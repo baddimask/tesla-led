@@ -2,32 +2,36 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Підсвітка</title>
 <style>
-:root{--bg:#0d0f12;--card:#171a1f;--line:#262a31;--txt:#e9ecf1;--mut:#8a93a3;--acc:#3e8bff}
+:root{color-scheme:dark;--bg:#0d0f12;--card:#171a1f;--line:#262a31;--txt:#e9ecf1;--mut:#8a93a3;--acc:#3e8bff;--btn:#20242b;--btnA:#2b313a;--track:#2a2f37;--sel:#fff;--shadow:#000a}
+@media (prefers-color-scheme:light){:root{color-scheme:light;--bg:#eef0f3;--card:#fff;--line:#dde1e7;--txt:#15181d;--mut:#667085;--acc:#2f7bf5;--btn:#f3f5f8;--btnA:#e4e8ee;--track:#e2e6ec;--sel:#15181d;--shadow:#0002}}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{overscroll-behavior-x:none}
 body{margin:0;background:var(--bg);color:var(--txt);font:18px/1.3 -apple-system,Segoe UI,Roboto,sans-serif;user-select:none}
 .wrap{max-width:1150px;margin:0 auto;padding:20px}
-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px 16px;margin-bottom:16px}
 h1{font-size:28px;margin:0}
-.st{display:flex;align-items:center;gap:10px;color:var(--mut)}
+.st{display:flex;align-items:center;gap:10px;color:var(--mut);flex-wrap:wrap}
+.stack{display:grid;gap:12px;margin-top:16px}
+.stack .btn{width:100%}
 .dot{width:14px;height:14px;border-radius:50%;background:#c33}
 .dot.on{background:#2ecc71}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px}
 .card h2{font-size:15px;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);margin:0 0 14px}
 .row{display:flex;gap:12px}
-.btn{flex:1;min-height:64px;border:1px solid var(--line);background:#20242b;color:var(--txt);border-radius:14px;font-size:19px;font-weight:600;padding:0 10px}
-.btn:active{transform:scale(.97);background:#2b313a}
-.btn.pri{background:var(--acc);border-color:var(--acc)}
-.sw button.sel{border-color:#fff}
-.vs{position:relative;width:64px;height:250px;border-radius:32px;background:#2a2f37;touch-action:none;flex:none;overflow:hidden}
+.btn{flex:1;min-height:64px;border:1px solid var(--line);background:var(--btn);color:var(--txt);border-radius:14px;font-size:19px;font-weight:600;padding:0 10px}
+.btn:active{transform:scale(.97);background:var(--btnA)}
+.btn.pri{background:var(--acc);border-color:var(--acc);color:#fff}
+.sw button.sel{border-color:var(--sel)}
+.sw button{box-shadow:inset 0 0 0 1px #0002}
+.vs{position:relative;width:64px;height:250px;border-radius:32px;background:var(--track);touch-action:none;flex:none;overflow:hidden}
 .vs .vf{position:absolute;left:0;right:0;bottom:0;background:var(--acc);opacity:.85}
-.vs .vk{position:absolute;left:4px;width:56px;height:56px;border-radius:50%;background:#fff;box-shadow:0 2px 8px #0008;pointer-events:none}
+.vs .vk{position:absolute;left:4px;width:56px;height:56px;border-radius:50%;background:#fff;box-shadow:0 2px 8px #0006;border:1px solid #0001;pointer-events:none}
 #hue.vs{background:linear-gradient(0deg,red,#ff0,lime,cyan,blue,#f0f,red)}
 .vcol{display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--mut);font-size:14px}
 .vrow{display:flex;gap:18px;align-items:flex-start}
 .grid3{display:grid;grid-template-columns:1fr 1fr 150px;gap:16px}
-.cbar{position:sticky;bottom:0;z-index:5;margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 18px;box-shadow:0 -8px 24px #000a}
+.cbar{position:sticky;bottom:0;z-index:5;margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 18px;box-shadow:0 -8px 24px var(--shadow)}
 .cbar .sw{display:flex;gap:10px;justify-content:space-between}
 .cbar .sw button{flex:1;max-width:72px;aspect-ratio:1;border-radius:50%;border:3px solid transparent}
 .gtabs{display:flex;gap:12px;margin-bottom:12px}
@@ -46,14 +50,55 @@ h1{font-size:28px;margin:0}
 @keyframes sp{to{transform:rotate(360deg)}}
 #back{min-height:44px;font-size:16px;flex:0 0 auto}
 @media(max-width:800px){.grid,.grid3{grid-template-columns:1fr}}
+@media(max-width:560px){.wrap{padding:12px}h1{font-size:22px}.card{padding:14px}.st .btn{min-height:40px!important;font-size:15px!important}}
 .login{position:fixed;inset:0;background:var(--bg);z-index:50;display:flex;align-items:center;justify-content:center}
-.login input{width:100%;font-size:22px;padding:14px;border-radius:12px;border:1px solid var(--line);background:#20242b;color:var(--txt);margin:12px 0}
+.login input{width:100%;font-size:22px;padding:14px;border-radius:12px;border:1px solid var(--line);background:var(--btn);color:var(--txt);margin:12px 0}
 #eveCard{display:none!important}
 </style>
+<script>
+// ---- ДЕМО-режим: сайт працює без плати, усі команди обробляються тут же, у браузері
+(function(){let on=false;try{on=/[?&]demo\b/.test(location.search)||localStorage.getItem('tled_demo')==='1'}catch(e){}
+if(!on)return;window.TLED_DEMO=true;try{localStorage.setItem('tled_demo','1')}catch(e){}
+const now=new Date();
+const D={online:true,inet:true,remote:true,connected:false,name:'',msg:'Демо-режим: натисніть «Шукати контролери»',saved:'',proto:1,env:0,
+clock:now.getHours()*60+now.getMinutes(),eveOn:false,eveFrom:1080,eveTo:360,eveBri:30,eveColor:'ff5a10',timer:0,devices:[]};
+const L={power:1,color:'ffffff',bri:100,fx:0};
+const DEV=[{name:'LEDCAR-01-03BD',addr:'26:03:13:a0:03:bd',rssi:-58},{name:'ELK-BLEDOM',addr:'be:ef:00:12:34:56',rssi:-79}];
+const upd=()=>setTimeout(()=>{if(typeof poll==='function')poll()},30);
+const q=u=>{const o={};(u.split('?')[1]||'').split('&').forEach(p=>{if(!p)return;const i=p.indexOf('=');o[decodeURIComponent(i<0?p:p.slice(0,i))]=i<0?'':decodeURIComponent(p.slice(i+1))});return o};
+function show(t){const b=document.getElementById('demoLog');if(b)b.textContent='Команда: '+t;
+const g=document.getElementById('demoGlow');if(g){const c=L.fx?'linear-gradient(90deg,red,#ff0,lime,cyan,blue,#f0f)':'#'+L.color;g.style.background=c;g.style.opacity=L.power?Math.max(.08,L.bri/100):0}}
+function handle(u){const p=u.split('?')[0],a=q(u);
+if(p==='/scan'){D.devices=[];D.msg='Шукаю контролери поруч…';show('пошук');setTimeout(()=>{D.devices=DEV.slice();D.msg='Знайдено пристроїв: '+DEV.length+'. Оберіть свій або натисніть «Підключитись автоматично».';upd()},1500)}
+else if(p==='/select'){const d=DEV.find(x=>x.addr===a.addr)||DEV[0];D.msg='Підключаюсь до '+d.name+'…';D.saved=a.addr||'';show('підключення до '+d.name);
+ setTimeout(()=>{D.connected=true;D.name=d.name;D.proto=d.name.indexOf('ELK')===0?0:1;D.msg='Підключено';upd()},1200)}
+else if(p==='/release'){D.connected=false;D.name='';D.msg='Контролер звільнено — тепер можна підключитись з телефону';show('звільнити')}
+else if(p==='/reboot'){D.connected=false;D.msg='Плата перезавантажується…';show('перезавантаження');setTimeout(()=>{D.msg='Демо-режим: натисніть «Шукати контролери»';upd()},3000)}
+else if(p==='/env'){D.env=+a.e;show('вихід '+(D.env?'SPI 7B':'RGB 7E'))}
+else if(p==='/timer'){D.timer=+a.m||0;show(D.timer?'таймер '+D.timer+' хв':'таймер вимкнено')}
+else if(p==='/evening'){D.eveOn=a.on==='1';D.eveFrom=+a.from;D.eveTo=+a.to;D.eveColor=a.color;D.eveBri=+a.bri;show('вечірній режим збережено')}
+else if(p==='/cmd'){const k=Object.keys(a)[0],v=a[k];
+ if(k==='power')L.power=+v;else if(k==='color'){L.color=v;L.fx=0}else if(k==='bri')L.bri=+v;else if(k==='fx')L.fx=+v;
+ show(({power:'живлення',color:'колір #',bri:'яскравість ',fx:'ефект ',speed:'швидкість '}[k]||k+'=')+v+(k==='power'?(v=='1'?' (увімк.)':' (вимк.)'):'')+(k==='bri'||k==='speed'?'%':''))}
+else if(p!=='/time'&&p!=='/status'&&p!=='/ping')show(u)}
+const realFetch=window.fetch.bind(window);
+window.fetch=function(u,o){if(typeof u==='string'&&u.charAt(0)==='/'){
+ if(u.indexOf('/status')===0){D.clock=new Date().getHours()*60+new Date().getMinutes();return Promise.resolve(new Response(JSON.stringify(D),{status:200,headers:{'Content-Type':'application/json'}}))}
+ handle(u);return Promise.resolve(new Response('ok'))}return realFetch(u,o)};
+window.TLED={sign:null,send:()=>Promise.resolve(null),state:()=>D,hasPass:()=>true,setPass:()=>{},clear:()=>{},
+ logout:()=>{try{localStorage.removeItem('tled_demo')}catch(e){}location.href=location.pathname},onState:null};
+window.addEventListener('DOMContentLoaded',()=>{
+ const h=document.querySelector('h1 .small');if(h)h.style.display='block';h.innerHTML='<b style="color:#f5a623">ДЕМО без плати</b> · <a href="#" onclick="TLED.logout();return false" style="color:var(--mut)">вийти з демо</a>';
+ const ec=document.getElementById('eveCard');if(ec)ec.style.setProperty('display','block','important');
+ const g=document.createElement('div');g.id='demoGlow';g.style.cssText='position:fixed;left:0;right:0;top:0;height:6px;z-index:60;background:#fff;transition:.2s;box-shadow:0 0 18px 4px currentColor';document.body.appendChild(g);
+ const b=document.createElement('div');b.id='demoLog';b.style.cssText='position:fixed;left:50%;transform:translateX(-50%);bottom:110px;z-index:60;background:#f5a623;color:#111;font:600 14px/1.2 sans-serif;padding:6px 12px;border-radius:20px;max-width:90vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none';
+ b.textContent='Демо-режим: команди нікуди не надсилаються';document.body.appendChild(b);show('—')});
+})();
+</script>
 <script src="https://unpkg.com/mqtt@5.11.0/dist/mqtt.min.js"></script>
 <script>
 // Сайт керує платою через інтернет: команди йдуть через сервіс-посередник MQTT і підписуються паролем (HMAC-SHA256)
-(function(){
+(function(){if(window.TLED_DEMO)return;
 const BROKER='wss://broker.emqx.io:8084/mqtt', ID='7b266m44ctfz';
 const TC='tesla-led/'+ID+'/cmd', TS='tesla-led/'+ID+'/state';
 let st=null,mc=null,pass=null,key=null;
@@ -85,15 +130,16 @@ window.addEventListener('load',connect);
 <h2>Підсвітка салону — вхід</h2><div class="big">Введіть пароль керування</div>
 <input id="lp" type="password" autocomplete="current-password" placeholder="Пароль">
 <button class="btn pri" style="width:100%" id="lb">Увійти</button>
-<div class="small" id="lm" style="margin-top:12px"></div></div></div>
+<div class="small" id="lm" style="margin-top:12px"></div>
+<button class="btn" style="width:100%;margin-top:14px" onclick="try{localStorage.setItem('tled_demo','1')}catch(e){}location.href=location.pathname+'?demo'">🧪 Спробувати без плати (демо)</button>
+<div class="small" style="margin-top:8px">Демо показує, як працює сайт: усі кнопки клацаються, але команди нікуди не йдуть.</div></div></div>
 <div class="wrap">
-<header><h1>Підсвітка салону <span class="small">через інтернет · <a href="#" onclick="TLED.logout();return false" style="color:var(--mut)">вийти</a></span></h1><div class="st"><button class="btn" id="gameBtn" onclick="openGame()" style="min-height:44px;font-size:16px;flex:0 0 auto">🎮 Гра</button><button class="btn hide" id="back" onclick="showConn()">Пристрій</button><span id="stt">…</span><span class="dot" id="dot"></span></div></header>
+<header><h1>Підсвітка салону <span class="small" style="display:block;font-weight:400">через інтернет · <a href="#" onclick="TLED.logout();return false" style="color:var(--mut)">вийти</a></span></h1><div class="st"><button class="btn" id="gameBtn" onclick="openGame()" style="min-height:44px;font-size:16px;flex:0 0 auto">🎮 Гра</button><button class="btn hide" id="back" onclick="showConn()">Пристрій</button><span id="stt">…</span><span class="dot" id="dot"></span></div></header>
 <div id="scrConn" class="card" style="max-width:760px;margin:0 auto">
 <h2>Крок 1 — підключення до контролера</h2>
 <div class="big" id="cmsg">…</div><div class="hint">Перед підключенням закрийте LED LAMP на телефоні: контролер приймає лише одне з'єднання.</div>
 <div id="info" class="small"></div>
-<div class="row" style="margin-top:12px"><button class="btn" onclick="get('/scan')">Шукати</button><button class="btn" onclick="get('/select?addr=')">Авто</button><button class="btn" onclick="get('/release')">Звільнити для телефону</button></div>
-<div class="row" style="margin-top:12px"><button class="btn" onclick="if(confirm('Перезавантажити плату?')){fetch('/reboot');setTimeout(()=>location.reload(),8000)}">↻ Перезавантажити плату</button></div>
+<div class="stack"><button class="btn pri" onclick="get('/scan')">🔍 Шукати контролери</button><button class="btn" onclick="get('/select?addr=')">⚡ Підключитись автоматично</button><button class="btn" onclick="get('/release')">📱 Звільнити для телефону</button><button class="btn" onclick="if(confirm('Перезавантажити плату?')){fetch('/reboot');setTimeout(()=>location.reload(),8000)}">↻ Перезавантажити плату</button></div>
 <div id="envrow" style="display:none;margin-top:12px"><div class="small">Вихід контролера LEDCAR (якщо не реагує — спробуйте інший):</div><div class="row" style="margin-top:8px"><button class="btn" id="env0" onclick="get('/env?e=0')">RGB (7E)</button><button class="btn" id="env1" onclick="get('/env?e=1')">SPI (7B)</button></div></div>
 <div id="list"></div>
 </div>
@@ -131,12 +177,12 @@ window.addEventListener('load',connect);
 <div class="card" id="eveCard" style="grid-column:1/-1"><h2>Вечірній режим</h2>
 <div class="small" id="clk">Годинник: …</div>
 <label style="display:flex;align-items:center;gap:12px;margin:14px 0;font-size:18px"><input type="checkbox" id="eon" style="width:28px;height:28px"> Автоматично вмикати вечірній колір</label>
-<div class="row"><label class="small" style="flex:1">З<br><input type="time" id="efrom" style="width:100%;font-size:22px;padding:8px;border-radius:10px;border:1px solid var(--line);background:#20242b;color:var(--txt)"></label>
-<label class="small" style="flex:1">До<br><input type="time" id="eto" style="width:100%;font-size:22px;padding:8px;border-radius:10px;border:1px solid var(--line);background:#20242b;color:var(--txt)"></label></div>
+<div class="row"><label class="small" style="flex:1">З<br><input type="time" id="efrom" style="width:100%;font-size:22px;padding:8px;border-radius:10px;border:1px solid var(--line);background:var(--btn);color:var(--txt)"></label>
+<label class="small" style="flex:1">До<br><input type="time" id="eto" style="width:100%;font-size:22px;padding:8px;border-radius:10px;border:1px solid var(--line);background:var(--btn);color:var(--txt)"></label></div>
 <div class="lbl" style="margin-top:14px"><span>Вечірній колір і яскравість:</span><span><span id="eprev" style="display:inline-block;width:44px;height:22px;border-radius:6px;vertical-align:middle"></span> <b id="ebri"></b></span></div>
 <div class="row" style="margin-top:10px"><button class="btn" onclick="eveTake()">Взяти поточні</button><button class="btn pri" onclick="eveSave()">Зберегти</button></div>
 <div class="small" id="emsg" style="margin-top:10px"></div>
-<div class="small" style="margin-top:14px"><a href="/update" style="color:#3e8bff">Оновлення прошивки →</a></div>
+<div class="small" style="margin-top:14px"><a href="/update" style="color:var(--acc)">Оновлення прошивки →</a></div>
 </div>
 </div>
 <div class="cbar"><div class="sw" id="sw"></div></div>
@@ -263,7 +309,6 @@ function eveTake(){eve.color=cur.color;eve.bri=+cur.bri;eveShow();$('emsg').text
 function eveSave(){fetch('/evening?on='+($('eon').checked?1:0)+'&from='+mm($('efrom').value)+'&to='+mm($('eto').value)+'&color='+eve.color+'&bri='+eve.bri)
 .then(()=>{$('emsg').textContent='Збережено ✓'}).catch(()=>{$('emsg').textContent='Не вдалося зберегти'})}
 function eveFill(s){if(eveLoaded)return;eveLoaded=true;$('eon').checked=s.eveOn;$('efrom').value=hm(s.eveFrom);$('eto').value=hm(s.eveTo);eve.color=s.eveColor;eve.bri=s.eveBri;eveShow()}
-
 // ---- вхід: перевіряємо пароль командою /ping — плата підтверджує її в стані (ack)
 (function(){const L=$('login');if(TLED.hasPass()){L.classList.add('hide');return}
 async function go(){const p=$('lp').value.trim();if(!p){$('lm').textContent='Введіть пароль';return}
