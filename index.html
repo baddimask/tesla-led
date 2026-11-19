@@ -1,0 +1,279 @@
+<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Підсвітка</title>
+<style>
+:root{--bg:#0d0f12;--card:#171a1f;--line:#262a31;--txt:#e9ecf1;--mut:#8a93a3;--acc:#3e8bff}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{overscroll-behavior-x:none}
+body{margin:0;background:var(--bg);color:var(--txt);font:18px/1.3 -apple-system,Segoe UI,Roboto,sans-serif;user-select:none}
+.wrap{max-width:1150px;margin:0 auto;padding:20px}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+h1{font-size:28px;margin:0}
+.st{display:flex;align-items:center;gap:10px;color:var(--mut)}
+.dot{width:14px;height:14px;border-radius:50%;background:#c33}
+.dot.on{background:#2ecc71}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px}
+.card h2{font-size:15px;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);margin:0 0 14px}
+.row{display:flex;gap:12px}
+.btn{flex:1;min-height:64px;border:1px solid var(--line);background:#20242b;color:var(--txt);border-radius:14px;font-size:19px;font-weight:600;padding:0 10px}
+.btn:active{transform:scale(.97);background:#2b313a}
+.btn.pri{background:var(--acc);border-color:var(--acc)}
+.sw button.sel{border-color:#fff}
+.vs{position:relative;width:64px;height:250px;border-radius:32px;background:#2a2f37;touch-action:none;flex:none;overflow:hidden}
+.vs .vf{position:absolute;left:0;right:0;bottom:0;background:var(--acc);opacity:.85}
+.vs .vk{position:absolute;left:4px;width:56px;height:56px;border-radius:50%;background:#fff;box-shadow:0 2px 8px #0008;pointer-events:none}
+#hue.vs{background:linear-gradient(0deg,red,#ff0,lime,cyan,blue,#f0f,red)}
+.vcol{display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--mut);font-size:14px}
+.vrow{display:flex;gap:18px;align-items:flex-start}
+.grid3{display:grid;grid-template-columns:1fr 1fr 150px;gap:16px}
+.cbar{position:sticky;bottom:0;z-index:5;margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 18px;box-shadow:0 -8px 24px #000a}
+.cbar .sw{display:flex;gap:10px;justify-content:space-between}
+.cbar .sw button{flex:1;max-width:72px;aspect-ratio:1;border-radius:50%;border:3px solid transparent}
+.gtabs{display:flex;gap:12px;margin-bottom:12px}
+.pad{display:grid;grid-template-columns:repeat(3,80px);grid-template-rows:repeat(2,80px);gap:10px;justify-content:center;margin-top:14px;flex:none}
+.pad .btn{min-height:0;font-size:28px}
+.lbl{display:flex;justify-content:space-between;align-items:center;color:var(--mut);font-size:15px}
+.fx{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.fx .btn{min-height:56px;font-size:17px}
+.dev{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.small{font-size:14px;color:var(--mut)}
+#prev{width:44px;height:22px;border-radius:6px;background:red}
+.hide{display:none!important}
+.big{font-size:20px;line-height:1.4;color:var(--txt);margin-bottom:6px}
+.hint{color:var(--mut);font-size:15px;margin:6px 0 14px}
+.spin{display:inline-block;width:16px;height:16px;border:3px solid #3e8bff55;border-top-color:#3e8bff;border-radius:50%;animation:sp 1s linear infinite;vertical-align:-2px;margin-right:8px}
+@keyframes sp{to{transform:rotate(360deg)}}
+#back{min-height:44px;font-size:16px;flex:0 0 auto}
+@media(max-width:800px){.grid,.grid3{grid-template-columns:1fr}}
+.login{position:fixed;inset:0;background:var(--bg);z-index:50;display:flex;align-items:center;justify-content:center}
+.login input{width:100%;font-size:22px;padding:14px;border-radius:12px;border:1px solid var(--line);background:#20242b;color:var(--txt);margin:12px 0}
+#eveCard{display:none!important}
+</style>
+<script src="https://unpkg.com/mqtt@5.11.0/dist/mqtt.min.js"></script>
+<script>
+// Сайт керує платою через інтернет: команди йдуть через сервіс-посередник MQTT і підписуються паролем (HMAC-SHA256)
+(function(){
+const BROKER='wss://broker.emqx.io:8084/mqtt', ID='7b266m44ctfz';
+const TC='tesla-led/'+ID+'/cmd', TS='tesla-led/'+ID+'/state';
+let st=null,mc=null,pass=null,key=null;
+try{pass=localStorage.getItem('tled_pass')}catch(e){}
+const enc=s=>new TextEncoder().encode(s);
+const hx=b=>Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');
+async function getKey(){if(!key)key=await crypto.subtle.importKey('raw',enc(pass),{name:'HMAC',hash:'SHA-256'},false,['sign']);return key}
+async function sign(p){const t=Math.floor(Date.now()/1000),n=Math.random().toString(36).slice(2,8)+Date.now().toString(36).slice(-5);
+const body=t+'|'+n+'|'+p;return {n:n,msg:body+'|'+hx(await crypto.subtle.sign('HMAC',await getKey(),enc(body)))}}
+async function sendPath(p){if(!mc||!mc.connected||!pass)return null;const s=await sign(p);mc.publish(TC,s.msg);return s.n}
+function offline(msg){return {online:false,connected:false,name:'',msg:msg,saved:'',proto:0,env:0,clock:-1,eveOn:false,eveFrom:1080,eveTo:360,eveBri:30,eveColor:'ff5a10',timer:0,devices:[]}}
+const realFetch=window.fetch.bind(window);
+window.fetch=function(u,o){if(typeof u==='string'&&u.charAt(0)==='/'){
+ if(u.indexOf('/status')===0){const s=(st&&st.online)?st:offline(!mc||!mc.connected?'Підключення до сервера…':'Плата не на зв\'язку: у машині немає живлення або інтернету від iPhone');
+  return Promise.resolve(new Response(JSON.stringify(s),{status:200,headers:{'Content-Type':'application/json'}}))}
+ if(u.indexOf('/time')!==0)sendPath(u);return Promise.resolve(new Response('ok'))}
+ return realFetch(u,o)};
+window.TLED={sign:sign,send:sendPath,state:()=>st,hasPass:()=>!!pass,
+ setPass:p=>{pass=p;key=null;try{localStorage.setItem('tled_pass',p)}catch(e){}},
+ clear:()=>{pass=null;key=null;try{localStorage.removeItem('tled_pass')}catch(e){}},logout:()=>{TLED.clear();location.reload()},onState:null};
+function connect(){if(typeof mqtt==='undefined'){setTimeout(connect,1000);return}
+ mc=mqtt.connect(BROKER,{clientId:'tled-web-'+Math.random().toString(16).slice(2,10),clean:true,reconnectPeriod:3000,connectTimeout:8000});
+ mc.on('connect',()=>mc.subscribe(TS));
+ mc.on('message',(t,m)=>{try{st=JSON.parse(m.toString());if(TLED.onState)TLED.onState(st);if(typeof poll==='function')setTimeout(poll,0)}catch(e){}})}
+window.addEventListener('load',connect);
+})();
+</script>
+</head><body><div class="login" id="login"><div class="card" style="width:min(520px,92vw)">
+<h2>Підсвітка салону — вхід</h2><div class="big">Введіть пароль керування</div>
+<input id="lp" type="password" autocomplete="current-password" placeholder="Пароль">
+<button class="btn pri" style="width:100%" id="lb">Увійти</button>
+<div class="small" id="lm" style="margin-top:12px"></div></div></div>
+<div class="wrap">
+<header><h1>Підсвітка салону <span class="small">через інтернет · <a href="#" onclick="TLED.logout();return false" style="color:var(--mut)">вийти</a></span></h1><div class="st"><button class="btn" id="gameBtn" onclick="openGame()" style="min-height:44px;font-size:16px;flex:0 0 auto">🎮 Гра</button><button class="btn hide" id="back" onclick="showConn()">Пристрій</button><span id="stt">…</span><span class="dot" id="dot"></span></div></header>
+<div id="scrConn" class="card" style="max-width:760px;margin:0 auto">
+<h2>Крок 1 — підключення до контролера</h2>
+<div class="big" id="cmsg">…</div><div class="hint">Перед підключенням закрийте LED LAMP на телефоні: контролер приймає лише одне з'єднання.</div>
+<div id="info" class="small"></div>
+<div class="row" style="margin-top:12px"><button class="btn" onclick="get('/scan')">Шукати</button><button class="btn" onclick="get('/select?addr=')">Авто</button><button class="btn" onclick="get('/release')">Звільнити для телефону</button></div>
+<div class="row" style="margin-top:12px"><button class="btn" onclick="if(confirm('Перезавантажити плату?')){fetch('/reboot');setTimeout(()=>location.reload(),8000)}">↻ Перезавантажити плату</button></div>
+<div id="envrow" style="display:none;margin-top:12px"><div class="small">Вихід контролера LEDCAR (якщо не реагує — спробуйте інший):</div><div class="row" style="margin-top:8px"><button class="btn" id="env0" onclick="get('/env?e=0')">RGB (7E)</button><button class="btn" id="env1" onclick="get('/env?e=1')">SPI (7B)</button></div></div>
+<div id="list"></div>
+</div>
+<div id="scrGame" class="hide card" style="text-align:center">
+<div class="gtabs"><button class="btn pri" id="tabC" onclick="gMode('cones')">🚗 Конуси</button><button class="btn" id="tabS" onclick="gMode('snake')">🐍 Змійка</button><button class="btn" onclick="closeGame()">← Назад до підсвітки</button></div>
+<div class="lbl" style="font-size:18px;margin-bottom:10px"><span>Рахунок: <b id="gs">0</b></span><span>Рекорд: <b id="gh">0</b></span></div>
+<div id="gCones">
+<canvas id="gc" width="1000" height="320" style="width:100%;background:#12151a;border-radius:14px;touch-action:none"></canvas>
+<div class="row" style="margin-top:14px"><button class="btn pri" id="gj">Стрибок</button></div>
+<div class="small" style="margin-top:10px">Торкніться поля або кнопки «Стрибок», щоб перестрибнути конус.</div>
+</div>
+<div id="gSnake" class="hide">
+<div style="display:flex;gap:16px;align-items:center">
+<canvas id="sc" width="1000" height="400" style="flex:1;min-width:0;width:100%;background:#12151a;border-radius:14px;touch-action:none"></canvas>
+<div class="pad" style="margin-top:0"><span></span><button class="btn" onclick="sDir(0,-1)">▲</button><span></span><button class="btn" onclick="sDir(-1,0)">◀</button><button class="btn" onclick="sDir(0,1)">▼</button><button class="btn" onclick="sDir(1,0)">▶</button></div>
+</div>
+<div class="small" style="margin-top:10px">Керуйте стрілками або проведіть пальцем по полю в потрібному напрямку.</div>
+</div>
+<label class="small" style="display:block;margin-top:12px"><input type="checkbox" id="glink" checked style="width:20px;height:20px;vertical-align:-4px"> Підсвітка реагує на гру</label>
+<div class="small" style="margin-top:6px">Тільки на стоянці!</div>
+</div>
+<div id="scrCtl" class="hide"><div class="grid3">
+<div class="card"><h2>Живлення і яскравість</h2>
+<div class="vrow"><div class="vcol"><div class="vs" id="bri"></div><b id="briv" style="color:var(--txt)">100%</b>Яскравість</div>
+<div style="flex:1">
+<div class="row"><button class="btn pri" onclick="cmd('power',1)">Увімкнути</button><button class="btn" onclick="cmd('power',0)">Вимкнути</button></div>
+<div class="row" style="margin-top:12px"><button class="btn" onclick="night()">🌙 Нічне світло (10%)</button></div>
+<div class="lbl" style="margin-top:14px"><span>Вимкнути через:</span><span id="tmr">таймер вимкнено</span></div>
+<div class="row" style="margin-top:8px"><button class="btn" onclick="timer(15)">15 хв</button><button class="btn" onclick="timer(30)">30</button><button class="btn" onclick="timer(60)">60</button><button class="btn" onclick="timer(0)">✕</button></div>
+</div></div></div>
+<div class="card"><h2>Ефекти</h2>
+<div class="vrow"><div class="fx" id="fx" style="flex:1"></div><div class="vcol"><div class="vs" id="spd"></div><b id="spv" style="color:var(--txt)">50%</b>Швидкість</div></div></div>
+<div class="card"><h2>Відтінок</h2><div class="vcol"><div class="vs" id="hue"></div><span id="prev"></span></div></div>
+
+<div class="card" id="eveCard" style="grid-column:1/-1"><h2>Вечірній режим</h2>
+<div class="small" id="clk">Годинник: …</div>
+<label style="display:flex;align-items:center;gap:12px;margin:14px 0;font-size:18px"><input type="checkbox" id="eon" style="width:28px;height:28px"> Автоматично вмикати вечірній колір</label>
+<div class="row"><label class="small" style="flex:1">З<br><input type="time" id="efrom" style="width:100%;font-size:22px;padding:8px;border-radius:10px;border:1px solid var(--line);background:#20242b;color:var(--txt)"></label>
+<label class="small" style="flex:1">До<br><input type="time" id="eto" style="width:100%;font-size:22px;padding:8px;border-radius:10px;border:1px solid var(--line);background:#20242b;color:var(--txt)"></label></div>
+<div class="lbl" style="margin-top:14px"><span>Вечірній колір і яскравість:</span><span><span id="eprev" style="display:inline-block;width:44px;height:22px;border-radius:6px;vertical-align:middle"></span> <b id="ebri"></b></span></div>
+<div class="row" style="margin-top:10px"><button class="btn" onclick="eveTake()">Взяти поточні</button><button class="btn pri" onclick="eveSave()">Зберегти</button></div>
+<div class="small" id="emsg" style="margin-top:10px"></div>
+<div class="small" style="margin-top:14px"><a href="/update" style="color:#3e8bff">Оновлення прошивки →</a></div>
+</div>
+</div>
+<div class="cbar"><div class="sw" id="sw"></div></div>
+</div></div>
+<script>
+const $=id=>document.getElementById(id);
+const pend={},busy={};
+const cur={color:'ffffff',bri:100};
+function cmd(k,v){if(k==='color'||k==='bri')cur[k]=v;if(busy[k]){pend[k]=v;return}busy[k]=1;
+fetch('/cmd?'+k+'='+encodeURIComponent(v)).catch(()=>{}).finally(()=>setTimeout(()=>{busy[k]=0;if(k in pend){const x=pend[k];delete pend[k];cmd(k,x)}},90))}
+function get(u){fetch(u).then(()=>setTimeout(poll,400)).catch(()=>{})}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';')}
+function hex(a){return a.map(x=>x.toString(16).padStart(2,'0')).join('')}
+function hsv(h){const f=n=>{const k=(n+h/60)%6;return Math.round(255*(1-Math.max(0,Math.min(k,4-k,1))))};return [f(5),f(3),f(1)]}
+const COLORS=['ff0000','ff4000','ff9000','ffff00','00ff00','00ffff','0080ff','0000ff','8000ff','ff00ff','ff0060','ffffff'];
+COLORS.forEach(c=>{const b=document.createElement('button');b.style.background='#'+c;
+b.onclick=()=>{document.querySelectorAll('.sw button').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');$('prev').style.background='#'+c;cmd('color',c)};$('sw').appendChild(b)});
+const FX=[[0x89,'Плавно RGB'],[0x8a,'Плавно 7 кольорів'],[0x87,'Стрибок RGB'],[0x88,'Стрибок 7 кольорів'],
+[0x95,'Блимання 7 кольорів'],[0x8b,'Пульс червоний'],[0x8d,'Пульс синій'],[0x91,'Пульс білий'],[0x92,'Червоний ↔ зелений'],[0x93,'Червоний ↔ синій']];
+const FX2=[[1,'Ефект 1'],[2,'Ефект 2'],[3,'Ефект 3'],[4,'Ефект 4'],[5,'Ефект 5'],[6,'Ефект 6'],[7,'Ефект 7'],[8,'Ефект 8'],[9,'Ефект 9'],[255,'Авто (усі по черзі)']];
+let curProto=-1;function setFx(p){if(p===curProto)return;curProto=p;$('fx').innerHTML='';(p==1?FX2:FX).forEach(([c,n])=>{const b=document.createElement('button');b.className='btn';b.textContent=n;b.onclick=()=>cmd('fx',c);$('fx').appendChild(b)})}
+setFx(0);
+// Вертикальні повзунки: тягнути вгору-вниз (горизонтальний свайп у Tesla повертає на попередню сторінку)
+function VS(id,min,max,val,onInput,fill){const el=$(id);el.innerHTML=(fill?'<div class="vf"></div>':'')+'<div class="vk"></div>';
+const o={value:val,set(v){v=Math.max(min,Math.min(max,Math.round(v)));o.value=v;const p=(v-min)/(max-min),H=el.offsetHeight||250;
+el.querySelector('.vk').style.bottom=(4+p*(H-64))+'px';const f=el.querySelector('.vf');if(f)f.style.height=(p*(H-64)+32)+'px'}};
+const at=e=>{const r=el.getBoundingClientRect();const p=1-(e.clientY-r.top-32)/(r.height-64);o.set(min+p*(max-min));onInput(o.value)};
+el.addEventListener('pointerdown',e=>{e.preventDefault();try{el.setPointerCapture(e.pointerId)}catch(_){}at(e);
+const mv=ev=>at(ev),up=()=>{el.removeEventListener('pointermove',mv);el.removeEventListener('pointerup',up);el.removeEventListener('pointercancel',up)};
+el.addEventListener('pointermove',mv);el.addEventListener('pointerup',up);el.addEventListener('pointercancel',up)});
+o.set(val);return o}
+const sBri=VS('bri',1,100,100,v=>{$('briv').textContent=v+'%';cmd('bri',v)},true);
+const sSpd=VS('spd',1,100,50,v=>{$('spv').textContent=v+'%';cmd('speed',v)},true);
+const sHue=VS('hue',0,359,0,v=>{const h=hex(hsv(v));$('prev').style.background='#'+h;document.querySelectorAll('.sw button').forEach(x=>x.classList.remove('sel'));cmd('color',h)},false);
+let wantConn=false,wasConn=false;
+function showConn(){wantConn=true;render()}
+let last=null;function render(){const s=last;if(!s||inGame)return;const conn=s.connected&&!wantConn;
+$('scrConn').classList.toggle('hide',conn);$('scrCtl').classList.toggle('hide',!conn);$('back').classList.toggle('hide',!conn);
+$('cmsg').innerHTML=s.connected?'✅ Підключено до <b>'+esc(s.name)+'</b> <button class="btn pri" style="min-height:48px;margin-left:10px" onclick="wantConn=false;render()">До налаштувань →</button>':'<span class="spin"></span>'+esc(s.msg)}
+let polling=false;
+async function poll(){if(polling)return;polling=true;const ac=new AbortController();const to=setTimeout(()=>ac.abort(),4000);try{const s=await (await fetch('/status',{signal:ac.signal})).json();last=s;if(s.connected&&!wasConn)wantConn=false;wasConn=s.connected;render();
+$('dot').classList.toggle('on',s.connected);$('stt').textContent=s.connected?'Підключено':'Не підключено';
+$('info').innerHTML=(s.connected?'Пристрій: <b>'+esc(s.name)+'</b>':esc(s.msg))+'<br>Вибір пристрою: '+(s.saved?'вручну ('+esc(s.saved)+')':'автоматично (ELK / LEDCAR)');
+setFx(s.proto);eveFill(s);$('clk').textContent=s.clock>=0?('Годинник плати: '+hm(s.clock)+' (час узято з браузера)'):'Годинник: невідомий — відкрийте цю сторінку, щоб передати час';$('tmr').textContent=s.timer?('вимкнеться через '+s.timer+' хв'):'таймер вимкнено';$('envrow').style.display=(s.connected&&s.proto==1)?'block':'none';$('env0').classList.toggle('pri',s.env==0);$('env1').classList.toggle('pri',s.env==1);
+$('list').innerHTML=s.devices.map(d=>'<div class="dev"><div>'+esc(d.name)+'<div class="small">'+esc(d.addr)+' · '+d.rssi+' dBm</div></div><button class="btn" style="flex:0 0 150px" onclick="get(\'/select?addr='+encodeURIComponent(d.addr)+'\')">Обрати</button></div>').join('');
+}catch(e){$('cmsg').textContent='Немає зв\'язку з ESP32. Перевірте, що ви в мережі Tesla-LED.';$('stt').textContent='Немає зв\'язку з ESP32';$('dot').classList.remove('on')}finally{clearTimeout(to);polling=false}}
+
+// ---- Гра «Конуси»: машинка стрибає через перешкоди ----
+let inGame=false;const G={};
+let gm='cones';
+function openGame(){inGame=true;['scrConn','scrCtl'].forEach(i=>$(i).classList.add('hide'));$('scrGame').classList.remove('hide');$('gameBtn').classList.add('hide');gReset();if(!G.loop){G.loop=1;requestAnimationFrame(gTick)}}
+function closeGame(){inGame=false;S.run=false;$('scrGame').classList.add('hide');$('gameBtn').classList.remove('hide');if($('glink').checked)raw('color',cur.color);render()}
+function gHi(v){try{if(v!==undefined)localStorage.setItem('ghi',v);return +(localStorage.getItem('ghi')||0)}catch(e){G.hi=Math.max(G.hi||0,v||0);return G.hi}}
+function gReset(){Object.assign(G,{y:0,vy:0,obs:[],t:0,score:0,speed:7,over:false,next:60,clouds:[[200,60],[600,90],[900,40]]});$('gh').textContent=gHi()}
+function gJump(){if(!inGame)return;if(G.over){gReset();return}if(G.y===0)G.vy=17}
+$('gc').addEventListener('pointerdown',e=>{e.preventDefault();gJump()});$('gj').onclick=gJump;
+document.addEventListener('keydown',e=>{if(!inGame)return;const k=e.code;
+if(gm==='cones'&&(k==='Space'||k==='ArrowUp')){e.preventDefault();gJump()}
+if(gm==='snake'){const d={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0]}[k];if(d){e.preventDefault();sDir(d[0],d[1])}}});
+function gMode(m){gm=m;$('gCones').classList.toggle('hide',m!=='cones');$('gSnake').classList.toggle('hide',m!=='snake');
+$('tabC').classList.toggle('pri',m==='cones');$('tabS').classList.toggle('pri',m==='snake');
+if(m==='cones'){S.run=false;gReset();if($('glink').checked)raw('color',cur.color)}else sReset()}
+// ---- Гра «Змійка»: під час гри підсвітка зелена, коли змійка їсть — коротко блимає різними кольорами
+const SC=25,SR=10,CS=40;const S={};
+function sHi(v){try{if(v!==undefined)localStorage.setItem('shi',v);return +(localStorage.getItem('shi')||0)}catch(e){S.hi=Math.max(S.hi||0,v||0);return S.hi}}
+function sFood(){let f;do{f=[Math.floor(Math.random()*SC),Math.floor(Math.random()*SR)]}while(S.body.some(b=>b[0]==f[0]&&b[1]==f[1]));S.food=f}
+function sReset(){Object.assign(S,{body:[[6,5],[5,5],[4,5]],dir:[1,0],next:[1,0],score:0,over:false,run:true,last:0,step:170});sFood();
+$('gs').textContent=0;$('gh').textContent=sHi();if($('glink').checked&&!fxBusy)raw('color','00ff00')}
+function sDir(x,y){if(!inGame||gm!=='snake')return;if(S.over){sReset();return}if(x===-S.dir[0]&&y===-S.dir[1])return;S.next=[x,y]}
+let sw0=null;$('sc').addEventListener('pointerdown',e=>{e.preventDefault();sw0=[e.clientX,e.clientY];if(S.over)sReset()});
+$('sc').addEventListener('pointerup',e=>{if(!sw0)return;const dx=e.clientX-sw0[0],dy=e.clientY-sw0[1];sw0=null;if(Math.max(Math.abs(dx),Math.abs(dy))<25)return;
+if(Math.abs(dx)>Math.abs(dy))sDir(dx>0?1:-1,0);else sDir(0,dy>0?1:-1)});
+async function eatFx(){if(fxBusy||!$('glink').checked)return;fxBusy=true;
+const pal=['ff0000','ffff00','0080ff','ff00ff','00ffff','ff9000','8000ff','ffffff'];
+for(let i=0;i<3;i++){await raw('color',pal[Math.floor(Math.random()*pal.length)]);await wait(200)}
+if(S.run&&!S.over)await raw('color','00ff00');fxBusy=false}
+async function snakeCrashFx(){if(fxBusy||!$('glink').checked)return;fxBusy=true;
+for(let i=0;i<2;i++){await raw('color','ff0000');await wait(220);await raw('color','000000');await wait(180)}await raw('color','00ff00');fxBusy=false}
+function sTick(t){if(!S.body)sReset();if(S.run&&!S.over&&t-S.last>=S.step){S.last=t;S.dir=S.next;
+const h=[S.body[0][0]+S.dir[0],S.body[0][1]+S.dir[1]];
+if(h[0]<0||h[1]<0||h[0]>=SC||h[1]>=SR||S.body.some(b=>b[0]==h[0]&&b[1]==h[1])){S.over=true;if(S.score>sHi())sHi(S.score);$('gh').textContent=sHi();snakeCrashFx()}
+else{S.body.unshift(h);if(h[0]==S.food[0]&&h[1]==S.food[1]){S.score++;$('gs').textContent=S.score;S.step=Math.max(80,S.step-4);sFood();eatFx()}else S.body.pop()}}
+const x=$('sc').getContext('2d'),W=SC*CS,H=SR*CS;x.clearRect(0,0,W,H);
+x.strokeStyle='#1c2027';for(let i=1;i<SC;i++){x.beginPath();x.moveTo(i*CS,0);x.lineTo(i*CS,H);x.stroke()}for(let j=1;j<SR;j++){x.beginPath();x.moveTo(0,j*CS);x.lineTo(W,j*CS);x.stroke()}
+x.fillStyle='#ff4d6d';x.beginPath();x.arc(S.food[0]*CS+CS/2,S.food[1]*CS+CS/2,CS/2-6,0,7);x.fill();
+S.body.forEach((b,i)=>{x.fillStyle=i?'#2ecc71':'#7dff9e';x.beginPath();x.roundRect?x.roundRect(b[0]*CS+3,b[1]*CS+3,CS-6,CS-6,9):x.rect(b[0]*CS+3,b[1]*CS+3,CS-6,CS-6);x.fill()});
+if(S.over){x.fillStyle='#000a';x.fillRect(0,0,W,H);x.fillStyle='#fff';x.font='bold 44px sans-serif';x.textAlign='center';x.fillText('Кінець гри! Рахунок: '+S.score,W/2,H/2-10);x.font='26px sans-serif';x.fillText('Торкніться поля або стрілки, щоб почати знову',W/2,H/2+34)}}
+function gTick(t){if(inGame){if(gm==='cones')gStep();else sTick(t)}requestAnimationFrame(gTick)}
+function gStep(){const c=$('gc'),x=c.getContext('2d'),W=c.width,H=c.height,GY=H-50;
+if(!G.over){G.t++;G.vy-=0.9;G.y=Math.max(0,G.y+G.vy);if(G.y===0&&G.vy<0)G.vy=0;
+G.speed=7+G.t/600;G.score=Math.floor(G.t/6);
+if(--G.next<=0){const big=Math.random()<0.3;G.obs.push({x:W+20,w:big?44:28,h:big?60:42,two:Math.random()<0.2});G.next=55+Math.random()*70-Math.min(30,G.t/200)}
+G.obs.forEach(o=>o.x-=G.speed);G.obs=G.obs.filter(o=>o.x>-80);
+G.clouds.forEach(cl=>{cl[0]-=G.speed*0.2;if(cl[0]<-80)cl[0]=W+40});
+const px=90,py=GY-G.y;for(const o of G.obs){const ow=o.two?o.w*2:o.w;if(px+70>o.x+6&&px+6<o.x+ow-6&&py>GY-o.h+8){G.over=true;if(G.score>gHi()&&gHi()>0){gHi(G.score);recordFx()}else{if(G.score>gHi())gHi(G.score);crashFx()}$('gh').textContent=gHi()}}
+$('gs').textContent=G.score}
+x.clearRect(0,0,W,H);x.fillStyle='#2a2f37';G.clouds.forEach(cl=>{x.beginPath();x.ellipse(cl[0],cl[1],40,12,0,0,7);x.fill()});
+x.fillStyle='#3a404a';x.fillRect(0,GY,W,3);for(let i=0;i<W;i+=60){x.fillRect((i-(G.t*G.speed)%60+60)%W,GY+20,30,3)}
+G.obs.forEach(o=>{for(let k=0;k<(o.two?2:1);k++){const ox=o.x+k*o.w;x.fillStyle='#ff7a1a';x.beginPath();x.moveTo(ox+o.w/2,GY-o.h);x.lineTo(ox+o.w,GY);x.lineTo(ox,GY);x.fill();x.fillStyle='#fff';x.fillRect(ox+o.w*0.3,GY-o.h*0.55,o.w*0.4,6)}});
+const px=90,py=GY-G.y;x.fillStyle='#e9ecf1';x.beginPath();x.moveTo(px,py-14);x.lineTo(px+12,py-30);x.lineTo(px+50,py-30);x.lineTo(px+66,py-16);x.lineTo(px+76,py-14);x.lineTo(px+76,py-6);x.lineTo(px,py-6);x.fill();
+x.fillStyle='#3e8bff';x.fillRect(px+16,py-27,14,10);x.fillRect(px+33,py-27,15,10);
+x.fillStyle='#111';[px+18,px+60].forEach(w=>{x.beginPath();x.arc(w,py-6,9,0,7);x.fill()});x.fillStyle='#888';[px+18,px+60].forEach(w=>{x.beginPath();x.arc(w,py-6,4,0,7);x.fill()});
+if(G.over){x.fillStyle='#000a';x.fillRect(0,0,W,H);x.fillStyle='#fff';x.font='bold 40px sans-serif';x.textAlign='center';x.fillText('Аварія! Рахунок: '+G.score,W/2,H/2-10);x.font='24px sans-serif';x.fillText('Торкніться, щоб почати знову',W/2,H/2+30)}}
+// ---- нічний режим, таймер, світлові ефекти гри
+function raw(k,v){return fetch('/cmd?'+k+'='+encodeURIComponent(v)).catch(()=>{})}
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+function night(){cmd('bri',10);sBri.set(10);$('briv').textContent='10%'}
+function timer(m){get('/timer?m='+m)}
+let fxBusy=false;
+async function crashFx(){if(fxBusy||!$('glink').checked)return;fxBusy=true;const c=cur.color;
+for(let i=0;i<3;i++){await raw('color','ff0000');await wait(220);await raw('color','000000');await wait(220)}
+await raw('color',c);fxBusy=false}
+async function recordFx(){if(fxBusy||!$('glink').checked)return;fxBusy=true;const c=cur.color;
+for(let h=0;h<=360;h+=24){await raw('color',hex(hsv(h%360)));await wait(90)}
+await raw('color',c);fxBusy=false}
+// ---- годинник і вечірній режим
+function hm(m){m=+m;return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0')}
+function mm(v){const p=(v||'0:0').split(':');return (+p[0])*60+(+p[1])}
+function syncTime(){const d=new Date();fetch('/time?m='+(d.getHours()*60+d.getMinutes())).catch(()=>{})}
+syncTime();setInterval(syncTime,600000);
+const eve={color:'ff5a10',bri:30};let eveLoaded=false;
+function eveShow(){$('eprev').style.background='#'+eve.color;$('ebri').textContent=eve.bri+'%'}
+function eveTake(){eve.color=cur.color;eve.bri=+cur.bri;eveShow();$('emsg').textContent='Взято поточний колір. Натисніть «Зберегти».'}
+function eveSave(){fetch('/evening?on='+($('eon').checked?1:0)+'&from='+mm($('efrom').value)+'&to='+mm($('eto').value)+'&color='+eve.color+'&bri='+eve.bri)
+.then(()=>{$('emsg').textContent='Збережено ✓'}).catch(()=>{$('emsg').textContent='Не вдалося зберегти'})}
+function eveFill(s){if(eveLoaded)return;eveLoaded=true;$('eon').checked=s.eveOn;$('efrom').value=hm(s.eveFrom);$('eto').value=hm(s.eveTo);eve.color=s.eveColor;eve.bri=s.eveBri;eveShow()}
+
+// ---- вхід: перевіряємо пароль командою /ping — плата підтверджує її в стані (ack)
+(function(){const L=$('login');if(TLED.hasPass()){L.classList.add('hide');return}
+async function go(){const p=$('lp').value.trim();if(!p){$('lm').textContent='Введіть пароль';return}
+TLED.setPass(p);$('lm').textContent='Перевіряю…';
+let n=null;for(let i=0;i<10&&!n;i++){n=await TLED.send('/ping');if(!n)await wait(800)}
+if(!n){$('lm').textContent='Немає зв\'язку із сервером. Пароль збережено — спробуйте пізніше.';setTimeout(()=>L.classList.add('hide'),2500);return}
+const t0=Date.now();while(Date.now()-t0<8000){const s=TLED.state();if(s&&s.ack===n){L.classList.add('hide');return}await wait(300)}
+const s=TLED.state();
+if(s&&s.online){TLED.clear();$('lm').textContent='Неправильний пароль'}
+else{$('lm').textContent='Плата зараз не на зв\'язку, тож пароль перевірити не можна. Його збережено.';setTimeout(()=>L.classList.add('hide'),2500)}}
+$('lb').onclick=go;$('lp').addEventListener('keydown',e=>{if(e.key==='Enter')go()})})();
+poll();setInterval(poll,4000);
+</script></body></html>
