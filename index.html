@@ -54,13 +54,39 @@ h1{font-size:28px;margin:0}
 @media(max-width:560px){.wrap{padding:12px}h1{font-size:22px}.card{padding:14px}.st .btn{min-height:40px!important;font-size:15px!important}}
 .login{position:fixed;inset:0;background:var(--bg);z-index:50;display:flex;align-items:center;justify-content:center}
 .login input{width:100%;font-size:22px;padding:14px;border-radius:12px;border:1px solid var(--line);background:var(--btn);color:var(--txt);margin:12px 0}
-#eveCard{display:none!important}
 .mapbar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-.mtabs{display:grid;grid-template-columns:auto 1fr 1fr 1fr}
+.mtabs{display:grid;grid-template-columns:auto 1fr 1fr 1fr 1fr}
 .mtabs .btn{min-height:52px;font-size:17px}
 .mframe{width:100%;height:calc(100vh - 230px);min-height:380px;border:0;border-radius:14px;background:var(--btn)}
 .mapbar .btn{min-height:52px;font-size:17px;display:flex;align-items:center;justify-content:center;text-decoration:none}
 @media(max-width:700px){.mapbar{grid-template-columns:1fr 1fr}.mtabs .btn{font-size:15px;padding:0 6px}}
+.dtop{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;margin-bottom:16px}
+.dclock{font-size:56px;font-weight:700;letter-spacing:.02em;font-variant-numeric:tabular-nums;line-height:1}
+.dgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}.dgrid>.card{min-width:0}
+.card h2 .mini{float:right;margin-top:-6px}
+.mini{min-width:44px;min-height:40px;border-radius:10px;border:1px solid var(--line);background:var(--btn);color:var(--txt);font-size:18px;padding:0 10px}
+.inp{min-width:0;font-size:20px;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--btn);color:var(--txt);min-height:48px}
+.seg .btn{min-height:46px;font-size:16px}
+.rtt{width:100%;border-collapse:collapse;font-size:20px;color:var(--txt)}.rtt th{font-size:13px;color:var(--mut);text-align:right;font-weight:600}.rtt td{padding:6px 0;text-align:right;border-top:1px solid var(--line)}.rtt td:first-child{text-align:left}
+.wnow{display:flex;align-items:center;gap:14px;line-height:1.5}
+.whr{display:flex;gap:6px;overflow-x:auto;margin:12px 0;padding-bottom:4px}.wh{flex:0 0 58px;text-align:center;background:var(--btn);border-radius:12px;padding:6px 0;line-height:1.5}.wh b{color:var(--txt)}
+.wd{display:flex;align-items:center;gap:10px;padding:6px 0;border-top:1px solid var(--line);color:var(--txt)}
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.tgrid .btn{min-height:52px}
+.tm{position:relative;display:flex;align-items:center;gap:10px;margin-top:10px;padding:10px 12px;border-radius:12px;background:var(--btn);overflow:hidden}.tm b{font-size:26px;font-variant-numeric:tabular-nums;z-index:1}.tm .small{flex:1;z-index:1}.tm .mini{z-index:1}
+.tmbar{position:absolute;left:0;top:0;bottom:0;background:var(--acc);opacity:.18}.tm.done{background:#e5484d;color:#fff}.tm.done .small{color:#fff}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:10px}.days .btn{min-height:44px;font-size:15px;padding:0}
+.calc{display:grid;grid-template-columns:1fr 220px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+#cIn,#cOut{font:20px/32px ui-monospace,Menlo,Consolas,monospace;padding:10px 14px;height:330px;margin:0;border:0;overflow-y:auto}
+#cIn{resize:none;background:var(--card);color:var(--txt);outline:none;white-space:pre;overflow-x:auto;user-select:text}#cOut{background:var(--btn);text-align:right;color:var(--acc);font-weight:700;overflow:hidden}#cOut div{white-space:nowrap;height:32px}
+.mk{background:none;border:0}.mkc,.mkz{width:100%;height:100%;border-radius:50%;display:flex;align-items:center;justify-content:center;font:700 13px sans-serif;box-shadow:0 1px 4px #0006}
+.mkc{background:#fff;border:3px solid #e5484d;color:#111}.mkz{background:#16a34a;color:#fff;border:2px solid #fff;font-size:16px}
+.pl{display:flex;gap:10px;margin-top:8px}.pl a{color:var(--acc);font-weight:600}
+.leaflet-popup-content{font-size:15px;line-height:1.5}
+.camwarn{position:fixed;left:50%;transform:translateX(-50%);top:12px;z-index:70;background:#f5a623;color:#111;font:600 22px/1.3 sans-serif;padding:14px 22px;border-radius:16px;box-shadow:0 6px 24px #0006;max-width:94vw;text-align:center}
+.camwarn.over{background:#e5484d;color:#fff;animation:pul .8s infinite alternate}@keyframes pul{to{transform:translateX(-50%) scale(1.04)}}
+@media(max-width:900px){.dgrid{grid-template-columns:minmax(0,1fr)}.calc{grid-template-columns:1fr 130px}.dclock{font-size:40px}.dtop{grid-template-columns:auto 1fr}#dNext{grid-column:1/-1;text-align:left!important}}
+@media(max-width:700px){.mtabs{grid-template-columns:repeat(3,1fr)}.mtabs .btn:first-child{grid-column:1/-1}}
+#eveCard a[href="/update"]{display:none}
 </style>
 <script>
 // ---- ДЕМО-режим: сайт працює без плати, усі команди обробляються тут же, у браузері
@@ -68,7 +94,7 @@ h1{font-size:28px;margin:0}
 if(!on)return;window.TLED_DEMO=true;try{localStorage.setItem('tled_demo','1')}catch(e){}
 const now=new Date();
 const D={online:true,inet:true,remote:true,connected:false,name:'',msg:'Демо-режим: натисніть «Шукати контролери»',saved:'',proto:1,env:0,
-clock:now.getHours()*60+now.getMinutes(),eveOn:false,eveFrom:1080,eveTo:360,eveBri:30,eveColor:'ff5a10',timer:0,devices:[]};
+clock:now.getHours()*60+now.getMinutes(),eveOn:false,eveFrom:1080,eveTo:360,eveBri:30,eveColor:'ff5a10',timer:0,devices:[],dow:now.getDay(),sch:[[1,127,450,2,'ffffff',60,1],[1,127,1380,0,'000000',0,0],[0,0,0,0,'000000',0,0],[0,0,0,0,'000000',0,0],[0,0,0,0,'000000',0,0],[0,0,0,0,'000000',0,0],[0,0,0,0,'000000',0,0],[0,0,0,0,'000000',0,0]]};
 const L={power:1,color:'ffffff',bri:100,fx:0};
 const DEV=[{name:'LEDCAR-01-03BD',addr:'26:03:13:a0:03:bd',rssi:-58},{name:'ELK-BLEDOM',addr:'be:ef:00:12:34:56',rssi:-79}];
 const upd=()=>setTimeout(()=>{if(typeof poll==='function')poll()},30);
@@ -84,6 +110,8 @@ else if(p==='/reboot'){D.connected=false;D.msg='Плата перезавант�
 else if(p==='/env'){D.env=+a.e;show('вихід '+(D.env?'SPI 7B':'RGB 7E'))}
 else if(p==='/timer'){D.timer=+a.m||0;show(D.timer?'таймер '+D.timer+' хв':'таймер вимкнено')}
 else if(p==='/evening'){D.eveOn=a.on==='1';D.eveFrom=+a.from;D.eveTo=+a.to;D.eveColor=a.color;D.eveBri=+a.bri;show('вечірній режим збережено')}
+else if(p==='/sched'){const i=+a.i,r=D.sch[i];if(!r)return;if('del' in a){D.sch[i]=[0,0,0,0,'000000',0,0];show('правило видалено')}else{
+ if('on' in a)r[0]=+a.on;if('d' in a)r[1]=+a.d;if('m' in a)r[2]=+a.m;if('a' in a)r[3]=+a.a;if('c' in a)r[4]=a.c;if('b' in a)r[5]=+a.b;if('f' in a)r[6]=+a.f;show('розклад: правило '+(i+1)+' збережено')}}
 else if(p==='/cmd'){const k=Object.keys(a)[0],v=a[k];
  if(k==='power')L.power=+v;else if(k==='color'){L.color=v;L.fx=0}else if(k==='bri')L.bri=+v;else if(k==='fx')L.fx=+v;
  show(({power:'живлення',color:'колір #',bri:'яскравість ',fx:'ефект ',speed:'швидкість '}[k]||k+'=')+v+(k==='power'?(v=='1'?' (увімк.)':' (вимк.)'):'')+(k==='bri'||k==='speed'?'%':''))}
@@ -102,6 +130,7 @@ window.addEventListener('DOMContentLoaded',()=>{
  b.textContent='Демо-режим: команди нікуди не надсилаються';document.body.appendChild(b);show('—')});
 })();
 </script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/mqtt@5.11.0/dist/mqtt.min.js"></script>
 <script>
 // Сайт керує платою через інтернет: команди йдуть через сервіс-посередник MQTT і підписуються паролем (HMAC-SHA256)
@@ -138,11 +167,12 @@ window.addEventListener('load',connect);
 <input id="lp" type="password" autocomplete="current-password" placeholder="Пароль">
 <button class="btn pri" style="width:100%" id="lb">Увійти</button>
 <div class="small" id="lm" style="margin-top:12px"></div>
-<button class="btn" style="width:100%;margin-top:14px" onclick="openMap()">🗺 Карти: Waze, тривоги, шахеди (без пароля)</button>
+<button class="btn" style="width:100%;margin-top:14px" onclick="openDash()">📊 Панель: погода, курси, таймери</button>
+<button class="btn" style="width:100%;margin-top:10px" onclick="openMap()">🗺 Карти: Waze, тривоги, шахеди, камери</button>
 <button class="btn" style="width:100%;margin-top:10px" onclick="try{localStorage.setItem('tled_demo','1')}catch(e){}location.href=location.pathname+'?demo'">🧪 Спробувати без плати (демо)</button>
 <div class="small" style="margin-top:8px">Демо показує, як працює сайт: усі кнопки клацаються, але команди нікуди не йдуть.</div></div></div>
-<div class="wrap">
-<header><h1>Підсвітка салону <span class="small" style="display:block;font-weight:400">через інтернет · <a href="#" onclick="TLED.logout();return false" style="color:var(--mut)">вийти</a></span></h1><div class="st"><button class="btn" id="mapBtn" onclick="openMap()" style="min-height:44px;font-size:16px;flex:0 0 auto">🗺 Карти</button><button class="btn" id="gameBtn" onclick="openGame()" style="min-height:44px;font-size:16px;flex:0 0 auto">🎮 Гра</button><button class="btn hide" id="back" onclick="showConn()">Пристрій</button><span id="stt">…</span><span class="dot" id="dot"></span></div></header>
+<div id="camWarn" class="camwarn hide"></div><div class="wrap">
+<header><h1>Підсвітка салону <span class="small" style="display:block;font-weight:400">через інтернет · <a href="#" onclick="TLED.logout();return false" style="color:var(--mut)">вийти</a></span></h1><div class="st"><button class="btn" id="dashBtn" onclick="openDash()" style="min-height:44px;font-size:16px;flex:0 0 auto">📊 Панель</button><button class="btn" id="mapBtn" onclick="openMap()" style="min-height:44px;font-size:16px;flex:0 0 auto">🗺 Карти</button><button class="btn" id="gameBtn" onclick="openGame()" style="min-height:44px;font-size:16px;flex:0 0 auto">🎮 Гра</button><button class="btn hide" id="back" onclick="showConn()">Пристрій</button><span id="stt">…</span><span class="dot" id="dot"></span></div></header>
 <div id="scrConn" class="card" style="max-width:760px;margin:0 auto">
 <h2>Крок 1 — підключення до контролера</h2>
 <div class="big" id="cmsg">…</div><div class="hint">Перед підключенням закрийте LED LAMP на телефоні: контролер приймає лише одне з'єднання.</div>
@@ -152,14 +182,59 @@ window.addEventListener('load',connect);
 <div id="list"></div>
 </div>
 <div id="scrMap" class="hide card" style="padding:12px">
-<div class="gtabs mtabs"><button class="btn" onclick="closeMap()">← Назад</button><button class="btn pri" id="mt0" onclick="mapTab(0)">🗺 Waze</button><button class="btn" id="mt1" onclick="mapTab(1)">🚨 Тривоги</button><button class="btn" id="mt2" onclick="mapTab(2)">🛩 Шахеди</button></div>
+<div class="gtabs mtabs"><button class="btn" onclick="closeMap()">← Назад</button><button class="btn pri" id="mt0" onclick="mapTab(0)">🗺 Waze</button><button class="btn" id="mt1" onclick="mapTab(1)">🚨 Тривоги</button><button class="btn" id="mt2" onclick="mapTab(2)">🛩 Шахеди</button><button class="btn" id="mt3" onclick="mapTab(3)">📷 Камери</button></div>
 <div class="mapbar" id="wzBar"><button class="btn pri" onclick="mapLocate(true)">📍 Де я</button>
 <button class="btn" id="mFollow" onclick="mapFollow()">🚗 Стежити: вимк.</button><a class="btn" id="mFull" target="_blank" rel="noopener" href="https://www.waze.com/live-map/">🧭 Маршрут у Waze</a></div>
 <div class="small" id="mMsg" style="margin:8px 4px"></div>
 <iframe id="wz" title="Waze" allow="geolocation" class="mframe"></iframe>
 <iframe id="al" title="Тривоги" class="mframe hide"></iframe>
 <iframe id="sh" title="Шахеди" class="mframe hide"></iframe>
+<div id="camBar" class="hide"><div class="mapbar"><button class="btn pri" onclick="camMe()">📍 Де я</button><button class="btn" id="camFol" onclick="camFollow()">🚗 Стежити: вимк.</button><div class="row" style="gap:10px"><button class="btn" id="tgCam" onclick="camLayerT('cam')">📷</button><button class="btn" id="tgChg" onclick="camLayerT('chg')">⚡</button></div></div>
+<div class="small" id="camInfo" style="margin:8px 4px"></div><div id="lmap" class="mframe"></div></div>
 </div>
+<div id="scrDash" class="hide">
+<div class="dtop"><button class="btn" onclick="closeDash()">← Назад</button><div><div id="dClock" class="dclock">--:--</div><div id="dDate" class="small"></div></div><div id="dNext" class="small" style="text-align:right"></div></div>
+<div class="dgrid">
+<div class="card" id="cWx"><h2>Погода <span id="wxPlace" class="small" style="text-transform:none;letter-spacing:0"></span><button class="mini" onclick="wxLoad(true)">↻</button></h2><div id="wx" class="small">Завантажую…</div></div>
+<div class="card" id="cRt"><h2>Курси валют <button class="mini" onclick="rtLoad(true)">↻</button></h2>
+<div class="row seg" id="rtSrc"><button class="btn" data-s="goverla">Говерла</button><button class="btn" data-s="mono">Monobank</button><button class="btn" data-s="nbu">НБУ</button></div>
+<div id="rt" class="small" style="margin-top:10px">Завантажую…</div>
+<div class="row" style="margin-top:12px;align-items:center"><input id="cvA" class="inp" inputmode="decimal" value="100" style="flex:1"><select id="cvC" class="inp" style="flex:0 0 96px"><option>USD</option><option>EUR</option><option>PLN</option><option>GBP</option></select><span class="small">=</span><b id="cvR" style="flex:1.3;text-align:right;font-size:20px;white-space:nowrap">—</b></div>
+<div class="small" style="margin-top:6px">Купівля / продаж у гривнях за 1 одиницю. Конвертер рахує за курсом продажу (ви купуєте валюту).</div></div>
+<div class="card" id="cTm"><h2>Таймери</h2>
+<div class="tgrid"><button class="btn" onclick="tmAdd(1)">1 хв</button><button class="btn" onclick="tmAdd(3)">3 хв</button><button class="btn" onclick="tmAdd(5)">5 хв</button><button class="btn" onclick="tmAdd(10)">10 хв</button><button class="btn" onclick="tmAdd(15)">15 хв</button><button class="btn" onclick="tmAdd(30)">30 хв</button></div>
+<div class="row" style="margin-top:10px"><input id="tmMin" class="inp" inputmode="decimal" placeholder="Своє, хв" style="flex:1"><button class="btn pri" style="flex:0 0 120px" onclick="tmAdd(parseFloat(String($('tmMin').value).replace(',','.')))">Старт</button></div>
+<div id="tmList"></div>
+<label class="small" style="display:flex;align-items:center;gap:10px;margin-top:10px"><input type="checkbox" id="tmFlash" checked style="width:24px;height:24px"> Коли таймер закінчився — блимнути підсвіткою</label>
+<h2 style="margin-top:18px">Секундомір</h2><div id="swT" class="dclock" style="font-size:44px">00:00.0</div>
+<div class="row" style="margin-top:10px"><button class="btn pri" id="swGo" onclick="swToggle()">Старт</button><button class="btn" onclick="swLap()">Коло</button><button class="btn" onclick="swReset()">Скинути</button></div>
+<div id="swLaps" class="small" style="margin-top:8px"></div></div>
+<div class="card" id="cSc"><h2>Розклад підсвітки</h2>
+<div class="small" id="scMsg">Підсвітка сама виконує ці дії за годинником плати — навіть коли сайт закритий.</div>
+<div id="scList"></div>
+<button class="btn" style="width:100%;margin-top:12px" onclick="scEdit(-1)">＋ Додати правило</button>
+<div id="scForm" class="hide" style="margin-top:12px">
+<div class="row"><label class="small" style="flex:1">Час<br><input type="time" id="scT" class="inp" style="width:100%"></label>
+<label class="small" style="flex:2">Дія<br><select id="scA" class="inp" style="width:100%" onchange="scFormUpd()"><option value="1">Увімкнути</option><option value="0">Вимкнути</option><option value="2">Колір і яскравість</option><option value="3">Ефект</option></select></label></div>
+<div class="days" id="scD"></div>
+<div class="row" id="scColRow" style="margin-top:10px;align-items:center"><input type="color" id="scC" value="#ff5a10" style="width:64px;height:48px;border:0;background:none"><span class="small">Яскравість</span><input type="range" id="scB" min="1" max="100" value="40" style="flex:1"><b id="scBv">40%</b></div>
+<div class="row" id="scFxRow" style="margin-top:10px"><select id="scF" class="inp" style="width:100%"></select></div>
+<div class="row" style="margin-top:12px"><button class="btn" onclick="$('scForm').classList.add('hide')">Скасувати</button><button class="btn pri" onclick="scSave()">Зберегти</button></div></div></div>
+<div class="card" id="cCalc" style="grid-column:1/-1"><h2>Калькулятор-блокнот <button class="mini" onclick="calcHelp()">?</button></h2>
+<div class="calc"><textarea id="cIn" spellcheck="false" placeholder="Пишіть як у блокноті, напр.:
+бензин 1250 грн
+мийка 300 грн
+разом
+100 usd в грн
+20% від 4500
+ціна = 1200
+ціна - 15%"></textarea><div id="cOut"></div></div>
+<div id="cHelp" class="small hide" style="margin-top:10px">Кожен рядок рахується окремо, відповідь — праворуч. Можна писати слова: «бензин 1250» — слова ігноруються.<br>
+• <b>+ − × ÷ ^ ( )</b>, дроби через кому або крапку · <b>змінні</b>: <i>ціна = 1200</i>, далі <i>ціна × 3</i><br>
+• <b>відсотки</b>: <i>20% від 4500</i>, <i>1200 + 10%</i>, <i>1200 − 15%</i><br>
+• <b>валюти</b> (за курсом Говерли/Monobank): <i>100 usd в грн</i>, <i>$250 + €40</i>, <i>5000 грн в eur</i><br>
+• <b>разом</b> / <b>сума</b> — сума рядків вище до порожнього рядка · <b>попереднє</b> — відповідь рядка вище · текст після <b>//</b> — коментар</div></div>
+</div></div>
 <div id="scrGame" class="hide card" style="text-align:center">
 <div class="gtabs"><button class="btn pri" id="tabC" onclick="gMode('cones')">🚗 Конуси</button><button class="btn" id="tabS" onclick="gMode('snake')">🐍 Змійка</button><button class="btn" onclick="closeGame()">← Назад</button></div>
 <div class="lbl" style="font-size:18px;margin-bottom:10px"><span>Рахунок: <b id="gs">0</b></span><span>Рекорд: <b id="gh">0</b></span></div>
@@ -237,7 +312,7 @@ const sSpd=VS('spd',1,100,50,v=>{$('spv').textContent=v+'%';cmd('speed',v)},true
 const sHue=VS('hue',0,359,0,v=>{const h=hex(hsv(v));$('prev').style.background='#'+h;document.querySelectorAll('.sw button').forEach(x=>x.classList.remove('sel'));cmd('color',h)},false);
 let wantConn=false,wasConn=false;
 function showConn(){wantConn=true;render()}
-let last=null;function render(){const s=last;if(!s||inGame||inMap)return;const conn=s.connected&&!wantConn;
+let last=null;function render(){const s=last;if(!s||inGame||inMap||window.inDash)return;const conn=s.connected&&!wantConn;
 $('scrConn').classList.toggle('hide',conn);$('scrCtl').classList.toggle('hide',!conn);$('back').classList.toggle('hide',!conn);
 $('cmsg').innerHTML=s.connected?'✅ Підключено до <b>'+esc(s.name)+'</b> <button class="btn pri" style="min-height:48px;margin-left:10px" onclick="wantConn=false;render()">До налаштувань →</button>':'<span class="spin"></span>'+esc(s.msg)}
 let polling=false;
@@ -319,7 +394,7 @@ await raw('color',c);fxBusy=false}
 // ---- годинник і вечірній режим
 function hm(m){m=+m;return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0')}
 function mm(v){const p=(v||'0:0').split(':');return (+p[0])*60+(+p[1])}
-function syncTime(){const d=new Date();fetch('/time?m='+(d.getHours()*60+d.getMinutes())).catch(()=>{})}
+function syncTime(){const d=new Date();fetch('/time?m='+(d.getHours()*60+d.getMinutes())+'&d='+d.getDay()).catch(()=>{})}
 syncTime();setInterval(syncTime,600000);
 const eve={color:'ff5a10',bri:30};let eveLoaded=false;
 function eveShow(){$('eprev').style.background='#'+eve.color;$('ebri').textContent=eve.bri+'%'}
@@ -330,10 +405,11 @@ function eveFill(s){if(eveLoaded)return;eveLoaded=true;$('eon').checked=s.eveOn;
 // ---- Карти: Waze (затори), тривоги (офіційна мапа), шахеди (monitor). Працюють і без плати, і без пароля
 const MAPS=[null,{id:'al',url:'https://map.ukrainealarm.com/',name:'Офіційна мапа тривог (застосунок «Повітряна тривога»)'},
 {id:'sh',url:'https://map.war-monitor.org/',name:'Мапа monitor: приблизний рух шахедів і ракет'}];let mTab=0;
-function mapTab(t){mTab=t;[0,1,2].forEach(i=>$('mt'+i).classList.toggle('pri',i===t));$('wzBar').classList.toggle('hide',t!==0);
+function mapTab(t){mTab=t;[0,1,2,3].forEach(i=>$('mt'+i).classList.toggle('pri',i===t));$('wzBar').classList.toggle('hide',t!==0);$('camBar').classList.toggle('hide',t!==3);
 $('wz').classList.toggle('hide',t!==0);$('al').classList.toggle('hide',t!==1);$('sh').classList.toggle('hide',t!==2);
 try{localStorage.setItem('tled_mtab',t)}catch(e){}
 if(t===0){$('mMsg').textContent='';if(!$('wz').src)mapLoad();mapLocate(false);return}
+if(t===3){$('tgCam').classList.toggle('pri',camOn);$('tgChg').classList.toggle('pri',chgOn);camTab();return}
 const m=MAPS[t];if(!$(m.id).src)$(m.id).src=m.url;
 $('mMsg').innerHTML=m.name+' · <a href="'+m.url+'" target="_blank" rel="noopener" style="color:var(--acc)">відкрити окремо ↗</a><br>Положення цілей приблизні й із затримкою. Дійте за офіційними сигналами тривоги.'}
 let inMap=false,mFol=false,mTimer=null,mLoginWas=false;
@@ -358,8 +434,246 @@ const L=$('login');mLoginWas=L&&!L.classList.contains('hide');if(L)L.classList.a
 let t=0;try{t=+(localStorage.getItem('tled_mtab')||0)}catch(e){}mapTab(t)}
 function closeMap(){inMap=false;clearInterval(mTimer);mFol=false;$('mFollow').textContent='🚗 Стежити: вимк.';$('mFollow').classList.remove('pri');
 $('scrMap').classList.add('hide');$('gameBtn').classList.remove('hide');$('mapBtn').classList.remove('hide');
-if(mLoginWas)$('login').classList.remove('hide');render()}
+if(mLoginWas&&!TLED.hasPass())$('login').classList.remove('hide');render()}
 {const og=openGame,cg=closeGame;openGame=function(){og();$('mapBtn').classList.add('hide')};closeGame=function(){cg();if(!inMap)$('mapBtn').classList.remove('hide')}}
+// ---- запам'ятовуємо екран: Tesla закриває браузер, коли відкриваєш музику, — після повернення сторінка відкривається там само
+function scrSave(v){try{localStorage.setItem('tled_scr',v)}catch(e){}}
+{const om=openMap,cm=closeMap,og=openGame,cg=closeGame,gmo=gMode;
+openMap=function(){om();scrSave('map')};closeMap=function(){cm();scrSave('main')};
+openGame=function(){og();scrSave('game:'+gm)};closeGame=function(){cg();if(!inMap)scrSave('main')};
+gMode=function(m){gmo(m);if(inGame)scrSave('game:'+m)}}
+{let v='';try{v=localStorage.getItem('tled_scr')||''}catch(e){}
+if(v==='map')openMap();else if(v.indexOf('game:')===0){openGame();if(v==='game:snake')gMode('snake')}}
+// ================= ПАНЕЛЬ: годинник, погода, курси, таймери, розклад, калькулятор =================
+var inDash=false,dashLoginWas=false;
+const DOW=['Нд','Пн','Вт','Ср','Чт','Пт','Сб'],DOWF=['неділя','понеділок','вівторок','середа','четвер','пʼятниця','субота'];
+const MON=['січня','лютого','березня','квітня','травня','червня','липня','серпня','вересня','жовтня','листопада','грудня'];
+const two=n=>String(n).padStart(2,'0');
+const LS={get(k,d){try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+function openDash(){inDash=true;if(inGame)closeGame();if(inMap)closeMap();['scrConn','scrCtl','scrGame','scrMap'].forEach(i=>$(i).classList.add('hide'));
+$('scrDash').classList.remove('hide');['gameBtn','mapBtn','dashBtn','back'].forEach(i=>$(i).classList.add('hide'));
+const L=$('login');dashLoginWas=L&&!L.classList.contains('hide');if(L)L.classList.add('hide');
+wxLoad(false);rtLoad(false);scRender();calcRun();try{localStorage.setItem('tled_scr','dash')}catch(e){}}
+function closeDash(){inDash=false;$('scrDash').classList.add('hide');['gameBtn','mapBtn','dashBtn'].forEach(i=>$(i).classList.remove('hide'));
+if(dashLoginWas&&!TLED.hasPass())$('login').classList.remove('hide');try{localStorage.setItem('tled_scr','main')}catch(e){}render()}
+{const om=openMap,og=openGame;openMap=function(){if(inDash){inDash=false;$('scrDash').classList.add('hide')}om();$('dashBtn').classList.add('hide')};
+const cm=closeMap,cg=closeGame;closeMap=function(){cm();$('dashBtn').classList.remove('hide')};
+openGame=function(){if(inDash){inDash=false;$('scrDash').classList.add('hide')}og();$('dashBtn').classList.add('hide')};closeGame=function(){cg();if(!inMap)$('dashBtn').classList.remove('hide')}}
+
+// ---- годинник
+function clockTick(){const d=new Date();$('dClock').textContent=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+$('dDate').textContent=DOWF[d.getDay()]+', '+d.getDate()+' '+MON[d.getMonth()];scNext()}
+setInterval(()=>{if(inDash)clockTick()},1000);
+
+// ---- місцезнаходження (спільне з картами)
+function geoOnce(){return new Promise(res=>{if(!navigator.geolocation)return res(null);
+navigator.geolocation.getCurrentPosition(p=>{M.lat=p.coords.latitude;M.lon=p.coords.longitude;M.known=true;mapSave();res(M)},()=>res(null),{timeout:8000,maximumAge:300000})})}
+
+// ---- погода (Open-Meteo, без ключа)
+const WMO={0:['☀️','ясно'],1:['🌤','переважно ясно'],2:['⛅','мінлива хмарність'],3:['☁️','хмарно'],45:['🌫','туман'],48:['🌫','паморозь'],51:['🌦','мряка'],53:['🌦','мряка'],55:['🌧','сильна мряка'],56:['🌧','крижана мряка'],57:['🌧','крижана мряка'],
+61:['🌦','невеликий дощ'],63:['🌧','дощ'],65:['🌧','злива'],66:['🌧','крижаний дощ'],67:['🌧','крижаний дощ'],71:['🌨','невеликий сніг'],73:['🌨','сніг'],75:['❄️','сильний сніг'],77:['🌨','снігова крупа'],
+80:['🌦','короткочасний дощ'],81:['🌧','зливи'],82:['⛈','сильні зливи'],85:['🌨','снігопад'],86:['❄️','сильний снігопад'],95:['⛈','гроза'],96:['⛈','гроза з градом'],99:['⛈','гроза з градом']};
+const wmo=c=>WMO[c]||['🌡',''];
+let wxAt=0;
+async function wxLoad(force){const c=LS.get('tled_wx',null);if(c)wxShow(c);if(!force&&c&&Date.now()-c.t<15*60000)return;
+await geoOnce();const la=M.lat.toFixed(3),lo=M.lon.toFixed(3);
+try{const u='https://api.open-meteo.com/v1/forecast?latitude='+la+'&longitude='+lo+'&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,relative_humidity_2m,precipitation&hourly=temperature_2m,precipitation_probability,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset&timezone=auto&forecast_days=6&wind_speed_unit=ms';
+const d=await (await fetch(u)).json();let place=c&&c.place&&Math.abs(c.la-la)<0.05&&Math.abs(c.lo-lo)<0.05?c.place:'';
+if(!place){try{const g=await (await fetch('https://nominatim.openstreetmap.org/reverse?format=json&zoom=10&accept-language=uk&lat='+la+'&lon='+lo)).json();const a=g.address||{};place=a.city||a.town||a.village||a.municipality||a.county||''}catch(e){}}
+const o={t:Date.now(),la:+la,lo:+lo,place:place,d:d};LS.set('tled_wx',o);wxShow(o)}catch(e){if(!c)$('wx').textContent='Не вдалося завантажити погоду. Перевірте інтернет.'}}
+function wxShow(o){const d=o.d,cu=d.current;$('wxPlace').textContent=o.place?'· '+o.place:'';
+const n0=new Date(),loc=n0.getFullYear()+'-'+two(n0.getMonth()+1)+'-'+two(n0.getDate())+'T'+two(n0.getHours());let i0=d.hourly.time.findIndex(t=>t.slice(0,13)>=loc);if(i0<0)i0=0;
+let hr='';for(let i=i0;i<Math.min(i0+12,d.hourly.time.length);i++){const t=d.hourly.time[i].slice(11,16),w=wmo(d.hourly.weather_code[i]);
+hr+='<div class="wh"><div>'+t+'</div><div style="font-size:24px">'+w[0]+'</div><b>'+Math.round(d.hourly.temperature_2m[i])+'°</b><div>'+(d.hourly.precipitation_probability[i]||0)+'%</div></div>'}
+let dy='';for(let i=0;i<d.daily.time.length;i++){const dt=new Date(d.daily.time[i]+'T12:00'),w=wmo(d.daily.weather_code[i]);
+dy+='<div class="wd"><span style="width:54px">'+(i?DOW[dt.getDay()]:'Сьогодні')+'</span><span style="font-size:22px">'+w[0]+'</span><span style="flex:1" class="small">'+w[1]+(d.daily.precipitation_probability_max[i]?' · 💧'+d.daily.precipitation_probability_max[i]+'%':'')+'</span><b>'+Math.round(d.daily.temperature_2m_max[i])+'°</b><span class="small" style="width:40px;text-align:right">'+Math.round(d.daily.temperature_2m_min[i])+'°</span></div>'}
+const w=wmo(cu.weather_code),sr=d.daily.sunrise[0].slice(11,16),ss=d.daily.sunset[0].slice(11,16);
+$('wx').innerHTML='<div class="wnow"><span style="font-size:56px">'+w[0]+'</span><div><div style="font-size:44px;font-weight:700;color:var(--txt)">'+Math.round(cu.temperature_2m)+'°</div><div>'+w[1]+'</div></div>'+
+'<div style="margin-left:auto;text-align:right">відчувається '+Math.round(cu.apparent_temperature)+'°<br>вітер '+Math.round(cu.wind_speed_10m)+' м/с · вологість '+cu.relative_humidity_2m+'%<br>🌅 '+sr+' · 🌇 '+ss+'</div></div>'+
+'<div class="whr">'+hr+'</div>'+dy+'<div class="small" style="margin-top:6px">Оновлено о '+new Date(o.t).toTimeString().slice(0,5)+' · Open-Meteo</div>'}
+
+// ---- курси валют
+const CUR=['USD','EUR','PLN','GBP'];let RATES=LS.get('tled_rates',null),rtSrc=LS.get('tled_rtsrc','goverla');
+async function rtGoverla(){const q='query Point($alias: Alias!) { point(alias: $alias) { id rates { id currency { alias name exponent codeAlpha codeNumeric } bid { absolute updatedAt } ask { absolute updatedAt } } updatedAt } }';
+const r=await fetch('https://api.goverla.ua/graphql',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({operationName:'Point',variables:{alias:'goverla-ua'},query:q})});
+const j=await r.json();const out={};(j.data.point.rates||[]).forEach(x=>{const c=x.currency.codeAlpha,e=Math.pow(10,x.currency.exponent||2);if(CUR.includes(c)&&x.bid&&x.ask)out[c]={buy:x.bid.absolute/e,sell:x.ask.absolute/e}});
+if(!out.USD)throw 0;return out}
+async function rtMono(){const j=await (await fetch('https://api.monobank.ua/bank/currency')).json();if(!Array.isArray(j))throw 0;const code={840:'USD',978:'EUR',985:'PLN',826:'GBP'},out={};
+j.forEach(x=>{const c=code[x.currencyCodeA];if(c&&x.currencyCodeB===980)out[c]=x.rateBuy?{buy:x.rateBuy,sell:x.rateSell}:{buy:x.rateCross,sell:x.rateCross}});if(!out.USD)throw 0;return out}
+async function rtNbu(){const j=await (await fetch('https://bank.gov.ua/NBUStatService/v1/statdirectory/exchangenew?json')).json();const out={};j.forEach(x=>{if(CUR.includes(x.cc))out[x.cc]={buy:x.rate,sell:x.rate}});if(!out.USD)throw 0;return out}
+const RT={goverla:['Говерла',rtGoverla],mono:['Monobank',rtMono],nbu:['НБУ (офіційний)',rtNbu]};
+document.querySelectorAll('#rtSrc button').forEach(b=>b.onclick=()=>{rtSrc=b.dataset.s;LS.set('tled_rtsrc',rtSrc);rtLoad(true)});
+async function rtLoad(force){document.querySelectorAll('#rtSrc button').forEach(b=>b.classList.toggle('pri',b.dataset.s===rtSrc));
+if(RATES&&RATES.src===rtSrc)rtShow();if(!force&&RATES&&RATES.src===rtSrc&&Date.now()-RATES.t<10*60000)return;
+const order=[rtSrc].concat(Object.keys(RT).filter(k=>k!==rtSrc));let note='';
+for(const s of order){try{const r=await RT[s][1]();RATES={src:s,t:Date.now(),r:r,note:note};LS.set('tled_rates',RATES);rtShow();calcRun();return}catch(e){note+=RT[s][0]+' не відповідає. '}}
+$('rt').textContent='Не вдалося завантажити курси. Перевірте інтернет.'}
+function rtShow(){if(!RATES)return;const f=v=>v.toFixed(2);let h=(RATES.note?'<div style="color:#f5a623">'+RATES.note+'Показую: '+RT[RATES.src][0]+'</div>':'')+'<table class="rtt"><tr><th></th><th>Купівля</th><th>Продаж</th></tr>';
+CUR.forEach(c=>{const x=RATES.r[c];if(x)h+='<tr><td><b>'+c+'</b></td><td>'+f(x.buy)+'</td><td>'+f(x.sell)+'</td></tr>'});
+$('rt').innerHTML=h+'</table><div style="margin-top:4px">'+RT[RATES.src][0]+' · оновлено о '+new Date(RATES.t).toTimeString().slice(0,5)+'</div>';cvRun()}
+function cvRun(){const a=parseFloat(String($('cvA').value).replace(',','.').replace(/\s/g,'')),c=$('cvC').value;const x=RATES&&RATES.r[c];
+$('cvR').textContent=(x&&!isNaN(a))?fmtN(a*x.sell)+' грн':'—'}
+$('cvA').addEventListener('input',cvRun);$('cvC').addEventListener('change',cvRun);
+function toUah(v,c){if(c==='UAH')return v;const x=RATES&&RATES.r[c];if(!x)throw 'rate';return v*(x.buy+x.sell)/2}
+function fromUah(v,c){if(c==='UAH')return v;const x=RATES&&RATES.r[c];if(!x)throw 'rate';return v/((x.buy+x.sell)/2)}
+function fmtN(v){if(!isFinite(v))return '—';const a=Math.abs(v);let s=v.toFixed(a>=1||a===0?2:4);if(s.indexOf('.')>=0)s=s.replace(/0+$/,'').replace(/\.$/,'');
+const p=s.split('.');p[0]=p[0].replace(/\B(?=(\d{3})+(?!\d))/g,' ');return p.join(',')}
+
+// ---- звук
+let AC=null;function beep(n,f){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();for(let i=0;i<(n||3);i++){const o=AC.createOscillator(),g=AC.createGain();o.frequency.value=f||880;o.connect(g);g.connect(AC.destination);
+const t=AC.currentTime+i*0.35;g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(0.4,t+0.02);g.gain.exponentialRampToValueAtTime(0.0001,t+0.25);o.start(t);o.stop(t+0.3)}}catch(e){}}
+document.addEventListener('pointerdown',()=>{try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume()}catch(e){}},{once:false,passive:true});
+
+// ---- таймери (зберігаються — переживуть закриття браузера)
+let TM=LS.get('tled_tm',[]),SW=LS.get('tled_sw',{run:false,start:0,acc:0,laps:[]});
+function fmtT(ms){ms=Math.max(0,ms);const s=Math.ceil(ms/1000),h=Math.floor(s/3600),m=Math.floor(s%3600/60);return (h?h+':'+two(m):m)+':'+two(s%60)}
+function tmAdd(min){if(!(min>0))return;TM.push({id:Date.now(),len:min*60000,end:Date.now()+min*60000,pause:0,done:false});LS.set('tled_tm',TM);$('tmMin').value='';tmRender()}
+function tmDel(id){TM=TM.filter(t=>t.id!==id);LS.set('tled_tm',TM);tmRender()}
+function tmPause(id){const t=TM.find(x=>x.id===id);if(!t)return;if(t.pause){t.end=Date.now()+t.pause;t.pause=0}else t.pause=t.end-Date.now();LS.set('tled_tm',TM);tmRender()}
+function tmRender(){$('tmList').innerHTML=TM.map(t=>{const left=t.pause||t.end-Date.now();const p=Math.max(0,Math.min(1,1-left/t.len));
+return '<div class="tm'+(t.done?' done':'')+'"><div class="tmbar" id="tmb'+t.id+'" style="width:'+(p*100)+'%"></div><b id="tmv'+t.id+'">'+(t.done?'Час вийшов!':fmtT(left))+'</b><span class="small">з '+fmtT(t.len)+'</span>'+
+(t.done?'':'<button class="mini" onclick="tmPause('+t.id+')">'+(t.pause?'▶':'⏸')+'</button>')+'<button class="mini" onclick="tmDel('+t.id+')">✕</button></div>'}).join('')}
+async function flashLights(){if(!$('tmFlash').checked||fxBusy)return;fxBusy=true;const back=cur.color;for(let i=0;i<4;i++){await raw('color','ff0000');await wait(250);await raw('color','ffffff');await wait(250)}await raw('color',back);fxBusy=false}
+function tmTick(){let ch=false;TM.forEach(t=>{if(!t.done&&!t.pause&&Date.now()>=t.end){t.done=true;ch=true;beep(4,988);flashLights()}
+const e=document.getElementById('tmv'+t.id);if(e&&!t.done){const left=t.pause||t.end-Date.now();e.textContent=fmtT(left);const b=document.getElementById('tmb'+t.id);if(b)b.style.width=(Math.max(0,Math.min(1,1-left/t.len))*100)+'%'}});
+if(ch){LS.set('tled_tm',TM);tmRender()}
+const ms=SW.acc+(SW.run?Date.now()-SW.start:0);$('swT').textContent=two(Math.floor(ms/60000))+':'+two(Math.floor(ms/1000)%60)+'.'+Math.floor(ms%1000/100)}
+setInterval(tmTick,200);
+function swToggle(){if(SW.run){SW.acc+=Date.now()-SW.start;SW.run=false}else{SW.start=Date.now();SW.run=true}LS.set('tled_sw',SW);$('swGo').textContent=SW.run?'Пауза':'Старт'}
+function swLap(){const ms=SW.acc+(SW.run?Date.now()-SW.start:0);if(!ms)return;SW.laps.unshift(ms);LS.set('tled_sw',SW);swLapsShow()}
+function swReset(){SW={run:false,start:0,acc:0,laps:[]};LS.set('tled_sw',SW);$('swGo').textContent='Старт';swLapsShow()}
+function swLapsShow(){$('swLaps').innerHTML=SW.laps.map((l,i)=>'Коло '+(SW.laps.length-i)+': <b>'+two(Math.floor(l/60000))+':'+two(Math.floor(l/1000)%60)+'.'+Math.floor(l%1000/100)+'</b>').join('<br>')}
+$('swGo').textContent=SW.run?'Пауза':'Старт';swLapsShow();tmRender();
+
+// ---- розклад підсвітки (виконує плата; потрібна прошивка v18+)
+const ACT=['Вимкнути','Увімкнути','Колір','Ефект'];let scIdx=-1;
+['Пн','Вт','Ср','Чт','Пт','Сб','Нд'].forEach((n,k)=>{const bit=(k+1)%7,b=document.createElement('button');b.className='btn';b.textContent=n;b.dataset.bit=bit;b.onclick=()=>b.classList.toggle('pri');$('scD').appendChild(b)});
+$('scB').oninput=()=>{$('scBv').textContent=$('scB').value+'%'};
+function scDaysTxt(d){if(d===127)return 'щодня';if(d===62)return 'по буднях';if(d===65)return 'на вихідних';return [1,2,3,4,5,6,0].filter(b=>d&(1<<b)).map(b=>DOW[b]).join(', ')||'—'}
+function fxName(f){const L=(last&&last.proto==1)?FX2:FX;const x=L.find(e=>e[0]==f);return x?x[1]:'ефект '+f}
+function scRender(){const s=last&&last.sch;if(!last||!last.online){$('scList').innerHTML='<div class="small" style="margin-top:8px">'+(TLED.hasPass()?'Плата зараз не на зв\'язку — розклад покажеться, коли вона з\'явиться.':'Увійдіть із паролем, щоб керувати розкладом.')+'</div>';return}
+if(!s){$('scList').innerHTML='<div class="small" style="margin-top:8px;color:#f5a623">Розклад з\'явиться після прошивки плати v18.</div>';return}
+const rows=s.map((r,i)=>[i,r]).filter(x=>x[1][1]||x[1][2]||x[1][0]).sort((a,b)=>a[1][2]-b[1][2]);
+$('scList').innerHTML=rows.length?rows.map(([i,r])=>'<div class="dev"><div><b style="font-size:22px">'+hm(r[2])+'</b> · '+scDaysTxt(r[1])+'<div class="small">'+ACT[r[3]]+
+(r[3]==2?' <span style="display:inline-block;width:18px;height:12px;border-radius:3px;vertical-align:middle;background:#'+r[4]+'"></span> '+r[5]+'%':'')+(r[3]==3?': '+esc(fxName(r[6])):'')+'</div></div>'+
+'<div class="row" style="flex:0 0 auto"><button class="mini" onclick="scToggle('+i+')">'+(r[0]?'🟢':'⚪')+'</button><button class="mini" onclick="scEdit('+i+')">✎</button><button class="mini" onclick="scDel('+i+')">✕</button></div></div>').join('')
+:'<div class="small" style="margin-top:8px">Правил ще немає. Напр.: «щодня о 07:30 — увімкнути білий 60%», «о 23:00 — вимкнути».</div>'}
+function scFormUpd(){const a=+$('scA').value;$('scColRow').classList.toggle('hide',a!==2);$('scFxRow').classList.toggle('hide',a!==3)}
+function scEdit(i){if(!last||!last.sch){$('scMsg').textContent='Розклад працюватиме після прошивки плати v18 і коли вона на зв\'язку.';return}
+let r=i>=0?last.sch[i]:null;if(i<0){scIdx=last.sch.findIndex(x=>!x[0]&&!x[1]&&!x[2]);if(scIdx<0){$('scMsg').textContent='Максимум 8 правил — видаліть якесь.';return}}else scIdx=i;
+r=r||[1,127,7*60+30,1,'ff5a10',40,1];$('scT').value=hm(r[2]);$('scA').value=r[3];$('scC').value='#'+r[4];$('scB').value=r[5]||40;$('scBv').textContent=(r[5]||40)+'%';
+const L=(last.proto==1)?FX2:FX;$('scF').innerHTML=L.map(e=>'<option value="'+e[0]+'">'+esc(e[1])+'</option>').join('');$('scF').value=r[6];
+document.querySelectorAll('#scD button').forEach(b=>b.classList.toggle('pri',!!(r[1]&(1<<b.dataset.bit))));scFormUpd();$('scForm').classList.remove('hide')}
+function scSave(){let d=0;document.querySelectorAll('#scD button.pri').forEach(b=>d|=1<<b.dataset.bit);if(!d){$('scMsg').textContent='Оберіть хоча б один день.';return}
+get('/sched?i='+scIdx+'&on=1&d='+d+'&m='+mm($('scT').value)+'&a='+$('scA').value+'&c='+$('scC').value.slice(1)+'&b='+$('scB').value+'&f='+$('scF').value);
+$('scForm').classList.add('hide');$('scMsg').textContent='Збережено — плата підтвердить за кілька секунд.'}
+function scToggle(i){get('/sched?i='+i+'&on='+(last.sch[i][0]?0:1))}
+function scDel(i){if(confirm('Видалити це правило?'))get('/sched?i='+i+'&del=1')}
+function scNext(){const s=last&&last.sch;if(!s){$('dNext').textContent='';return}const d=new Date(),now=d.getDay()*1440+d.getHours()*60+d.getMinutes();let best=null;
+s.forEach(r=>{if(!r[0])return;for(let k=0;k<7;k++)if(r[1]&(1<<k)){let t=k*1440+r[2]-now;if(t<=0)t+=7*1440;if(!best||t<best.t)best={t:t,r:r,k:k}}});
+$('dNext').innerHTML=best?'Наступне за розкладом:<br><b style="color:var(--txt)">'+(best.t<1440&&best.k===d.getDay()?'сьогодні':DOWF[best.k])+' о '+hm(best.r[2])+'</b> — '+ACT[best.r[3]].toLowerCase():''}
+{const r0=render;render=function(){r0();if(inDash)scRender()}}
+{const p0=poll;poll=async function(){await p0();if(inDash)scRender()}}
+
+// ---- калькулятор-блокнот (як Soulver)
+const CURW=[[/^(usd|долар\w*|\$)$/i,'USD'],[/^(eur|євро|€)$/i,'EUR'],[/^(pln|злот\w*)$/i,'PLN'],[/^(gbp|фунт\w*|£)$/i,'GBP'],[/^(uah|грн|гривн\w*|₴)$/i,'UAH']];
+const CSYM={USD:'$',EUR:'€',PLN:'zł',GBP:'£',UAH:'грн'};
+function curOf(w){for(const [re,c] of CURW)if(re.test(w))return c;return null}
+function calcTok(s){s=s.replace(/\/\/.*$/,'').replace(/(\d)[   ](?=\d{3}(\D|$))/g,'$1').replace(/(\d),(\d)/g,'$1.$2').replace(/[×·]/g,'*').replace(/÷/g,'/').replace(/−/g,'-');
+const t=[],re=/\s*(\d+(?:\.\d+)?|[a-zа-яіїєґ_ʼ'][a-zа-яіїєґ_0-9ʼ']*|[$€£₴]|[-+*/^()%=]|\S)/giy;let m;
+while((m=re.exec(s))){const v=m[1];if(/^\d/.test(v))t.push({k:'n',v:+v});else if(/^[$€£₴]$/.test(v))t.push({k:'c',v:curOf(v)});
+else if(/^[a-zа-яіїєґ_]/i.test(v)){const lw=v.toLowerCase(),c=curOf(lw);if(c)t.push({k:'c',v:c});else if(['в','у','in','to'].includes(lw))t.push({k:'to'});else if(['від','of','with'].includes(lw))t.push({k:'of'});
+else if(lw==='x'||lw==='х')t.push({k:'o',v:'*'});else t.push({k:'w',v:lw})}else t.push({k:'o',v:v})}return t}
+function calcLine(src,vars,ctx){let t=calcTok(src);if(!t.length)return null;let asg=null;
+if(t.length>2&&t[0].k==='w'&&t[1].k==='o'&&t[1].v==='='){asg=t[0].v;t=t.slice(2)}
+// слова без значення (не змінні, не ключові) прибираємо — «бензин 1250 грн» = 1250 грн
+const KEY=['разом','сума','total','sum','попереднє','prev','ans'];t=t.filter(x=>x.k!=='w'||vars[x.v]!==undefined||KEY.includes(x.v));
+let i=0;const pk=()=>t[i],nx=()=>t[i++];
+const V=(v,c,p)=>({v:v,c:c||null,p:!!p});
+function conv(a,c){if(!a.c||!c||a.c===c)return V(a.v,c||a.c);return V(fromUah(toUah(a.v,a.c),c),c)}
+function prim(){const k=pk();if(!k)throw 'end';
+if(k.k==='o'&&k.v==='('){nx();const e=expr();if(pk()&&pk().v===')')nx();return post(e)}
+if(k.k==='o'&&k.v==='-'){nx();const e=prim();return V(-e.v,e.c,e.p)}
+if(k.k==='c'&&t[i+1]&&t[i+1].k==='n'){nx();const n=nx();return post(V(n.v,k.v))}
+if(k.k==='n'){nx();return post(V(k.v))}
+if(k.k==='w'){nx();if(k.v==='разом'||k.v==='сума'||k.v==='total'||k.v==='sum')return post(ctx.sum());if(['попереднє','prev','ans'].includes(k.v)){if(!ctx.prev)throw 'prev';return post(ctx.prev)}return post(vars[k.v])}
+throw 'tok'}
+function post(a){let k=pk();if(k&&k.k==='c'&&!a.c){nx();a=V(a.v,k.v,a.p)}k=pk();if(k&&k.k==='o'&&k.v==='%'){nx();a=V(a.v,a.c,true);
+if(pk()&&pk().k==='of'){nx();const b=pow();return V(a.v/100*b.v,b.c)}}return a}
+function pow(){let a=prim();while(pk()&&pk().k==='o'&&pk().v==='^'){nx();const b=prim();a=V(Math.pow(a.v,b.v),a.c)}return a}
+function term(){let a=pow();while(pk()&&pk().k==='o'&&(pk().v==='*'||pk().v==='/')){const op=nx().v,b=pow();
+if(b.p){a=V(op==='*'?a.v*b.v/100:a.v/(b.v/100),a.c)}else if(op==='*')a=V(a.v*b.v,a.c||b.c);else a=V(a.v/b.v,(a.c&&b.c)?null:a.c)}return a}
+function expr(){let a=term();while(pk()&&pk().k==='o'&&(pk().v==='+'||pk().v==='-')){const op=nx().v;let b=term();
+if(b.p&&!a.p){a=V(a.v*(1+(op==='+'?1:-1)*b.v/100),a.c)}else{if(a.c&&b.c&&a.c!==b.c)b=conv(b,a.c);a=V(op==='+'?a.v+b.v:a.v-b.v,a.c||b.c)}}return a}
+let r=expr();if(pk()&&pk().k==='to'){nx();const c=nx();if(!c||c.k!=='c')throw 'to';r=r.c?conv(r,c.v):V(r.v,c.v)}
+if(i<t.length)throw 'rest';if(asg)vars[asg]=r;return r}
+function calcRun(){const lines=$('cIn').value.split('\n'),vars={};let prev=null,block=[];const out=[];
+lines.forEach(l=>{if(!l.trim()){block=[];out.push('');return}
+const ctx={prev:prev,sum:()=>{let c=null,s=0;block.forEach(b=>{if(c===null)c=b.c;s+=(b.c&&c&&b.c!==c)?fromUah(toUah(b.v,b.c),c):b.v});return {v:s,c:c,p:false}}};
+let r=null;try{r=calcLine(l,vars,ctx)}catch(e){r=null}
+if(r&&isFinite(r.v)){prev=r;if(!/^\s*(разом|сума|total|sum)\b/i.test(l))block.push(r);out.push((r.p?fmtN(r.v)+'%':fmtN(r.v)+(r.c?' '+CSYM[r.c]:'')))}else out.push('')});
+$('cOut').innerHTML=out.map(o=>'<div>'+(o?esc(o):'&nbsp;')+'</div>').join('');LS.set('tled_calc',$('cIn').value)}
+function calcHelp(){$('cHelp').classList.toggle('hide')}
+$('cIn').value=LS.get('tled_calc','бензин 1250 грн\nмийка 300 грн\nразом\n\n100 usd в грн\n20% від 4500\nціна = 1200\nціна - 15%');
+$('cIn').addEventListener('input',calcRun);$('cIn').addEventListener('scroll',()=>{$('cOut').scrollTop=$('cIn').scrollTop});
+{let v='';try{v=localStorage.getItem('tled_scr')||''}catch(e){}if(v==='dash')openDash()}
+// ================= КАМЕРИ ШВИДКОСТІ та ЗАРЯДКИ (дані OpenStreetMap через Overpass) =================
+let LM=null,camLayer=null,chgLayer=null,meMk=null,camOn=LS.get('tled_cam_on',true),chgOn=LS.get('tled_chg_on',true);
+let OSM=LS.get('tled_osm',{boxes:[],cams:{},chg:{}});   // кеш, переживає закриття браузера
+let camWatch=null,camWarned={},camFol=false;
+const OVP=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter','https://maps.mail.ru/osm/tools/overpass/api/interpreter'];
+function osmSave(){const ck=Object.keys(OSM.cams),hk=Object.keys(OSM.chg);if(ck.length+hk.length>6000){OSM={boxes:[],cams:{},chg:{}}}LS.set('tled_osm',OSM)}
+function camInit(){if(LM||typeof L==='undefined')return;
+LM=L.map('lmap',{zoomControl:true,attributionControl:true}).setView([M.lat,M.lon],M.known?13:11);
+const dark=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches;
+L.tileLayer('https://{s}.basemaps.cartocdn.com/'+(dark?'dark_all':'rastertiles/voyager')+'/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',attribution:'© OpenStreetMap contributors © CARTO'}).addTo(LM);
+camLayer=L.layerGroup();chgLayer=L.layerGroup();if(camOn)camLayer.addTo(LM);if(chgOn)chgLayer.addTo(LM);
+let tmo=null;LM.on('moveend',()=>{clearTimeout(tmo);tmo=setTimeout(osmFetchView,700)});camDraw();osmFetchView()}
+function camTab(){camInit();if(!LM){$('mMsg').textContent='Карта не завантажилась — перевірте інтернет.';return}setTimeout(()=>LM.invalidateSize(),50);
+$('mMsg').innerHTML='📷 камери швидкості й ⚡ зарядні станції з OpenStreetMap. Дані волонтерські: нових камер може не бути. Попередження працюють, коли ввімкнено «Стежити».'}
+function boxCovered(s,w,n,e){return OSM.boxes.some(b=>b[0]<=s&&b[1]<=w&&b[2]>=n&&b[3]>=e&&Date.now()-b[4]<7*864e5)}
+let osmBusy=false;
+async function osmFetchView(){if(!LM||osmBusy)return;if(LM.getZoom()<9){$('camInfo').textContent='Наблизьте карту, щоб завантажити камери й зарядки.';return}
+const b=LM.getBounds().pad(0.5),s=+b.getSouth().toFixed(2),w=+b.getWest().toFixed(2),n=+b.getNorth().toFixed(2),e=+b.getEast().toFixed(2);
+if(boxCovered(s,w,n,e)){camDraw();return}osmBusy=true;$('camInfo').textContent='Завантажую камери й зарядки…';
+const bb='('+s+','+w+','+n+','+e+')',q='[out:json][timeout:25];(node["highway"="speed_camera"]'+bb+';node["amenity"="charging_station"]'+bb+';way["amenity"="charging_station"]'+bb+';);out center tags;';
+let ok=false;for(const u of OVP){try{const r=await fetch(u,{method:'POST',body:'data='+encodeURIComponent(q),headers:{'Content-Type':'application/x-www-form-urlencoded'}});if(!r.ok)continue;const j=await r.json();
+j.elements.forEach(x=>{const la=x.lat||(x.center&&x.center.lat),lo=x.lon||(x.center&&x.center.lon);if(!la)return;const t=x.tags||{};
+if(t.highway==='speed_camera')OSM.cams[x.id]=[+la.toFixed(5),+lo.toFixed(5),t.maxspeed||'',t.direction||''];
+else OSM.chg[x.id]=[+la.toFixed(5),+lo.toFixed(5),t.name||t.operator||t.brand||'',t.operator||'',chgPlugs(t),t['capacity']||'',t['fee']||'',t['opening_hours']||'']});
+OSM.boxes.push([s,w,n,e,Date.now()]);if(OSM.boxes.length>40)OSM.boxes.shift();osmSave();ok=true;break}catch(err){}}
+osmBusy=false;camDraw();if(!ok)$('camInfo').textContent='Не вдалося завантажити дані OpenStreetMap — спробуйте пізніше.'}
+function chgPlugs(t){const P=[['socket:type2_combo','CCS2'],['socket:chademo','CHAdeMO'],['socket:type2','Type 2'],['socket:tesla_supercharger','Tesla'],['socket:gb_dc','GB/T'],['socket:type1_combo','CCS1'],['socket:schuko','Schuko']];
+const o=[];P.forEach(([k,n])=>{if(t[k]&&t[k]!=='no'){const pw=t[k+':output']||'';o.push(n+(t[k]!=='yes'&&!isNaN(+t[k])?' ×'+t[k]:'')+(pw?' '+pw:''))}});return o.join(', ')}
+function camDraw(){if(!LM)return;camLayer.clearLayers();chgLayer.clearLayers();const b=LM.getBounds().pad(0.3);let nc=0,nh=0;
+const camIc=L.divIcon({className:'mk',html:'<div class="mkc">📷</div>',iconSize:[30,30],iconAnchor:[15,15]}),chgIc=L.divIcon({className:'mk',html:'<div class="mkz">⚡</div>',iconSize:[30,30],iconAnchor:[15,15]});
+for(const id in OSM.cams){const c=OSM.cams[id];if(!b.contains([c[0],c[1]]))continue;nc++;
+L.marker([c[0],c[1]],{icon:c[2]?L.divIcon({className:'mk',html:'<div class="mkc">'+esc(c[2])+'</div>',iconSize:[34,34],iconAnchor:[17,17]}):camIc}).bindPopup('<b>📷 Камера швидкості</b>'+(c[2]?'<br>Обмеження: '+esc(c[2])+' км/год':'')+navLinks(c[0],c[1])).addTo(camLayer)}
+for(const id in OSM.chg){const c=OSM.chg[id];if(!b.contains([c[0],c[1]]))continue;nh++;
+L.marker([c[0],c[1]],{icon:chgIc}).bindPopup('<b>⚡ '+esc(c[2]||'Зарядна станція')+'</b>'+(c[3]&&c[3]!==c[2]?'<br>'+esc(c[3]):'')+(c[4]?'<br>Роз\'єми: '+esc(c[4]):'')+(c[5]?'<br>Місць: '+esc(c[5]):'')+
+(c[6]?'<br>Оплата: '+(c[6]==='no'?'безкоштовно':c[6]==='yes'?'платно':esc(c[6])):'')+(c[7]?'<br>Години: '+esc(c[7]):'')+navLinks(c[0],c[1],true)).addTo(chgLayer)}
+$('camInfo').textContent=(camOn?'📷 '+nc:'')+(camOn&&chgOn?' · ':'')+(chgOn?'⚡ '+nh:'')+' на карті'}
+function navLinks(la,lo,ps){return '<div class="pl"><a target="_blank" rel="noopener" href="https://waze.com/ul?ll='+la+','+lo+'&navigate=yes">Waze</a><a target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination='+la+','+lo+'">Google Maps</a>'+
+(ps?'<a target="_blank" rel="noopener" href="https://www.plugshare.com/">PlugShare</a>':'')+'</div>'}
+function camLayerT(w){if(w==='cam'){camOn=!camOn;LS.set('tled_cam_on',camOn);camOn?camLayer.addTo(LM):LM.removeLayer(camLayer)}else{chgOn=!chgOn;LS.set('tled_chg_on',chgOn);chgOn?chgLayer.addTo(LM):LM.removeLayer(chgLayer)}
+$('tgCam').classList.toggle('pri',camOn);$('tgChg').classList.toggle('pri',chgOn);camDraw()}
+function camMe(){if(!navigator.geolocation){$('camInfo').textContent='Браузер не дає місцезнаходження.';return}
+navigator.geolocation.getCurrentPosition(p=>{camPos(p);LM.setView([p.coords.latitude,p.coords.longitude],14)},()=>{$('camInfo').textContent='Не вдалося визначити місце.'},{enableHighAccuracy:true,timeout:10000})}
+function camPos(p){const la=p.coords.latitude,lo=p.coords.longitude;M.lat=la;M.lon=lo;M.known=true;mapSave();
+if(!meMk)meMk=L.circleMarker([la,lo],{radius:9,color:'#fff',weight:3,fillColor:'#2f7bf5',fillOpacity:1}).addTo(LM);else meMk.setLatLng([la,lo]);
+if(camFol){LM.panTo([la,lo]);camCheck(la,lo,p.coords.speed,p.coords.heading)}}
+function brg(a,b,c,d){const r=Math.PI/180,y=Math.sin((d-b)*r)*Math.cos(c*r),x=Math.cos(a*r)*Math.sin(c*r)-Math.sin(a*r)*Math.cos(c*r)*Math.cos((d-b)*r);return (Math.atan2(y,x)/r+360)%360}
+function camCheck(la,lo,spd,hd){let best=null;const moving=spd!=null&&spd>3&&hd!=null&&!isNaN(hd);
+for(const id in OSM.cams){const c=OSM.cams[id],dd=dist(la,lo,c[0],c[1]);if(dd>800)continue;
+if(moving){let df=Math.abs(brg(la,lo,c[0],c[1])-hd);if(df>180)df=360-df;if(df>45&&dd>60)continue}if(!best||dd<best.d)best={id:id,d:dd,c:c}}
+const kmh=spd!=null&&spd>=0?Math.round(spd*3.6):null,W=$('camWarn');
+if(best){const lim=parseInt(best.c[2])||0,over=lim&&kmh&&kmh>lim;W.className='camwarn'+(over?' over':'');
+W.innerHTML='📷 Камера через <b>'+Math.round(best.d/10)*10+' м</b>'+(lim?' · обмеження <b>'+lim+'</b>':'')+(kmh!=null?' · ваша швидкість <b>'+kmh+'</b>':'');
+const st=camWarned[best.id]||0;if(best.d<600&&st<1){camWarned[best.id]=1;beep(2,880)}if(best.d<200&&st<2){camWarned[best.id]=2;beep(over?5:3,over?1320:988)}}
+else{W.className='camwarn hide';for(const id in camWarned){const c=OSM.cams[id];if(!c||dist(la,lo,c[0],c[1])>1000)delete camWarned[id]}}}
+function camFollow(){camFol=!camFol;$('camFol').textContent='🚗 Стежити: '+(camFol?'увімк.':'вимк.');$('camFol').classList.toggle('pri',camFol);
+if(camWatch!==null){navigator.geolocation.clearWatch(camWatch);camWatch=null}$('camWarn').className='camwarn hide';
+if(camFol&&navigator.geolocation){beep(1,660);camWatch=navigator.geolocation.watchPosition(camPos,()=>{$('camInfo').textContent='Немає доступу до місцезнаходження — попередження не працюють.'},{enableHighAccuracy:true,maximumAge:2000,timeout:15000})}}
 // ---- вхід: перевіряємо пароль командою /ping — плата підтверджує її в стані (ack)
 (function(){const L=$('login');if(TLED.hasPass()){L.classList.add('hide');return}
 async function go(){const p=$('lp').value.trim();if(!p){$('lm').textContent='Введіть пароль';return}
