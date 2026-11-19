@@ -24,9 +24,10 @@ h1{font-size:28px;margin:0}
 .btn.pri{background:var(--acc);border-color:var(--acc);color:#fff}
 .sw button.sel{border-color:var(--sel)}
 .sw button{box-shadow:inset 0 0 0 1px #0002}
-.vs{position:relative;width:64px;height:250px;border-radius:32px;background:var(--track);touch-action:none;flex:none;overflow:hidden}
-.vs .vf{position:absolute;left:0;right:0;bottom:0;background:var(--acc);opacity:.85}
-.vs .vk{position:absolute;left:4px;width:56px;height:56px;border-radius:50%;background:#fff;box-shadow:0 2px 8px #0006;border:1px solid #0001;pointer-events:none}
+.vs{position:relative;width:78px;height:250px;border-radius:26px;background:var(--track);touch-action:none;flex:none;overflow:hidden;box-shadow:inset 0 0 0 1px var(--line);cursor:pointer}
+.vs .vf{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(0deg,var(--acc),#6fb0ff)}
+.vs .vk{position:absolute;left:50%;width:34px;height:6px;margin-left:-17px;border-radius:3px;background:#fff;box-shadow:0 1px 3px #0005;pointer-events:none}
+#hue .vk{left:7px;right:7px;width:auto;margin:0;height:22px;border-radius:12px;background:transparent;border:4px solid #fff;box-shadow:0 0 0 1px #0004,0 2px 6px #0006}
 #hue.vs{background:linear-gradient(0deg,red,#ff0,lime,cyan,blue,#f0f,red)}
 .vcol{display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--mut);font-size:14px}
 .vrow{display:flex;gap:18px;align-items:flex-start}
@@ -54,9 +55,12 @@ h1{font-size:28px;margin:0}
 .login{position:fixed;inset:0;background:var(--bg);z-index:50;display:flex;align-items:center;justify-content:center}
 .login input{width:100%;font-size:22px;padding:14px;border-radius:12px;border:1px solid var(--line);background:var(--btn);color:var(--txt);margin:12px 0}
 #eveCard{display:none!important}
-.mapbar{display:grid;grid-template-columns:auto 1fr 1fr 1fr;gap:10px}
+.mapbar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.mtabs{display:grid;grid-template-columns:auto 1fr 1fr 1fr}
+.mtabs .btn{min-height:52px;font-size:17px}
+.mframe{width:100%;height:calc(100vh - 230px);min-height:380px;border:0;border-radius:14px;background:var(--btn)}
 .mapbar .btn{min-height:52px;font-size:17px;display:flex;align-items:center;justify-content:center;text-decoration:none}
-@media(max-width:700px){.mapbar{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.mapbar{grid-template-columns:1fr 1fr}.mtabs .btn{font-size:15px;padding:0 6px}}
 </style>
 <script>
 // ---- ДЕМО-режим: сайт працює без плати, усі команди обробляються тут же, у браузері
@@ -69,7 +73,7 @@ const L={power:1,color:'ffffff',bri:100,fx:0};
 const DEV=[{name:'LEDCAR-01-03BD',addr:'26:03:13:a0:03:bd',rssi:-58},{name:'ELK-BLEDOM',addr:'be:ef:00:12:34:56',rssi:-79}];
 const upd=()=>setTimeout(()=>{if(typeof poll==='function')poll()},30);
 const q=u=>{const o={};(u.split('?')[1]||'').split('&').forEach(p=>{if(!p)return;const i=p.indexOf('=');o[decodeURIComponent(i<0?p:p.slice(0,i))]=i<0?'':decodeURIComponent(p.slice(i+1))});return o};
-function show(t){const b=document.getElementById('demoLog');if(b)b.textContent='Команда: '+t;
+function show(t){const b=document.getElementById('demoLog');if(b){b.textContent='Команда: '+t;b.style.opacity=1;clearTimeout(b._t);b._t=setTimeout(()=>b.style.opacity=0,2500)}
 const g=document.getElementById('demoGlow');if(g){const c=L.fx?'linear-gradient(90deg,red,#ff0,lime,cyan,blue,#f0f)':'#'+L.color;g.style.background=c;g.style.opacity=L.power?Math.max(.08,L.bri/100):0}}
 function handle(u){const p=u.split('?')[0],a=q(u);
 if(p==='/scan'){D.devices=[];D.msg='Шукаю контролери поруч…';show('пошук');setTimeout(()=>{D.devices=DEV.slice();D.msg='Знайдено пристроїв: '+DEV.length+'. Оберіть свій або натисніть «Підключитись автоматично».';upd()},1500)}
@@ -94,7 +98,7 @@ window.addEventListener('DOMContentLoaded',()=>{
  const h=document.querySelector('h1 .small');if(h)h.style.display='block';h.innerHTML='<b style="color:#f5a623">ДЕМО без плати</b> · <a href="#" onclick="TLED.logout();return false" style="color:var(--mut)">вийти з демо</a>';
  const ec=document.getElementById('eveCard');if(ec)ec.style.setProperty('display','block','important');
  const g=document.createElement('div');g.id='demoGlow';g.style.cssText='position:fixed;left:0;right:0;top:0;height:6px;z-index:60;background:#fff;transition:.2s;box-shadow:0 0 18px 4px currentColor';document.body.appendChild(g);
- const b=document.createElement('div');b.id='demoLog';b.style.cssText='position:fixed;left:50%;transform:translateX(-50%);bottom:110px;z-index:60;background:#f5a623;color:#111;font:600 14px/1.2 sans-serif;padding:6px 12px;border-radius:20px;max-width:90vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none';
+ const b=document.createElement('div');b.id='demoLog';b.style.cssText='position:fixed;left:50%;transform:translateX(-50%);bottom:110px;z-index:60;background:#f5a623;color:#111;font:600 14px/1.2 sans-serif;padding:6px 12px;border-radius:20px;max-width:90vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none;transition:opacity .4s';
  b.textContent='Демо-режим: команди нікуди не надсилаються';document.body.appendChild(b);show('—')});
 })();
 </script>
@@ -134,11 +138,11 @@ window.addEventListener('load',connect);
 <input id="lp" type="password" autocomplete="current-password" placeholder="Пароль">
 <button class="btn pri" style="width:100%" id="lb">Увійти</button>
 <div class="small" id="lm" style="margin-top:12px"></div>
-<button class="btn" style="width:100%;margin-top:14px" onclick="openMap()">🗺 Відкрити Waze (без пароля)</button>
+<button class="btn" style="width:100%;margin-top:14px" onclick="openMap()">🗺 Карти: Waze, тривоги, шахеди (без пароля)</button>
 <button class="btn" style="width:100%;margin-top:10px" onclick="try{localStorage.setItem('tled_demo','1')}catch(e){}location.href=location.pathname+'?demo'">🧪 Спробувати без плати (демо)</button>
 <div class="small" style="margin-top:8px">Демо показує, як працює сайт: усі кнопки клацаються, але команди нікуди не йдуть.</div></div></div>
 <div class="wrap">
-<header><h1>Підсвітка салону <span class="small" style="display:block;font-weight:400">через інтернет · <a href="#" onclick="TLED.logout();return false" style="color:var(--mut)">вийти</a></span></h1><div class="st"><button class="btn" id="mapBtn" onclick="openMap()" style="min-height:44px;font-size:16px;flex:0 0 auto">🗺 Waze</button><button class="btn" id="gameBtn" onclick="openGame()" style="min-height:44px;font-size:16px;flex:0 0 auto">🎮 Гра</button><button class="btn hide" id="back" onclick="showConn()">Пристрій</button><span id="stt">…</span><span class="dot" id="dot"></span></div></header>
+<header><h1>Підсвітка салону <span class="small" style="display:block;font-weight:400">через інтернет · <a href="#" onclick="TLED.logout();return false" style="color:var(--mut)">вийти</a></span></h1><div class="st"><button class="btn" id="mapBtn" onclick="openMap()" style="min-height:44px;font-size:16px;flex:0 0 auto">🗺 Карти</button><button class="btn" id="gameBtn" onclick="openGame()" style="min-height:44px;font-size:16px;flex:0 0 auto">🎮 Гра</button><button class="btn hide" id="back" onclick="showConn()">Пристрій</button><span id="stt">…</span><span class="dot" id="dot"></span></div></header>
 <div id="scrConn" class="card" style="max-width:760px;margin:0 auto">
 <h2>Крок 1 — підключення до контролера</h2>
 <div class="big" id="cmsg">…</div><div class="hint">Перед підключенням закрийте LED LAMP на телефоні: контролер приймає лише одне з'єднання.</div>
@@ -148,13 +152,16 @@ window.addEventListener('load',connect);
 <div id="list"></div>
 </div>
 <div id="scrMap" class="hide card" style="padding:12px">
-<div class="mapbar"><button class="btn" onclick="closeMap()">← Назад</button><button class="btn pri" onclick="mapLocate(true)">📍 Де я</button>
-<button class="btn" id="mFollow" onclick="mapFollow()">🚗 Стежити: вимк.</button><a class="btn" id="mFull" target="_blank" rel="noopener">🧭 Маршрут у Waze</a></div>
+<div class="gtabs mtabs"><button class="btn" onclick="closeMap()">← Назад</button><button class="btn pri" id="mt0" onclick="mapTab(0)">🗺 Waze</button><button class="btn" id="mt1" onclick="mapTab(1)">🚨 Тривоги</button><button class="btn" id="mt2" onclick="mapTab(2)">🛩 Шахеди</button></div>
+<div class="mapbar" id="wzBar"><button class="btn pri" onclick="mapLocate(true)">📍 Де я</button>
+<button class="btn" id="mFollow" onclick="mapFollow()">🚗 Стежити: вимк.</button><a class="btn" id="mFull" target="_blank" rel="noopener" href="https://www.waze.com/live-map/">🧭 Маршрут у Waze</a></div>
 <div class="small" id="mMsg" style="margin:8px 4px"></div>
-<iframe id="wz" title="Waze" allow="geolocation" style="width:100%;height:calc(100vh - 190px);min-height:380px;border:0;border-radius:14px;background:var(--btn)"></iframe>
+<iframe id="wz" title="Waze" allow="geolocation" class="mframe"></iframe>
+<iframe id="al" title="Тривоги" class="mframe hide"></iframe>
+<iframe id="sh" title="Шахеди" class="mframe hide"></iframe>
 </div>
 <div id="scrGame" class="hide card" style="text-align:center">
-<div class="gtabs"><button class="btn pri" id="tabC" onclick="gMode('cones')">🚗 Конуси</button><button class="btn" id="tabS" onclick="gMode('snake')">🐍 Змійка</button><button class="btn" onclick="closeGame()">← Назад до підсвітки</button></div>
+<div class="gtabs"><button class="btn pri" id="tabC" onclick="gMode('cones')">🚗 Конуси</button><button class="btn" id="tabS" onclick="gMode('snake')">🐍 Змійка</button><button class="btn" onclick="closeGame()">← Назад</button></div>
 <div class="lbl" style="font-size:18px;margin-bottom:10px"><span>Рахунок: <b id="gs">0</b></span><span>Рекорд: <b id="gh">0</b></span></div>
 <div id="gCones">
 <canvas id="gc" width="1000" height="320" style="width:100%;background:#12151a;border-radius:14px;touch-action:none"></canvas>
@@ -212,14 +219,15 @@ COLORS.forEach(c=>{const b=document.createElement('button');b.style.background='
 b.onclick=()=>{document.querySelectorAll('.sw button').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');$('prev').style.background='#'+c;cmd('color',c)};$('sw').appendChild(b)});
 const FX=[[0x89,'Плавно RGB'],[0x8a,'Плавно 7 кольорів'],[0x87,'Стрибок RGB'],[0x88,'Стрибок 7 кольорів'],
 [0x95,'Блимання 7 кольорів'],[0x8b,'Пульс червоний'],[0x8d,'Пульс синій'],[0x91,'Пульс білий'],[0x92,'Червоний ↔ зелений'],[0x93,'Червоний ↔ синій']];
-const FX2=[[1,'Ефект 1'],[2,'Ефект 2'],[3,'Ефект 3'],[4,'Ефект 4'],[5,'Ефект 5'],[6,'Ефект 6'],[7,'Ефект 7'],[8,'Ефект 8'],[9,'Ефект 9'],[255,'Авто (усі по черзі)']];
+const FX2=[[1,'Ефект 1'],[2,'Ефект 2'],[3,'Ефект 3'],[4,'Ефект 4'],[5,'Ефект 5'],[6,'Ефект 6'],[7,'Ефект 7'],[8,'Ефект 8'],[9,'Ефект 9'],[255,'Авто']];
 let curProto=-1;function setFx(p){if(p===curProto)return;curProto=p;$('fx').innerHTML='';(p==1?FX2:FX).forEach(([c,n])=>{const b=document.createElement('button');b.className='btn';b.textContent=n;b.onclick=()=>cmd('fx',c);$('fx').appendChild(b)})}
 setFx(0);
 // Вертикальні повзунки: тягнути вгору-вниз (горизонтальний свайп у Tesla повертає на попередню сторінку)
 function VS(id,min,max,val,onInput,fill){const el=$(id);el.innerHTML=(fill?'<div class="vf"></div>':'')+'<div class="vk"></div>';
 const o={value:val,set(v){v=Math.max(min,Math.min(max,Math.round(v)));o.value=v;const p=(v-min)/(max-min),H=el.offsetHeight||250;
-el.querySelector('.vk').style.bottom=(4+p*(H-64))+'px';const f=el.querySelector('.vf');if(f)f.style.height=(p*(H-64)+32)+'px'}};
-const at=e=>{const r=el.getBoundingClientRect();const p=1-(e.clientY-r.top-32)/(r.height-64);o.set(min+p*(max-min));onInput(o.value)};
+const k=el.querySelector('.vk'),f=el.querySelector('.vf');
+if(f){f.style.height=(p*H)+'px';k.style.bottom=Math.max(10,p*H-16)+'px'}else k.style.bottom=(7+p*(H-36))+'px'}};
+const at=e=>{const r=el.getBoundingClientRect();const p=1-(e.clientY-r.top-12)/(r.height-24);o.set(min+p*(max-min));onInput(o.value)};
 el.addEventListener('pointerdown',e=>{e.preventDefault();try{el.setPointerCapture(e.pointerId)}catch(_){}at(e);
 const mv=ev=>at(ev),up=()=>{el.removeEventListener('pointermove',mv);el.removeEventListener('pointerup',up);el.removeEventListener('pointercancel',up)};
 el.addEventListener('pointermove',mv);el.addEventListener('pointerup',up);el.addEventListener('pointercancel',up)});
@@ -319,27 +327,35 @@ function eveTake(){eve.color=cur.color;eve.bri=+cur.bri;eveShow();$('emsg').text
 function eveSave(){fetch('/evening?on='+($('eon').checked?1:0)+'&from='+mm($('efrom').value)+'&to='+mm($('eto').value)+'&color='+eve.color+'&bri='+eve.bri)
 .then(()=>{$('emsg').textContent='Збережено ✓'}).catch(()=>{$('emsg').textContent='Не вдалося зберегти'})}
 function eveFill(s){if(eveLoaded)return;eveLoaded=true;$('eon').checked=s.eveOn;$('efrom').value=hm(s.eveFrom);$('eto').value=hm(s.eveTo);eve.color=s.eveColor;eve.bri=s.eveBri;eveShow()}
-// ---- Waze: жива карта заторів. Працює і без плати, і без пароля
+// ---- Карти: Waze (затори), тривоги (офіційна мапа), шахеди (monitor). Працюють і без плати, і без пароля
+const MAPS=[null,{id:'al',url:'https://map.ukrainealarm.com/',name:'Офіційна мапа тривог (застосунок «Повітряна тривога»)'},
+{id:'sh',url:'https://map.war-monitor.org/',name:'Мапа monitor: приблизний рух шахедів і ракет'}];let mTab=0;
+function mapTab(t){mTab=t;[0,1,2].forEach(i=>$('mt'+i).classList.toggle('pri',i===t));$('wzBar').classList.toggle('hide',t!==0);
+$('wz').classList.toggle('hide',t!==0);$('al').classList.toggle('hide',t!==1);$('sh').classList.toggle('hide',t!==2);
+try{localStorage.setItem('tled_mtab',t)}catch(e){}
+if(t===0){$('mMsg').textContent='';if(!$('wz').src)mapLoad();mapLocate(false);return}
+const m=MAPS[t];if(!$(m.id).src)$(m.id).src=m.url;
+$('mMsg').innerHTML=m.name+' · <a href="'+m.url+'" target="_blank" rel="noopener" style="color:var(--acc)">відкрити окремо ↗</a><br>Положення цілей приблизні й із затримкою. Дійте за офіційними сигналами тривоги.'}
 let inMap=false,mFol=false,mTimer=null,mLoginWas=false;
 const M={lat:50.4501,lon:30.5234,z:13,known:false};
 try{const v=JSON.parse(localStorage.getItem('tled_map')||'null');if(v)Object.assign(M,v)}catch(e){}
 function mapSave(){try{localStorage.setItem('tled_map',JSON.stringify(M))}catch(e){}}
 function mapLoad(){$('wz').src='https://embed.waze.com/iframe?zoom='+M.z+'&lat='+M.lat.toFixed(5)+'&lon='+M.lon.toFixed(5)+(M.known?'&pin=1':'');
-$('mFull').href='https://www.waze.com/live-map/'}
+}
 function dist(a,b,c,d){const r=Math.PI/180,x=(d-b)*r*Math.cos((a+c)/2*r),y=(c-a)*r;return 6371000*Math.hypot(x,y)}
 function mapLocate(force){if(!navigator.geolocation){$('mMsg').textContent='Браузер не дає місцезнаходження — знайдіть місце пошуком на карті.';return}
 if(force)$('mMsg').textContent='Визначаю, де ви…';
 navigator.geolocation.getCurrentPosition(p=>{const la=p.coords.latitude,lo=p.coords.longitude;
 const moved=!M.known||dist(M.lat,M.lon,la,lo)>(mFol?400:50);M.lat=la;M.lon=lo;M.known=true;if(force)M.z=15;mapSave();
-$('mMsg').textContent='📍 Ваше місце визначено'+(mFol?' · карта сама переміщається за вами':'');if(force||moved)mapLoad()},
-e=>{$('mMsg').textContent=e.code===1?'Доступ до місцезнаходження заборонено — дозвольте його в браузері або знайдіть місце пошуком на карті.':'Не вдалося визначити місце — знайдіть його пошуком на карті.'},
+if(mTab===0)$('mMsg').textContent='📍 Ваше місце визначено'+(mFol?' · карта сама переміщається за вами':'');if(force||moved)mapLoad()},
+e=>{if(mTab===0)$('mMsg').textContent=e.code===1?'Доступ до місцезнаходження заборонено — дозвольте його в браузері або знайдіть місце пошуком на карті.':'Не вдалося визначити місце — знайдіть його пошуком на карті.'},
 {enableHighAccuracy:true,timeout:10000,maximumAge:20000})}
 function mapFollow(){mFol=!mFol;$('mFollow').textContent='🚗 Стежити: '+(mFol?'увімк.':'вимк.');$('mFollow').classList.toggle('pri',mFol);
 clearInterval(mTimer);if(mFol){mapLocate(false);mTimer=setInterval(()=>mapLocate(false),30000)}}
 function openMap(){inMap=true;if(inGame)closeGame();['scrConn','scrCtl','scrGame'].forEach(i=>$(i).classList.add('hide'));
 $('scrMap').classList.remove('hide');$('gameBtn').classList.add('hide');$('mapBtn').classList.add('hide');$('back').classList.add('hide');
 const L=$('login');mLoginWas=L&&!L.classList.contains('hide');if(L)L.classList.add('hide');
-if(!$('wz').src)mapLoad();mapLocate(false)}
+let t=0;try{t=+(localStorage.getItem('tled_mtab')||0)}catch(e){}mapTab(t)}
 function closeMap(){inMap=false;clearInterval(mTimer);mFol=false;$('mFollow').textContent='🚗 Стежити: вимк.';$('mFollow').classList.remove('pri');
 $('scrMap').classList.add('hide');$('gameBtn').classList.remove('hide');$('mapBtn').classList.remove('hide');
 if(mLoginWas)$('login').classList.remove('hide');render()}
