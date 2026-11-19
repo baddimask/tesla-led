@@ -54,6 +54,9 @@ h1{font-size:28px;margin:0}
 .login{position:fixed;inset:0;background:var(--bg);z-index:50;display:flex;align-items:center;justify-content:center}
 .login input{width:100%;font-size:22px;padding:14px;border-radius:12px;border:1px solid var(--line);background:var(--btn);color:var(--txt);margin:12px 0}
 #eveCard{display:none!important}
+.mapbar{display:grid;grid-template-columns:auto 1fr 1fr 1fr;gap:10px}
+.mapbar .btn{min-height:52px;font-size:17px;display:flex;align-items:center;justify-content:center;text-decoration:none}
+@media(max-width:700px){.mapbar{grid-template-columns:1fr 1fr}}
 </style>
 <script>
 // ---- ДЕМО-режим: сайт працює без плати, усі команди обробляються тут же, у браузері
@@ -131,10 +134,11 @@ window.addEventListener('load',connect);
 <input id="lp" type="password" autocomplete="current-password" placeholder="Пароль">
 <button class="btn pri" style="width:100%" id="lb">Увійти</button>
 <div class="small" id="lm" style="margin-top:12px"></div>
-<button class="btn" style="width:100%;margin-top:14px" onclick="try{localStorage.setItem('tled_demo','1')}catch(e){}location.href=location.pathname+'?demo'">🧪 Спробувати без плати (демо)</button>
+<button class="btn" style="width:100%;margin-top:14px" onclick="openMap()">🗺 Відкрити Waze (без пароля)</button>
+<button class="btn" style="width:100%;margin-top:10px" onclick="try{localStorage.setItem('tled_demo','1')}catch(e){}location.href=location.pathname+'?demo'">🧪 Спробувати без плати (демо)</button>
 <div class="small" style="margin-top:8px">Демо показує, як працює сайт: усі кнопки клацаються, але команди нікуди не йдуть.</div></div></div>
 <div class="wrap">
-<header><h1>Підсвітка салону <span class="small" style="display:block;font-weight:400">через інтернет · <a href="#" onclick="TLED.logout();return false" style="color:var(--mut)">вийти</a></span></h1><div class="st"><button class="btn" id="gameBtn" onclick="openGame()" style="min-height:44px;font-size:16px;flex:0 0 auto">🎮 Гра</button><button class="btn hide" id="back" onclick="showConn()">Пристрій</button><span id="stt">…</span><span class="dot" id="dot"></span></div></header>
+<header><h1>Підсвітка салону <span class="small" style="display:block;font-weight:400">через інтернет · <a href="#" onclick="TLED.logout();return false" style="color:var(--mut)">вийти</a></span></h1><div class="st"><button class="btn" id="mapBtn" onclick="openMap()" style="min-height:44px;font-size:16px;flex:0 0 auto">🗺 Waze</button><button class="btn" id="gameBtn" onclick="openGame()" style="min-height:44px;font-size:16px;flex:0 0 auto">🎮 Гра</button><button class="btn hide" id="back" onclick="showConn()">Пристрій</button><span id="stt">…</span><span class="dot" id="dot"></span></div></header>
 <div id="scrConn" class="card" style="max-width:760px;margin:0 auto">
 <h2>Крок 1 — підключення до контролера</h2>
 <div class="big" id="cmsg">…</div><div class="hint">Перед підключенням закрийте LED LAMP на телефоні: контролер приймає лише одне з'єднання.</div>
@@ -142,6 +146,12 @@ window.addEventListener('load',connect);
 <div class="stack"><button class="btn pri" onclick="get('/scan')">🔍 Шукати контролери</button><button class="btn" onclick="get('/select?addr=')">⚡ Підключитись автоматично</button><button class="btn" onclick="get('/release')">📱 Звільнити для телефону</button><button class="btn" onclick="if(confirm('Перезавантажити плату?')){fetch('/reboot');setTimeout(()=>location.reload(),8000)}">↻ Перезавантажити плату</button></div>
 <div id="envrow" style="display:none;margin-top:12px"><div class="small">Вихід контролера LEDCAR (якщо не реагує — спробуйте інший):</div><div class="row" style="margin-top:8px"><button class="btn" id="env0" onclick="get('/env?e=0')">RGB (7E)</button><button class="btn" id="env1" onclick="get('/env?e=1')">SPI (7B)</button></div></div>
 <div id="list"></div>
+</div>
+<div id="scrMap" class="hide card" style="padding:12px">
+<div class="mapbar"><button class="btn" onclick="closeMap()">← Назад</button><button class="btn pri" onclick="mapLocate(true)">📍 Де я</button>
+<button class="btn" id="mFollow" onclick="mapFollow()">🚗 Стежити: вимк.</button><a class="btn" id="mFull" target="_blank" rel="noopener">🧭 Маршрут у Waze</a></div>
+<div class="small" id="mMsg" style="margin:8px 4px"></div>
+<iframe id="wz" title="Waze" allow="geolocation" style="width:100%;height:calc(100vh - 190px);min-height:380px;border:0;border-radius:14px;background:var(--btn)"></iframe>
 </div>
 <div id="scrGame" class="hide card" style="text-align:center">
 <div class="gtabs"><button class="btn pri" id="tabC" onclick="gMode('cones')">🚗 Конуси</button><button class="btn" id="tabS" onclick="gMode('snake')">🐍 Змійка</button><button class="btn" onclick="closeGame()">← Назад до підсвітки</button></div>
@@ -219,7 +229,7 @@ const sSpd=VS('spd',1,100,50,v=>{$('spv').textContent=v+'%';cmd('speed',v)},true
 const sHue=VS('hue',0,359,0,v=>{const h=hex(hsv(v));$('prev').style.background='#'+h;document.querySelectorAll('.sw button').forEach(x=>x.classList.remove('sel'));cmd('color',h)},false);
 let wantConn=false,wasConn=false;
 function showConn(){wantConn=true;render()}
-let last=null;function render(){const s=last;if(!s||inGame)return;const conn=s.connected&&!wantConn;
+let last=null;function render(){const s=last;if(!s||inGame||inMap)return;const conn=s.connected&&!wantConn;
 $('scrConn').classList.toggle('hide',conn);$('scrCtl').classList.toggle('hide',!conn);$('back').classList.toggle('hide',!conn);
 $('cmsg').innerHTML=s.connected?'✅ Підключено до <b>'+esc(s.name)+'</b> <button class="btn pri" style="min-height:48px;margin-left:10px" onclick="wantConn=false;render()">До налаштувань →</button>':'<span class="spin"></span>'+esc(s.msg)}
 let polling=false;
@@ -309,6 +319,31 @@ function eveTake(){eve.color=cur.color;eve.bri=+cur.bri;eveShow();$('emsg').text
 function eveSave(){fetch('/evening?on='+($('eon').checked?1:0)+'&from='+mm($('efrom').value)+'&to='+mm($('eto').value)+'&color='+eve.color+'&bri='+eve.bri)
 .then(()=>{$('emsg').textContent='Збережено ✓'}).catch(()=>{$('emsg').textContent='Не вдалося зберегти'})}
 function eveFill(s){if(eveLoaded)return;eveLoaded=true;$('eon').checked=s.eveOn;$('efrom').value=hm(s.eveFrom);$('eto').value=hm(s.eveTo);eve.color=s.eveColor;eve.bri=s.eveBri;eveShow()}
+// ---- Waze: жива карта заторів. Працює і без плати, і без пароля
+let inMap=false,mFol=false,mTimer=null,mLoginWas=false;
+const M={lat:50.4501,lon:30.5234,z:13,known:false};
+try{const v=JSON.parse(localStorage.getItem('tled_map')||'null');if(v)Object.assign(M,v)}catch(e){}
+function mapSave(){try{localStorage.setItem('tled_map',JSON.stringify(M))}catch(e){}}
+function mapLoad(){$('wz').src='https://embed.waze.com/iframe?zoom='+M.z+'&lat='+M.lat.toFixed(5)+'&lon='+M.lon.toFixed(5)+(M.known?'&pin=1':'');
+$('mFull').href='https://www.waze.com/live-map/'}
+function dist(a,b,c,d){const r=Math.PI/180,x=(d-b)*r*Math.cos((a+c)/2*r),y=(c-a)*r;return 6371000*Math.hypot(x,y)}
+function mapLocate(force){if(!navigator.geolocation){$('mMsg').textContent='Браузер не дає місцезнаходження — знайдіть місце пошуком на карті.';return}
+if(force)$('mMsg').textContent='Визначаю, де ви…';
+navigator.geolocation.getCurrentPosition(p=>{const la=p.coords.latitude,lo=p.coords.longitude;
+const moved=!M.known||dist(M.lat,M.lon,la,lo)>(mFol?400:50);M.lat=la;M.lon=lo;M.known=true;if(force)M.z=15;mapSave();
+$('mMsg').textContent='📍 Ваше місце визначено'+(mFol?' · карта сама переміщається за вами':'');if(force||moved)mapLoad()},
+e=>{$('mMsg').textContent=e.code===1?'Доступ до місцезнаходження заборонено — дозвольте його в браузері або знайдіть місце пошуком на карті.':'Не вдалося визначити місце — знайдіть його пошуком на карті.'},
+{enableHighAccuracy:true,timeout:10000,maximumAge:20000})}
+function mapFollow(){mFol=!mFol;$('mFollow').textContent='🚗 Стежити: '+(mFol?'увімк.':'вимк.');$('mFollow').classList.toggle('pri',mFol);
+clearInterval(mTimer);if(mFol){mapLocate(false);mTimer=setInterval(()=>mapLocate(false),30000)}}
+function openMap(){inMap=true;if(inGame)closeGame();['scrConn','scrCtl','scrGame'].forEach(i=>$(i).classList.add('hide'));
+$('scrMap').classList.remove('hide');$('gameBtn').classList.add('hide');$('mapBtn').classList.add('hide');$('back').classList.add('hide');
+const L=$('login');mLoginWas=L&&!L.classList.contains('hide');if(L)L.classList.add('hide');
+if(!$('wz').src)mapLoad();mapLocate(false)}
+function closeMap(){inMap=false;clearInterval(mTimer);mFol=false;$('mFollow').textContent='🚗 Стежити: вимк.';$('mFollow').classList.remove('pri');
+$('scrMap').classList.add('hide');$('gameBtn').classList.remove('hide');$('mapBtn').classList.remove('hide');
+if(mLoginWas)$('login').classList.remove('hide');render()}
+{const og=openGame,cg=closeGame;openGame=function(){og();$('mapBtn').classList.add('hide')};closeGame=function(){cg();if(!inMap)$('mapBtn').classList.remove('hide')}}
 // ---- вхід: перевіряємо пароль командою /ping — плата підтверджує її в стані (ack)
 (function(){const L=$('login');if(TLED.hasPass()){L.classList.add('hide');return}
 async function go(){const p=$('lp').value.trim();if(!p){$('lm').textContent='Введіть пароль';return}
