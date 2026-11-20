@@ -169,7 +169,6 @@ window.addEventListener('DOMContentLoaded',()=>{
  b.textContent='Демо-режим: команди нікуди не надсилаються';document.body.appendChild(b);show('—')});
 })();
 </script>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/mqtt@5.11.0/dist/mqtt.min.js"></script>
 <script>
 // Сайт керує платою через інтернет: команди йдуть через сервіс-посередник MQTT і підписуються паролем (HMAC-SHA256)
@@ -203,11 +202,11 @@ window.addEventListener('load',connect);
 </script>
 </head><body><div class="login" id="login"><div class="card" style="width:min(520px,92vw)">
 <h2>Підсвітка салону — вхід</h2><div class="big">Введіть пароль</div>
-<input id="lp" type="password" autocomplete="current-password" placeholder="Пароль">
+<input id="lp" type="password" inputmode="numeric" autocomplete="current-password" placeholder="Пароль">
 <button class="btn pri" style="width:100%" id="lb">Увійти</button>
 <div class="small" id="lm" style="margin-top:12px"></div></div></div>
-<div id="camWarn" class="camwarn hide"></div><div class="wrap">
-<header><h1>Підсвітка салону <span class="small" style="display:block;font-weight:400">через інтернет · <a href="#" onclick="TLED.logout();return false" style="color:var(--mut)">вийти</a></span></h1><div class="st"><button class="btn" id="dashBtn" onclick="openDash()" style="min-height:44px;font-size:16px;flex:0 0 auto">📊 Панель</button><button class="btn" id="mapBtn" onclick="openMap()" style="min-height:44px;font-size:16px;flex:0 0 auto">🗺 Карти</button><button class="btn" id="gameBtn" onclick="openGame()" style="min-height:44px;font-size:16px;flex:0 0 auto">🎮 Гра</button><button class="btn hide" id="back" onclick="showConn()">Пристрій</button><span id="stt">…</span><span class="dot" id="dot"></span></div></header>
+<div class="wrap">
+<header><h1>Підсвітка салону <span class="small" style="display:block;font-weight:400">через інтернет · <a href="#" onclick="TLED.logout();return false" style="color:var(--mut)">вийти</a></span></h1><div class="st"><button class="btn" id="dashBtn" onclick="openDash()" style="min-height:44px;font-size:16px;flex:0 0 auto">📊 Панель</button><button class="btn" id="gameBtn" onclick="openGame()" style="min-height:44px;font-size:16px;flex:0 0 auto">🎮 Гра</button><button class="btn hide" id="back" onclick="showConn()">Пристрій</button><span id="stt">…</span><span class="dot" id="dot"></span></div></header>
 <div id="scrConn" class="card" style="max-width:760px;margin:0 auto">
 <h2>Крок 1 — підключення до контролера</h2>
 <div class="big" id="cmsg">…</div><div class="hint">Перед підключенням закрийте LED LAMP на телефоні: контролер приймає лише одне з'єднання.</div>
@@ -215,20 +214,6 @@ window.addEventListener('load',connect);
 <div class="stack"><button class="btn pri" onclick="get('/scan')">🔍 Шукати контролери</button><button class="btn" onclick="get('/select?addr=')">⚡ Підключитись автоматично</button><button class="btn" onclick="get('/release')">📱 Звільнити для телефону</button><button class="btn" onclick="if(confirm('Перезавантажити плату?')){fetch('/reboot');setTimeout(()=>location.reload(),8000)}">↻ Перезавантажити плату</button></div>
 <div id="envrow" style="display:none;margin-top:12px"><div class="small">Вихід контролера LEDCAR (якщо не реагує — спробуйте інший):</div><div class="row" style="margin-top:8px"><button class="btn" id="env0" onclick="get('/env?e=0')">RGB (7E)</button><button class="btn" id="env1" onclick="get('/env?e=1')">SPI (7B)</button></div></div>
 <div id="list"></div>
-</div>
-<div id="scrMap" class="hide card" style="padding:12px">
-<div class="gtabs mtabs"><button class="btn" onclick="closeMap()">← Назад</button><button class="btn pri" id="mt0" onclick="mapTab(0)">🗺 Waze</button><button class="btn" id="mt1" onclick="mapTab(1)">🚨 Тривоги</button><button class="btn" id="mt2" onclick="mapTab(2)">🛩 Шахеди</button><button class="btn" id="mt3" onclick="mapTab(3)">📷 Камери</button></div>
-<div class="mapbar" id="wzBar"><button class="btn pri" onclick="mapLocate(true)">📍 Де я</button>
-<button class="btn" id="mFollow" onclick="mapFollow()">🚗 Стежити: вимк.</button><a class="btn" id="mFull" target="_blank" rel="noopener" href="https://www.waze.com/live-map/">🧭 Маршрут у Waze</a></div>
-<div class="small" id="mMsg" style="margin:8px 4px"></div>
-<iframe id="wz" title="Waze" allow="geolocation" class="mframe"></iframe>
-<iframe id="al" title="Тривоги" class="mframe hide"></iframe>
-<div id="sh" class="mframe hide shcard"><div style="font-size:64px">🛩</div><div class="big">Мапа шахедів не дозволяє показувати себе всередині інших сайтів</div>
-<div class="small">Відкрийте її окремою вкладкою — повернутися сюди можна кнопкою «назад» або вкладками браузера.</div>
-<a class="btn pri" style="min-height:64px;font-size:20px;padding:0 30px;display:flex;align-items:center;text-decoration:none" href="https://map.war-monitor.org/" target="_blank" rel="noopener">Відкрити мапу шахедів ↗</a>
-<a class="btn" style="min-height:56px;padding:0 24px;display:flex;align-items:center;text-decoration:none" href="https://map.war-monitor.org/">Відкрити в цій вкладці</a></div>
-<div id="camBar" class="hide"><div class="mapbar"><button class="btn pri" onclick="camMe()">📍 Де я</button><button class="btn" id="camFol" onclick="camFollow()">🚗 Стежити: вимк.</button><div class="row" style="gap:10px"><button class="btn" id="tgCam" onclick="camLayerT('cam')">📷</button><button class="btn" id="tgChg" onclick="camLayerT('chg')">⚡</button></div></div>
-<div class="small" id="camInfo" style="margin:8px 4px"></div><div id="lmap" class="mframe"></div></div>
 </div>
 <div id="scrDash" class="hide">
 <div class="dtop"><button class="btn" onclick="closeDash()">← Назад</button><div><div id="dClock" class="dclock">--:--</div><div id="dDate" class="small"></div></div><div id="dNext" class="small" style="text-align:right"></div></div>
@@ -772,62 +757,31 @@ if(RC.duo){if(p===1)RC.s1++;else RC.s2++;rcScore();rcPads('');$(p===1?'rcA':'rcB
 else{const h=hiGet('react',0),rec=!h||ms<h;if(rec)hiSet('react',ms);$('rcH').textContent=hiGet('react',0)+' мс';rcPads('win',ms+' мс'+(rec?' — рекорд! 🏆':'')+'<br><small>Торкніться, щоб ще раз</small>')}
 gflash(['22c55e','ffffff','22c55e'],150,null)}}
 XI.react=()=>{const h=hiGet('react',0);$('rcH').textContent=h?h+' мс':'—';rcReset()};XS.react=()=>{clearTimeout(RC.tm);RC.st='idle'};
-// ---- Карти: Waze (затори), тривоги (офіційна мапа), шахеди (monitor). Працюють і без плати, і без пароля
-const MAPS=[null,{id:'al',url:'https://map.ukrainealarm.com/',name:'Офіційна мапа тривог (застосунок «Повітряна тривога»)'},
-{id:'sh',url:'https://map.war-monitor.org/',name:'Мапа monitor: приблизний рух шахедів і ракет'}];let mTab=0;
-function mapTab(t){mTab=t;[0,1,2,3].forEach(i=>$('mt'+i).classList.toggle('pri',i===t));$('wzBar').classList.toggle('hide',t!==0);$('camBar').classList.toggle('hide',t!==3);
-$('wz').classList.toggle('hide',t!==0);$('al').classList.toggle('hide',t!==1);$('sh').classList.toggle('hide',t!==2);
-try{localStorage.setItem('tled_mtab',t)}catch(e){}
-if(t===0){$('mMsg').textContent='';if(!$('wz').src)mapLoad();mapLocate(false);return}
-if(t===3){$('tgCam').classList.toggle('pri',camOn);$('tgChg').classList.toggle('pri',chgOn);camTab();return}
-const m=MAPS[t];if(m.id==='al'&&!$(m.id).src)$(m.id).src=m.url;
-$('mMsg').innerHTML=m.name+' · <a href="'+m.url+'" target="_blank" rel="noopener" style="color:var(--acc)">відкрити окремо ↗</a><br>Положення цілей приблизні й із затримкою. Дійте за офіційними сигналами тривоги.'}
-let inMap=false,mFol=false,mTimer=null,mLoginWas=false;
+// ---- місцезнаходження для погоди
+let inMap=false;
 const M={lat:50.4501,lon:30.5234,z:13,known:false};
 try{const v=JSON.parse(localStorage.getItem('tled_map')||'null');if(v)Object.assign(M,v)}catch(e){}
 function mapSave(){try{localStorage.setItem('tled_map',JSON.stringify(M))}catch(e){}}
-function mapLoad(){$('wz').src='https://embed.waze.com/iframe?zoom='+M.z+'&lat='+M.lat.toFixed(5)+'&lon='+M.lon.toFixed(5)+(M.known?'&pin=1':'');
-}
-function dist(a,b,c,d){const r=Math.PI/180,x=(d-b)*r*Math.cos((a+c)/2*r),y=(c-a)*r;return 6371000*Math.hypot(x,y)}
-function mapLocate(force){if(!navigator.geolocation){$('mMsg').textContent='Браузер не дає місцезнаходження — знайдіть місце пошуком на карті.';return}
-if(force)$('mMsg').textContent='Визначаю, де ви…';
-navigator.geolocation.getCurrentPosition(p=>{const la=p.coords.latitude,lo=p.coords.longitude;
-const moved=!M.known||dist(M.lat,M.lon,la,lo)>(mFol?400:50);M.lat=la;M.lon=lo;M.known=true;if(force)M.z=15;mapSave();
-if(mTab===0)$('mMsg').textContent='📍 Ваше місце визначено'+(mFol?' · карта сама переміщається за вами':'');if(force||moved)mapLoad()},
-e=>{if(mTab===0)$('mMsg').textContent=e.code===1?'Доступ до місцезнаходження заборонено — дозвольте його в браузері або знайдіть місце пошуком на карті.':'Не вдалося визначити місце — знайдіть його пошуком на карті.'},
-{enableHighAccuracy:true,timeout:10000,maximumAge:20000})}
-function mapFollow(){mFol=!mFol;$('mFollow').textContent='🚗 Стежити: '+(mFol?'увімк.':'вимк.');$('mFollow').classList.toggle('pri',mFol);
-clearInterval(mTimer);if(mFol){mapLocate(false);mTimer=setInterval(()=>mapLocate(false),30000)}}
-function openMap(){inMap=true;if(inGame)closeGame();['scrConn','scrCtl','scrGame'].forEach(i=>$(i).classList.add('hide'));
-$('scrMap').classList.remove('hide');$('gameBtn').classList.add('hide');$('mapBtn').classList.add('hide');$('back').classList.add('hide');
-
-let t=0;try{t=+(localStorage.getItem('tled_mtab')||0)}catch(e){}mapTab(t)}
-function closeMap(){inMap=false;clearInterval(mTimer);mFol=false;$('mFollow').textContent='🚗 Стежити: вимк.';$('mFollow').classList.remove('pri');
-$('scrMap').classList.add('hide');$('gameBtn').classList.remove('hide');$('mapBtn').classList.remove('hide');
-render()}
-{const og=openGame,cg=closeGame;openGame=function(){og();$('mapBtn').classList.add('hide')};closeGame=function(){cg();if(!inMap)$('mapBtn').classList.remove('hide')}}
 // ---- запам'ятовуємо екран: Tesla закриває браузер, коли відкриваєш музику, — після повернення сторінка відкривається там само
 function scrSave(v){try{localStorage.setItem('tled_scr',v)}catch(e){}}
-{const om=openMap,cm=closeMap,og=openGame,cg=closeGame,gmo=gMode;
-openMap=function(){om();scrSave('map')};closeMap=function(){cm();scrSave('main')};
-openGame=function(){og();scrSave('game:'+gm)};closeGame=function(){cg();if(!inMap)scrSave('main')};
+{const og=openGame,cg=closeGame,gmo=gMode;
+openGame=function(){og();scrSave('game:'+gm)};closeGame=function(){cg();scrSave('main')};
 gMode=function(m){gmo(m);if(inGame)scrSave('game:'+m)}}
 {let v='';try{v=localStorage.getItem('tled_scr')||''}catch(e){}
-if(v==='map')openMap();else if(v.indexOf('game:')===0){openGame();const g=v.slice(5);if(g&&g!=='cones')gMode(g)}}
+if(v.indexOf('game:')===0){openGame();const g=v.slice(5);if(g&&g!=='cones')gMode(g)}}
 // ================= ПАНЕЛЬ: годинник, погода, курси, таймери, розклад, калькулятор =================
 var inDash=false,dashLoginWas=false;
 const DOW=['Нд','Пн','Вт','Ср','Чт','Пт','Сб'],DOWF=['неділя','понеділок','вівторок','середа','четвер','пʼятниця','субота'];
 const MON=['січня','лютого','березня','квітня','травня','червня','липня','серпня','вересня','жовтня','листопада','грудня'];
 const two=n=>String(n).padStart(2,'0');
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
-function openDash(){inDash=true;if(inGame)closeGame();if(inMap)closeMap();['scrConn','scrCtl','scrGame','scrMap'].forEach(i=>$(i).classList.add('hide'));
-$('scrDash').classList.remove('hide');['gameBtn','mapBtn','dashBtn','back'].forEach(i=>$(i).classList.add('hide'));
+function openDash(){inDash=true;if(inGame)closeGame();['scrConn','scrCtl','scrGame'].forEach(i=>$(i).classList.add('hide'));
+$('scrDash').classList.remove('hide');['gameBtn','dashBtn','back'].forEach(i=>$(i).classList.add('hide'));
 
 wxLoad(false);rtLoad(false);scRender();calcRun();try{localStorage.setItem('tled_scr','dash')}catch(e){}}
-function closeDash(){inDash=false;$('scrDash').classList.add('hide');['gameBtn','mapBtn','dashBtn'].forEach(i=>$(i).classList.remove('hide'));
+function closeDash(){inDash=false;$('scrDash').classList.add('hide');['gameBtn','dashBtn'].forEach(i=>$(i).classList.remove('hide'));
 try{localStorage.setItem('tled_scr','main')}catch(e){}render()}
-{const om=openMap,og=openGame;openMap=function(){if(inDash){inDash=false;$('scrDash').classList.add('hide')}om();$('dashBtn').classList.add('hide')};
-const cm=closeMap,cg=closeGame;closeMap=function(){cm();$('dashBtn').classList.remove('hide')};
+{const og=openGame,cg=closeGame;
 openGame=function(){if(inDash){inDash=false;$('scrDash').classList.add('hide')}og();$('dashBtn').classList.add('hide')};closeGame=function(){cg();if(!inMap)$('dashBtn').classList.remove('hide')}}
 
 // ---- годинник
@@ -973,74 +927,16 @@ document.addEventListener('keydown',e=>{if(!inDash||/INPUT|TEXTAREA|SELECT/.test
 if(/^[0-9]$/.test(m)||['.','+','-','*','/','%','=','back','C'].includes(m)){e.preventDefault();cKey(m)}});
 function calcRun(){}
 {let v='';try{v=localStorage.getItem('tled_scr')||''}catch(e){}if(v==='dash')openDash()}
-// ================= КАМЕРИ ШВИДКОСТІ та ЗАРЯДКИ (дані OpenStreetMap через Overpass) =================
-let LM=null,camLayer=null,chgLayer=null,meMk=null,camOn=LS.get('tled_cam_on',true),chgOn=LS.get('tled_chg_on',true);
-let OSM=LS.get('tled_osm',{boxes:[],cams:{},chg:{}});   // кеш, переживає закриття браузера
-let camWatch=null,camWarned={},camFol=false;
-const OVP=['https://overpass-api.de/api/interpreter','https://overpass.private.coffee/api/interpreter','https://overpass.kumi.systems/api/interpreter'];
-function osmSave(){const ck=Object.keys(OSM.cams),hk=Object.keys(OSM.chg);if(ck.length+hk.length>6000){OSM={boxes:[],cams:{},chg:{}}}LS.set('tled_osm',OSM)}
-function camInit(){if(LM||typeof L==='undefined')return;
-LM=L.map('lmap',{zoomControl:true,attributionControl:true}).setView([M.lat,M.lon],M.known?13:11);
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap contributors'}).addTo(LM);
-camLayer=L.layerGroup();chgLayer=L.layerGroup();if(camOn)camLayer.addTo(LM);if(chgOn)chgLayer.addTo(LM);
-let tmo=null;LM.on('moveend',()=>{clearTimeout(tmo);tmo=setTimeout(osmFetchView,700)});camDraw();osmFetchView()}
-function camTab(){camInit();if(!LM){$('mMsg').textContent='Карта не завантажилась — перевірте інтернет.';return}setTimeout(()=>LM.invalidateSize(),50);
-$('mMsg').innerHTML='📷 камери швидкості й ⚡ зарядні станції з OpenStreetMap. Дані волонтерські: нових камер може не бути. Попередження працюють, коли ввімкнено «Стежити».'}
-function boxCovered(s,w,n,e){return OSM.boxes.some(b=>b[0]<=s&&b[1]<=w&&b[2]>=n&&b[3]>=e&&Date.now()-b[4]<7*864e5)}
-let osmBusy=false;
-async function osmFetchView(){if(!LM||osmBusy)return;if(LM.getZoom()<8){$('camInfo').textContent='Наблизьте карту, щоб завантажити камери й зарядки.';camDraw();return}
-const b=LM.getBounds().pad(0.3),c=LM.getCenter();let s=Math.min(b.getSouth(),c.lat-0.25),n=Math.max(b.getNorth(),c.lat+0.25),w=Math.min(b.getWest(),c.lng-0.4),e=Math.max(b.getEast(),c.lng+0.4);
-s=+s.toFixed(2);n=+n.toFixed(2);w=+w.toFixed(2);e=+e.toFixed(2);
-if(boxCovered(s,w,n,e)){camDraw();return}osmBusy=true;$('camInfo').textContent='Завантажую камери й зарядки…';
-const bb='('+s+','+w+','+n+','+e+')',q='[out:json][timeout:25];(node["highway"="speed_camera"]'+bb+';node["amenity"="charging_station"]'+bb+';way["amenity"="charging_station"]'+bb+';);out center tags;';
-let ok=false;for(const u of OVP){try{const r=await fetch(u,{method:'POST',body:'data='+encodeURIComponent(q),headers:{'Content-Type':'application/x-www-form-urlencoded'}});if(!r.ok)continue;const j=await r.json();
-j.elements.forEach(x=>{const la=x.lat||(x.center&&x.center.lat),lo=x.lon||(x.center&&x.center.lon);if(!la)return;const t=x.tags||{};
-if(t.highway==='speed_camera')OSM.cams[x.id]=[+la.toFixed(5),+lo.toFixed(5),t.maxspeed||'',t.direction||''];
-else OSM.chg[x.id]=[+la.toFixed(5),+lo.toFixed(5),t.name||t.operator||t.brand||'',t.operator||'',chgPlugs(t),t['capacity']||'',t['fee']||'',t['opening_hours']||'']});
-OSM.boxes.push([s,w,n,e,Date.now()]);if(OSM.boxes.length>40)OSM.boxes.shift();osmSave();ok=true;break}catch(err){}}
-osmBusy=false;camDraw();if(!ok)$('camInfo').textContent='Не вдалося завантажити дані OpenStreetMap (сервер перевантажений) — спробуйте за хвилину кнопкою «Де я» або посуньте карту.'}
-function chgPlugs(t){const P=[['socket:type2_combo','CCS2'],['socket:chademo','CHAdeMO'],['socket:type2','Type 2'],['socket:tesla_supercharger','Tesla'],['socket:gb_dc','GB/T'],['socket:type1_combo','CCS1'],['socket:schuko','Schuko']];
-const o=[];P.forEach(([k,n])=>{if(t[k]&&t[k]!=='no'){const pw=t[k+':output']||'';o.push(n+(t[k]!=='yes'&&!isNaN(+t[k])?' ×'+t[k]:'')+(pw?' '+pw:''))}});return o.join(', ')}
-function camDraw(){if(!LM)return;camLayer.clearLayers();chgLayer.clearLayers();const b=LM.getBounds().pad(0.3);let nc=0,nh=0;
-const camIc=L.divIcon({className:'mk',html:'<div class="mkc">📷</div>',iconSize:[30,30],iconAnchor:[15,15]}),chgIc=L.divIcon({className:'mk',html:'<div class="mkz">⚡</div>',iconSize:[30,30],iconAnchor:[15,15]});
-for(const id in OSM.cams){const c=OSM.cams[id];if(!b.contains([c[0],c[1]]))continue;nc++;
-L.marker([c[0],c[1]],{icon:c[2]?L.divIcon({className:'mk',html:'<div class="mkc">'+esc(c[2])+'</div>',iconSize:[34,34],iconAnchor:[17,17]}):camIc}).bindPopup('<b>📷 Камера швидкості</b>'+(c[2]?'<br>Обмеження: '+esc(c[2])+' км/год':'')+navLinks(c[0],c[1])).addTo(camLayer)}
-for(const id in OSM.chg){const c=OSM.chg[id];if(!b.contains([c[0],c[1]]))continue;nh++;
-L.marker([c[0],c[1]],{icon:chgIc}).bindPopup('<b>⚡ '+esc(c[2]||'Зарядна станція')+'</b>'+(c[3]&&c[3]!==c[2]?'<br>'+esc(c[3]):'')+(c[4]?'<br>Роз\'єми: '+esc(c[4]):'')+(c[5]?'<br>Місць: '+esc(c[5]):'')+
-(c[6]?'<br>Оплата: '+(c[6]==='no'?'безкоштовно':c[6]==='yes'?'платно':esc(c[6])):'')+(c[7]?'<br>Години: '+esc(c[7]):'')+navLinks(c[0],c[1],true)).addTo(chgLayer)}
-let near='';if(camOn){const c=LM.getCenter();let best=1e9;for(const id in OSM.cams){const d=dist(c.lat,c.lng,OSM.cams[id][0],OSM.cams[id][1]);if(d<best)best=d}if(best<1e9&&!nc)near=' · найближча камера за '+(best/1000).toFixed(1)+' км'}
-$('camInfo').textContent=(camOn?'📷 '+nc:'')+(camOn&&chgOn?' · ':'')+(chgOn?'⚡ '+nh:'')+' на екрані'+near}
-function navLinks(la,lo,ps){return '<div class="pl"><a target="_blank" rel="noopener" href="https://waze.com/ul?ll='+la+','+lo+'&navigate=yes">Waze</a><a target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination='+la+','+lo+'">Google Maps</a>'+
-(ps?'<a target="_blank" rel="noopener" href="https://www.plugshare.com/">PlugShare</a>':'')+'</div>'}
-function camLayerT(w){if(w==='cam'){camOn=!camOn;LS.set('tled_cam_on',camOn);camOn?camLayer.addTo(LM):LM.removeLayer(camLayer)}else{chgOn=!chgOn;LS.set('tled_chg_on',chgOn);chgOn?chgLayer.addTo(LM):LM.removeLayer(chgLayer)}
-$('tgCam').classList.toggle('pri',camOn);$('tgChg').classList.toggle('pri',chgOn);camDraw()}
-function camMe(){if(!navigator.geolocation){$('camInfo').textContent='Браузер не дає місцезнаходження.';return}
-navigator.geolocation.getCurrentPosition(p=>{camPos(p);LM.setView([p.coords.latitude,p.coords.longitude],14)},()=>{$('camInfo').textContent='Не вдалося визначити місце.'},{enableHighAccuracy:true,timeout:10000})}
-function camPos(p){const la=p.coords.latitude,lo=p.coords.longitude;M.lat=la;M.lon=lo;M.known=true;mapSave();
-if(!meMk)meMk=L.circleMarker([la,lo],{radius:9,color:'#fff',weight:3,fillColor:'#2f7bf5',fillOpacity:1}).addTo(LM);else meMk.setLatLng([la,lo]);
-if(camFol){LM.panTo([la,lo]);camCheck(la,lo,p.coords.speed,p.coords.heading)}}
-function brg(a,b,c,d){const r=Math.PI/180,y=Math.sin((d-b)*r)*Math.cos(c*r),x=Math.cos(a*r)*Math.sin(c*r)-Math.sin(a*r)*Math.cos(c*r)*Math.cos((d-b)*r);return (Math.atan2(y,x)/r+360)%360}
-function camCheck(la,lo,spd,hd){let best=null;const moving=spd!=null&&spd>3&&hd!=null&&!isNaN(hd);
-for(const id in OSM.cams){const c=OSM.cams[id],dd=dist(la,lo,c[0],c[1]);if(dd>800)continue;
-if(moving){let df=Math.abs(brg(la,lo,c[0],c[1])-hd);if(df>180)df=360-df;if(df>45&&dd>60)continue}if(!best||dd<best.d)best={id:id,d:dd,c:c}}
-const kmh=spd!=null&&spd>=0?Math.round(spd*3.6):null,W=$('camWarn');
-if(best){const lim=parseInt(best.c[2])||0,over=lim&&kmh&&kmh>lim;W.className='camwarn'+(over?' over':'');
-W.innerHTML='📷 Камера через <b>'+Math.round(best.d/10)*10+' м</b>'+(lim?' · обмеження <b>'+lim+'</b>':'')+(kmh!=null?' · ваша швидкість <b>'+kmh+'</b>':'');
-const st=camWarned[best.id]||0;if(best.d<600&&st<1){camWarned[best.id]=1;beep(2,880)}if(best.d<200&&st<2){camWarned[best.id]=2;beep(over?5:3,over?1320:988)}}
-else{W.className='camwarn hide';for(const id in camWarned){const c=OSM.cams[id];if(!c||dist(la,lo,c[0],c[1])>1000)delete camWarned[id]}}}
-function camFollow(){camFol=!camFol;$('camFol').textContent='🚗 Стежити: '+(camFol?'увімк.':'вимк.');$('camFol').classList.toggle('pri',camFol);
-if(camWatch!==null){navigator.geolocation.clearWatch(camWatch);camWatch=null}$('camWarn').className='camwarn hide';
-if(camFol&&navigator.geolocation){beep(1,660);camWatch=navigator.geolocation.watchPosition(camPos,()=>{$('camInfo').textContent='Немає доступу до місцезнаходження — попередження не працюють.'},{enableHighAccuracy:true,maximumAge:2000,timeout:15000})}}
-// ---- вхід: пароль перевіряється тут же (PBKDF2), без нього сайт закритий повністю
+// ---- вхід: пароль сайту (PBKDF2 + AES-GCM) розшифровує ключ керування платою; без пароля сайт закритий
 (function(){const L=$('login');if(TLED.hasPass()){L.classList.add('hide');return}
-const VER='5a2f31ad29701c1d967072a483f8db0374c7223fa08dba81c8549edae6161b6b';
-async function chk(p){const e=new TextEncoder(),k=await crypto.subtle.importKey('raw',e.encode(p),'PBKDF2',false,['deriveBits']);
-const b=await crypto.subtle.deriveBits({name:'PBKDF2',salt:e.encode('tesla-led-7b266m44ctfz'),iterations:150000,hash:'SHA-256'},k,256);
-return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('')===VER}
+const IV='y3bvKfMl3WaM7XEp',CT='2xuiRgkcrgpBSXRhPitoY+G32mnwGDaj',b=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function unlock(p){const e=new TextEncoder(),k=await crypto.subtle.importKey('raw',e.encode(p),'PBKDF2',false,['deriveKey']);
+const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:e.encode('tesla-led-7b266m44ctfz'),iterations:300000,hash:'SHA-256'},k,{name:'AES-GCM',length:256},false,['decrypt']);
+return new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:b(IV)},key,b(CT)))}
 async function go(){const p=$('lp').value.trim();if(!p){$('lm').textContent='Введіть пароль';return}
-$('lm').textContent='Перевіряю…';$('lb').disabled=true;let ok=false;try{ok=await chk(p)}catch(e){}$('lb').disabled=false;
-if(!ok){$('lm').textContent='Неправильний пароль';$('lp').select();return}
-TLED.setPass(p);location.reload()}
+$('lm').textContent='Перевіряю…';$('lb').disabled=true;let k=null;try{k=await unlock(p)}catch(e){}$('lb').disabled=false;
+if(!k){$('lm').textContent='Неправильний пароль';$('lp').select();return}
+TLED.setPass(k);location.reload()}
 $('lb').onclick=go;$('lp').addEventListener('keydown',e=>{if(e.key==='Enter')go()});setTimeout(()=>$('lp').focus(),100)})();
 poll();setInterval(poll,4000);
 </script></body></html>
