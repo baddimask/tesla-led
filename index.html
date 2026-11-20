@@ -22,8 +22,8 @@ h1{font-size:28px;margin:0}
 .btn{flex:1;min-height:64px;border:1px solid var(--line);background:var(--btn);color:var(--txt);border-radius:14px;font-size:19px;font-weight:600;padding:0 10px}
 .btn:active{transform:scale(.97);background:var(--btnA)}
 .btn.pri{background:var(--acc);border-color:var(--acc);color:#fff}
-.btn.tog.on{background:#16a34a;border-color:#16a34a;color:#fff;box-shadow:0 0 0 3px #16a34a44}
-.btn.tog.on::before{content:"✓ ";font-weight:800}
+.btn.tog.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.tmrow .btn{white-space:nowrap;font-size:17px;padding:0 4px}
 .fold{display:flex;align-items:center;gap:10px;cursor:pointer;margin:-4px 0 14px!important;min-height:36px}
 .fold::after{content:"▾";margin-left:auto;font-size:20px;color:var(--mut);transition:transform .2s}
 .card.closed .fold{margin-bottom:-4px!important}.card.closed .fold::after{transform:rotate(-90deg)}
@@ -86,9 +86,9 @@ h1{font-size:28px;margin:0}
 .tm{position:relative;display:flex;align-items:center;gap:10px;margin-top:10px;padding:10px 12px;border-radius:12px;background:var(--btn);overflow:hidden}.tm b{font-size:26px;font-variant-numeric:tabular-nums;z-index:1}.tm .small{flex:1;z-index:1}.tm .mini{z-index:1}
 .tmbar{position:absolute;left:0;top:0;bottom:0;background:var(--acc);opacity:.18}.tm.done{background:#e5484d;color:#fff}.tm.done .small{color:#fff}
 .days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:10px}.days .btn{min-height:44px;font-size:15px;padding:0}
-.calc{display:grid;grid-template-columns:1fr 220px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
-#cIn,#cOut{font:20px/32px ui-monospace,Menlo,Consolas,monospace;padding:10px 14px;height:330px;margin:0;border:0;overflow-y:auto}
-#cIn{resize:none;background:var(--card);color:var(--txt);outline:none;white-space:pre;overflow-x:auto;user-select:text}#cOut{background:var(--btn);text-align:right;color:var(--acc);font-weight:700;overflow:hidden}#cOut div{white-space:nowrap;height:32px}
+.cdisp{background:var(--btn);border-radius:14px;padding:12px 16px;text-align:right;margin-bottom:12px;overflow:hidden}
+#cExpr{min-height:22px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#cVal{font-size:46px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ckeys{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.ck{min-height:62px;font-size:26px}.ck.op{color:var(--acc);font-size:30px}.ck.fn{color:var(--mut)}.ck.pri{color:#fff}
 .mk{background:none;border:0}.mkc,.mkz{width:100%;height:100%;border-radius:50%;display:flex;align-items:center;justify-content:center;font:700 13px sans-serif;box-shadow:0 1px 4px #0006}
 .mkc{background:#fff;border:3px solid #e5484d;color:#111}.mkz{background:#16a34a;color:#fff;border:2px solid #fff;font-size:16px}
 .pl{display:flex;gap:10px;margin-top:8px}.pl a{color:var(--acc);font-weight:600}
@@ -98,6 +98,28 @@ h1{font-size:28px;margin:0}
 @media(max-width:900px){.dgrid{grid-template-columns:minmax(0,1fr)}.calc{grid-template-columns:1fr 130px}.dclock{font-size:40px}.dtop{grid-template-columns:auto 1fr}#dNext{grid-column:1/-1;text-align:left!important}}
 @media(max-width:700px){.mtabs{grid-template-columns:repeat(3,1fr)}.mtabs .btn:first-child{grid-column:1/-1}}
 #eveCard a[href="/update"]{display:none}
+.gpick{display:grid;grid-template-columns:auto repeat(6,1fr);gap:8px;margin-bottom:12px}.gpick .btn{min-height:50px;font-size:15px;padding:0 6px;white-space:nowrap}
+@media(max-width:900px){.gpick{grid-template-columns:repeat(4,1fr)}.gpick .btn:first-child{grid-column:1/-1}}
+@media(max-width:520px){.gpick{grid-template-columns:repeat(3,1fr)}}
+.gl2{font-size:18px;margin-bottom:10px}
+.gcv{width:100%;background:#12151a;border-radius:14px;touch-action:none;display:block;margin:0 auto}
+.gsplit{display:flex;gap:16px;align-items:center;justify-content:center;flex-wrap:wrap}
+.gctl{display:flex;flex-direction:column;gap:10px;min-width:240px}
+.pad3{display:grid;grid-template-columns:repeat(3,72px);gap:10px;justify-content:center}.pad3 .btn{min-height:68px;font-size:26px;touch-action:none}
+[data-h]{touch-action:none;user-select:none;-webkit-user-select:none}
+.b2048{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;background:#bbada0;padding:10px;border-radius:14px;width:min(420px,88vw);aspect-ratio:1}
+.t2{border-radius:8px;background:#cdc1b4;display:flex;align-items:center;justify-content:center;font-weight:800}
+.t2over{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#000a;color:#fff;font-size:30px;font-weight:700;border-radius:14px}
+.bmines{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;max-width:640px;margin:0 auto}
+.mc{aspect-ratio:1;border:0;border-radius:6px;background:var(--track);font:800 22px sans-serif;color:var(--txt);padding:0}.mc.o{background:var(--card);box-shadow:inset 0 0 0 1px var(--line)}.mc.boom{background:#e5484d}
+.bmemo{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:520px;margin:0 auto}
+.mcard{aspect-ratio:1;border-radius:14px;border:2px solid var(--line);background:linear-gradient(135deg,var(--acc),#6fb0ff);font-size:42px;transition:transform .2s}.mcard.up{background:var(--card)}.mcard.ok{opacity:.75}
+.bttt{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:min(380px,84vw);margin:0 auto}.tc{aspect-ratio:1;border-radius:16px;border:1px solid var(--line);background:var(--btn);font-size:56px}.tc.win{background:#16a34a55}
+.bc4{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;background:#1d4ed8;padding:10px;border-radius:16px;width:min(560px,92vw);margin:0 auto}
+.c4c{aspect-ratio:1;border:0;background:none;padding:0}.c4c span{display:block;width:100%;height:100%;border-radius:50%;background:#0b1220}.c4c span.r{background:#ef4444}.c4c span.y{background:#facc15}.c4c span.win{box-shadow:0 0 0 4px #fff}
+.rpad{min-height:300px;border-radius:18px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:34px;font-weight:800;background:var(--btn);color:var(--txt);cursor:pointer;user-select:none;touch-action:manipulation}
+.rpad.wait{background:#7f1d1d;color:#fff}.rpad.go{background:#16a34a;color:#fff}.rpad.bad{background:#e5484d;color:#fff}.rpad.win{background:#2f7bf5;color:#fff}.rpad small{font-size:18px;font-weight:500}
+.rduo{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 </style>
 <script>
 // ---- ДЕМО-режим: сайт працює без плати, усі команди обробляються тут же, у браузері
@@ -233,24 +255,19 @@ window.addEventListener('load',connect);
 <div class="row" id="scColRow" style="margin-top:10px;align-items:center"><input type="color" id="scC" value="#ff5a10" style="width:64px;height:48px;border:0;background:none"><span class="small">Яскравість</span><input type="range" id="scB" min="1" max="100" value="40" style="flex:1"><b id="scBv">40%</b></div>
 <div class="row" id="scFxRow" style="margin-top:10px"><select id="scF" class="inp" style="width:100%"></select></div>
 <div class="row" style="margin-top:12px"><button class="btn" onclick="$('scForm').classList.add('hide')">Скасувати</button><button class="btn pri" onclick="scSave()">Зберегти</button></div></div></div>
-<div class="card" id="cCalc" style="grid-column:1/-1"><h2>Калькулятор-блокнот <button class="mini" onclick="calcHelp()">?</button></h2>
-<div class="calc"><textarea id="cIn" spellcheck="false" placeholder="Пишіть як у блокноті, напр.:
-бензин 1250 грн
-мийка 300 грн
-разом
-100 usd в грн
-20% від 4500
-ціна = 1200
-ціна - 15%"></textarea><div id="cOut"></div></div>
-<div id="cHelp" class="small hide" style="margin-top:10px">Кожен рядок рахується окремо, відповідь — праворуч. Можна писати слова: «бензин 1250» — слова ігноруються.<br>
-• <b>+ − × ÷ ^ ( )</b>, дроби через кому або крапку · <b>змінні</b>: <i>ціна = 1200</i>, далі <i>ціна × 3</i><br>
-• <b>відсотки</b>: <i>20% від 4500</i>, <i>1200 + 10%</i>, <i>1200 − 15%</i><br>
-• <b>валюти</b> (за курсом Говерли/Monobank): <i>100 usd в грн</i>, <i>$250 + €40</i>, <i>5000 грн в eur</i><br>
-• <b>разом</b> / <b>сума</b> — сума рядків вище до порожнього рядка · <b>попереднє</b> — відповідь рядка вище · текст після <b>//</b> — коментар</div></div>
+<div class="card" id="cCalc"><h2>Калькулятор</h2>
+<div class="cdisp"><div id="cExpr" class="small">&nbsp;</div><div id="cVal">0</div></div>
+<div class="ckeys">
+<button class="btn ck fn" data-k="C">C</button><button class="btn ck fn" data-k="back">⌫</button><button class="btn ck fn" data-k="%">%</button><button class="btn ck op" data-k="/">÷</button>
+<button class="btn ck" data-k="7">7</button><button class="btn ck" data-k="8">8</button><button class="btn ck" data-k="9">9</button><button class="btn ck op" data-k="*">×</button>
+<button class="btn ck" data-k="4">4</button><button class="btn ck" data-k="5">5</button><button class="btn ck" data-k="6">6</button><button class="btn ck op" data-k="-">−</button>
+<button class="btn ck" data-k="1">1</button><button class="btn ck" data-k="2">2</button><button class="btn ck" data-k="3">3</button><button class="btn ck op" data-k="+">+</button>
+<button class="btn ck fn" data-k="neg">±</button><button class="btn ck" data-k="0">0</button><button class="btn ck" data-k=".">,</button><button class="btn ck pri" data-k="=">=</button>
+</div></div>
 </div></div>
 <div id="scrGame" class="hide card" style="text-align:center">
-<div class="gtabs"><button class="btn pri" id="tabC" onclick="gMode('cones')">🚗 Конуси</button><button class="btn" id="tabS" onclick="gMode('snake')">🐍 Змійка</button><button class="btn" onclick="closeGame()">← Назад</button></div>
-<div class="lbl" style="font-size:18px;margin-bottom:10px"><span>Рахунок: <b id="gs">0</b></span><span>Рекорд: <b id="gh">0</b></span></div>
+<div class="gpick"><button class="btn" onclick="closeGame()">← Назад</button><button class="btn pri" data-g="cones" id="tabC" onclick="gMode('cones')">🚗 Конуси</button><button class="btn" data-g="snake" id="tabS" onclick="gMode('snake')">🐍 Змійка</button><button class="btn" data-g="tetris" onclick="gMode('tetris')">🧱 Тетріс</button><button class="btn" data-g="break" onclick="gMode('break')">🏓 Арканоїд</button><button class="btn" data-g="flap" onclick="gMode('flap')">🐦 Флапі</button><button class="btn" data-g="inv" onclick="gMode('inv')">🚀 Загарбники</button><button class="btn" data-g="2048" onclick="gMode('2048')">🔢 2048</button><button class="btn" data-g="mines" onclick="gMode('mines')">💣 Сапер</button><button class="btn" data-g="memo" onclick="gMode('memo')">🃏 Мемо</button><button class="btn" data-g="ttt" onclick="gMode('ttt')">❌⭕ Хрестики</button><button class="btn" data-g="c4" onclick="gMode('c4')">🔴 4 в ряд</button><button class="btn" data-g="react" onclick="gMode('react')">⚡ Реакція</button></div>
+<div class="lbl" id="gsRow" style="font-size:18px;margin-bottom:10px"><span>Рахунок: <b id="gs">0</b></span><span>Рекорд: <b id="gh">0</b></span></div>
 <div id="gCones">
 <canvas id="gc" width="1000" height="320" style="width:100%;background:#12151a;border-radius:14px;touch-action:none"></canvas>
 <div class="row" style="margin-top:14px"><button class="btn pri" id="gj">Стрибок</button></div>
@@ -263,6 +280,68 @@ window.addEventListener('load',connect);
 </div>
 <div class="small" style="margin-top:10px">Керуйте стрілками або проведіть пальцем по полю в потрібному напрямку.</div>
 </div>
+<div id="gTetris" class="hide xg">
+<div class="lbl gl2"><span>Рахунок: <b id="ttS">0</b> · Лінії: <b id="ttL">0</b> · Рівень: <b id="ttV">1</b></span><span>Рекорд: <b id="ttH">0</b></span></div>
+<div class="gsplit"><canvas id="ttc" width="440" height="600" class="gcv" style="max-height:62vh;width:auto;max-width:100%"></canvas>
+<div class="gctl"><button class="btn pri" id="ttGo" onclick="ttStart()">▶ Почати</button>
+<div class="pad3"><button class="btn" data-h="tt:l">◀</button><button class="btn" onclick="ttRot()">⟳</button><button class="btn" data-h="tt:r">▶</button><button class="btn" data-h="tt:d">▼</button><button class="btn" style="grid-column:span 2" onclick="ttDrop()">⤓ Скинути</button></div></div></div>
+<div class="small" style="margin-top:8px">Колір підсвітки — колір фігури, що падає. Зібрали лінію — блимає білим.</div></div>
+
+<div id="gBreak" class="hide xg">
+<div class="lbl gl2"><span>Рахунок: <b id="brS">0</b> · Життя: <b id="brL">3</b></span><span>Рекорд: <b id="brH">0</b></span></div>
+<canvas id="brc" width="1000" height="560" class="gcv"></canvas>
+<div class="row" style="margin-top:12px"><button class="btn" data-h="br:l">◀◀</button><button class="btn pri" onclick="brLaunch()">Запустити</button><button class="btn" data-h="br:r">▶▶</button></div>
+<div class="small" style="margin-top:8px">Водіть пальцем по полю або тримайте ◀◀ ▶▶. Розбита цеглинка спалахує своїм кольором.</div></div>
+
+<div id="gFlap" class="hide xg">
+<div class="lbl gl2"><span>Рахунок: <b id="flS">0</b></span><span>Рекорд: <b id="flH">0</b></span></div>
+<canvas id="flc" width="1000" height="540" class="gcv"></canvas>
+<div class="row" style="margin-top:12px"><button class="btn pri" id="flB">Мах крилами</button></div>
+<div class="small" style="margin-top:8px">Торкайтеся поля або кнопки. Кожна пройдена труба — новий колір підсвітки.</div></div>
+
+<div id="gInv" class="hide xg">
+<div class="lbl gl2"><span>Рахунок: <b id="ivS">0</b> · Життя: <b id="ivL">3</b> · Хвиля: <b id="ivW">1</b></span><span>Рекорд: <b id="ivH">0</b></span></div>
+<canvas id="ivc" width="1000" height="560" class="gcv"></canvas>
+<div class="row" style="margin-top:12px"><button class="btn" data-h="iv:l">◀◀</button><button class="btn pri" data-h="iv:f">🔥 Вогонь</button><button class="btn" data-h="iv:r">▶▶</button></div>
+<div class="small" style="margin-top:8px">Влучили — зелений спалах, влучили у вас — червоний.</div></div>
+
+<div id="g2048" class="hide xg">
+<div class="lbl gl2"><span>Рахунок: <b id="tw2S">0</b></span><span>Рекорд: <b id="tw2H">0</b></span></div>
+<div class="gsplit"><div id="tw2" class="b2048"></div>
+<div class="gctl"><button class="btn" onclick="t2New()">↻ Нова гра</button>
+<div class="pad3"><span></span><button class="btn" onclick="t2Move('u')">▲</button><span></span><button class="btn" onclick="t2Move('l')">◀</button><button class="btn" onclick="t2Move('d')">▼</button><button class="btn" onclick="t2Move('r')">▶</button></div></div></div>
+<div class="small" style="margin-top:8px">Зʼєднуйте однакові плитки. Колір підсвітки — колір найбільшої плитки.</div></div>
+
+<div id="gMines" class="hide xg">
+<div class="lbl gl2"><span>Мін: <b id="mnM">12</b> · <span id="mnT">Відкрийте першу клітинку</span></span><span>Рекорд: <b id="mnH">—</b></span></div>
+<div id="mn" class="bmines"></div>
+<div class="row" style="margin-top:12px"><button class="btn pri" id="mnMode" onclick="mnToggle()">⛏ Відкривати</button><button class="btn" onclick="mnNew()">↻ Нова гра</button></div>
+<div class="small" style="margin-top:8px">Перемкніть на 🚩, щоб ставити прапорці. Вибух — червоний спалах.</div></div>
+
+<div id="gMemo" class="hide xg">
+<div class="lbl gl2"><span>Ходів: <b id="meS">0</b> · Пар: <b id="meP">0</b>/8</span><span>Рекорд: <b id="meH">—</b></span></div>
+<div id="me" class="bmemo"></div>
+<div class="row" style="margin-top:12px"><button class="btn" onclick="meNew()">↻ Нова гра</button></div>
+<div class="small" style="margin-top:8px">Знайдена пара підсвічує салон своїм кольором. Рекорд — найменше ходів.</div></div>
+
+<div id="gTtt" class="hide xg">
+<div class="lbl gl2"><span id="ttt_msg">Хід: ❌</span><span>❌ <b id="tttX">0</b> : <b id="tttO">0</b> ⭕</span></div>
+<div id="ttt" class="bttt"></div>
+<div class="row" style="margin-top:12px"><button class="btn" id="tttM" onclick="tttMode()">🤖 Проти комп'ютера</button><button class="btn" onclick="tttNew()">↻ Нова партія</button></div>
+<div class="small" style="margin-top:8px">Хід ❌ — синя підсвітка, хід ⭕ — червона.</div></div>
+
+<div id="gC4" class="hide xg">
+<div class="lbl gl2"><span id="c4msg">Хід: 🔴</span><span>🔴 <b id="c4R">0</b> : <b id="c4Y">0</b> 🟡</span></div>
+<div id="c4" class="bc4"></div>
+<div class="row" style="margin-top:12px"><button class="btn" id="c4M" onclick="c4Mode()">🤖 Проти комп'ютера</button><button class="btn" onclick="c4New()">↻ Нова партія</button></div>
+<div class="small" style="margin-top:8px">Торкніться стовпчика, щоб кинути фішку. Підсвітка — колір того, чий хід.</div></div>
+
+<div id="gReact" class="hide xg">
+<div class="lbl gl2"><span id="rcInfo">Один гравець</span><span>Рекорд: <b id="rcH">—</b></span></div>
+<div id="rc1" class="rpad" onpointerdown="rcTap(0)"><div id="rcT">Торкніться, щоб почати</div></div>
+<div id="rc2" class="hide rduo"><div class="rpad" id="rcA" onpointerdown="rcTap(1)"><div><span id="rcN1">Гравець 1</span><br><b id="rcS1">0</b></div></div><div class="rpad" id="rcB" onpointerdown="rcTap(2)"><div><span id="rcN2">Гравець 2</span><br><b id="rcS2">0</b></div></div></div>
+<div class="row" style="margin-top:12px"><button class="btn" id="rcM" onclick="rcMode()">👥 Двоє гравців</button><button class="btn pri" onclick="rcStart()">▶ Старт</button></div>
+<div class="small" style="margin-top:8px">Чекайте, поки екран і підсвітка стануть <b>зеленими</b>, — і тисніть! Натиснули раніше — фальстарт. Підсвітка може трохи запізнюватися, час рахується від зміни екрана.</div></div>
 <label class="small" style="display:block;margin-top:12px"><input type="checkbox" id="glink" checked style="width:20px;height:20px;vertical-align:-4px"> Підсвітка реагує на гру</label>
 <div class="small" style="margin-top:6px">Тільки на стоянці!</div>
 </div>
@@ -274,7 +353,7 @@ window.addEventListener('load',connect);
 <div class="row" style="margin-top:12px"><button class="btn tog" id="nBtn" onclick="nightT()">🌙 Нічне світло</button></div>
 <div class="lbl" style="margin-top:10px"><span>Яскравість нічного світла:</span><span class="step"><button onclick="nb(-5)">−</button><b id="nbv">10%</b><button onclick="nb(5)">+</button></span></div>
 <div class="lbl" style="margin-top:14px"><span>Вимкнути через:</span><span id="tmr">таймер вимкнено</span></div>
-<div class="row" style="margin-top:8px"><button class="btn tog" id="tm15" onclick="timer(15)">15 хв</button><button class="btn tog" id="tm30" onclick="timer(30)">30</button><button class="btn tog" id="tm60" onclick="timer(60)">60</button><button class="btn" onclick="timer(0)">✕</button></div>
+<div class="row tmrow" style="margin-top:8px"><button class="btn tog" id="tm15" onclick="timer(15)">15 хв</button><button class="btn tog" id="tm30" onclick="timer(30)">30 хв</button><button class="btn tog" id="tm60" onclick="timer(60)">60 хв</button><button class="btn" onclick="timer(0)">✕</button></div>
 </div></div></div>
 <div class="card" data-f="fx"><h2 class="fold">Ефекти <span class="sum" id="sumFx"></span></h2>
 <div class="vrow"><div class="fx" id="fx" style="flex:1"></div><div class="vcol"><div class="vs" id="spd"></div><b id="spv" style="color:var(--txt)">50%</b>Швидкість</div></div></div>
@@ -377,7 +456,7 @@ x.strokeStyle='#1c2027';for(let i=1;i<SC;i++){x.beginPath();x.moveTo(i*CS,0);x.l
 x.fillStyle='#ff4d6d';x.beginPath();x.arc(S.food[0]*CS+CS/2,S.food[1]*CS+CS/2,CS/2-6,0,7);x.fill();
 S.body.forEach((b,i)=>{x.fillStyle=i?'#2ecc71':'#7dff9e';x.beginPath();x.roundRect?x.roundRect(b[0]*CS+3,b[1]*CS+3,CS-6,CS-6,9):x.rect(b[0]*CS+3,b[1]*CS+3,CS-6,CS-6);x.fill()});
 if(S.over){x.fillStyle='#000a';x.fillRect(0,0,W,H);x.fillStyle='#fff';x.font='bold 44px sans-serif';x.textAlign='center';x.fillText('Кінець гри! Рахунок: '+S.score,W/2,H/2-10);x.font='26px sans-serif';x.fillText('Торкніться поля або стрілки, щоб почати знову',W/2,H/2+34)}}
-function gTick(t){if(inGame){if(gm==='cones')gStep();else sTick(t)}requestAnimationFrame(gTick)}
+function gTick(t){if(inGame){if(gm==='cones')gStep();else if(gm==='snake')sTick(t)}requestAnimationFrame(gTick)}
 function gStep(){const c=$('gc'),x=c.getContext('2d'),W=c.width,H=c.height,GY=H-50;
 if(!G.over){G.t++;G.vy-=0.9;G.y=Math.max(0,G.y+G.vy);if(G.y===0&&G.vy<0)G.vy=0;
 G.speed=7+G.t/600;G.score=Math.floor(G.t/6);
@@ -410,7 +489,7 @@ $('nbv').textContent=v+'%';clearTimeout(nbT);nbT=setTimeout(()=>{if(last&&last.n
 function fxN(f){const x=(curProto==1?FX2:FX).find(e=>e[0]==f);return x?x[1]:''}
 function uiState(){const s=ST(),on=s.pw===1||s.pw===true;
 $('pwOn').classList.toggle('on',s.pw===1);$('pwOff').classList.toggle('on',s.pw===0);$('nBtn').classList.toggle('on',!!s.night&&s.pw!==0);
-$('nBtn').textContent='🌙 Нічне світло'+(s.night&&s.pw!==0?' — увімкнено':'');$('nbv').textContent=(s.nightBri||LOC.nightBri)+'%';
+$('nbv').textContent=(s.nightBri||LOC.nightBri)+'%';
 const tl=(last&&last.timer)?(s.tlen||LOC.tlen):0;[15,30,60].forEach(m=>$('tm'+m).classList.toggle('on',tl===m));
 document.querySelectorAll('#fx .btn').forEach(b=>b.classList.toggle('on',s.fx>0&&+b.dataset.fx===+s.fx&&s.pw!==0));
 if(s.col&&!s.fx)document.querySelectorAll('.sw button').forEach(b=>b.classList.toggle('sel',b.dataset.c===s.col));
@@ -443,6 +522,253 @@ function eveTake(){eve.color=cur.color;eve.bri=+cur.bri;eveShow();$('emsg').text
 function eveSave(){fetch('/evening?on='+($('eon').checked?1:0)+'&from='+mm($('efrom').value)+'&to='+mm($('eto').value)+'&color='+eve.color+'&bri='+eve.bri)
 .then(()=>{$('emsg').textContent='Збережено ✓'}).catch(()=>{$('emsg').textContent='Не вдалося зберегти'})}
 function eveFill(s){if(eveLoaded)return;eveLoaded=true;$('eon').checked=s.eveOn;$('efrom').value=hm(s.eveFrom);$('eto').value=hm(s.eveTo);eve.color=s.eveColor;eve.bri=s.eveBri;eveShow()}
+// ================= НОВІ ІГРИ (тільки на сайті) =================
+const XG={tetris:'gTetris',break:'gBreak',flap:'gFlap',inv:'gInv','2048':'g2048',mines:'gMines',memo:'gMemo',ttt:'gTtt',c4:'gC4',react:'gReact'};
+let xgCur=null;
+// ---- підсвітка для ігор
+let glT=0,glQ=null;
+function gl(c){if(!$('glink').checked||fxBusy)return;const n=Date.now(),dt=n-glT;clearTimeout(glQ);if(dt<200){glQ=setTimeout(()=>gl(c),200-dt);return}glT=n;raw('color',c)}
+async function gflash(seq,ms,back){if(!$('glink').checked||fxBusy)return;fxBusy=true;clearTimeout(glQ);for(const c of seq){await raw('color',c);await wait(ms)}if(back)await raw('color',back);glT=Date.now();fxBusy=false}
+const hiGet=(m,d)=>{try{const v=localStorage.getItem('tled_hi_'+m);return v===null?d:+v}catch(e){return d}};
+const hiSet=(m,v)=>{try{localStorage.setItem('tled_hi_'+m,v)}catch(e){}};
+// ---- утримання кнопок (◀ ▶ вогонь)
+const HOLD={};
+document.querySelectorAll('[data-h]').forEach(b=>{const k=b.dataset.h,on=e=>{e.preventDefault();HOLD[k]=true;if(HOLD_TAP[k])HOLD_TAP[k]()},off=()=>{HOLD[k]=false};
+b.addEventListener('pointerdown',on);['pointerup','pointerleave','pointercancel'].forEach(t=>b.addEventListener(t,off))});
+const HOLD_TAP={};
+const KEY={};document.addEventListener('keydown',e=>{if(!inGame||!xgCur)return;KEY[e.key]=true;const f=XKEY[xgCur];if(f&&f(e.key))e.preventDefault()});document.addEventListener('keyup',e=>{KEY[e.key]=false});
+const XKEY={};
+function xgStop(){if(xgCur&&XS[xgCur])XS[xgCur]();xgCur=null}
+const XS={},XI={};   // stop / init для кожної гри
+{const og=gMode;gMode=function(m){
+if(XG[m]){xgStop();S.run=false;gm=m;$('gCones').classList.add('hide');$('gSnake').classList.add('hide');Object.values(XG).forEach(id=>$(id).classList.add('hide'));
+$(XG[m]).classList.remove('hide');$('gsRow').classList.add('hide');xgCur=m;XI[m]()}
+else{xgStop();Object.values(XG).forEach(id=>$(id).classList.add('hide'));$('gsRow').classList.remove('hide');og(m)}
+document.querySelectorAll('.gpick .btn').forEach(b=>b.classList.toggle('pri',b.dataset.g===m))}}
+{const cg=closeGame;closeGame=function(){xgStop();cg()};const og2=openGame;openGame=function(){og2();if(XG[gm])gMode(gm)}}
+function cvPos(cv,e){const r=cv.getBoundingClientRect();return {x:(e.clientX-r.left)*cv.width/r.width,y:(e.clientY-r.top)*cv.height/r.height}}
+function rr(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function overlay(ctx,W,H,t1,t2){ctx.fillStyle='#000a';ctx.fillRect(0,0,W,H);ctx.fillStyle='#fff';ctx.textAlign='center';ctx.font='bold 44px sans-serif';ctx.fillText(t1,W/2,H/2-8);ctx.font='24px sans-serif';ctx.fillText(t2,W/2,H/2+34)}
+
+// ================= 🧱 ТЕТРІС =================
+const TPC=[[[[1,1,1,1]],'00e5ff'],[[[1,1],[1,1]],'ffd400'],[[[0,1,0],[1,1,1]],'b84dff'],[[[1,0,0],[1,1,1]],'2f7bf5'],[[[0,0,1],[1,1,1]],'ff8a00'],[[[0,1,1],[1,1,0]],'22c55e'],[[[1,1,0],[0,1,1]],'ef4444']];
+const TT={W:10,H:20,b:[],p:null,nx:null,x:0,y:0,s:0,l:0,v:1,run:false,over:false,t:null,mv:null,cx:null};
+function ttNew(){const k=Math.floor(Math.random()*7);return {m:TPC[k][0].map(r=>r.slice()),c:TPC[k][1]}}
+function ttFits(m,x,y){for(let r=0;r<m.length;r++)for(let c=0;c<m[r].length;c++)if(m[r][c]){const X=x+c,Y=y+r;if(X<0||X>=TT.W||Y>=TT.H||(Y>=0&&TT.b[Y][X]))return false}return true}
+function ttSpawn(){TT.p=TT.nx||ttNew();TT.nx=ttNew();TT.x=Math.floor((TT.W-TT.p.m[0].length)/2);TT.y=-1;
+if(!ttFits(TT.p.m,TT.x,TT.y+1)){TT.over=true;TT.run=false;clearInterval(TT.t);if(TT.s>hiGet('tetris',0))hiSet('tetris',TT.s);$('ttH').textContent=hiGet('tetris',0);$('ttGo').textContent='▶ Ще раз';gflash(['ff0000','330000','ff0000'],250,cur.color)}else gl(TT.p.c);ttDraw()}
+function ttStart(){if(TT.run&&!TT.over){TT.run=false;clearInterval(TT.t);$('ttGo').textContent='▶ Далі';ttDraw();return}
+if(TT.over||!TT.p){TT.b=Array.from({length:TT.H},()=>Array(TT.W).fill(0));TT.s=0;TT.l=0;TT.v=1;TT.over=false;TT.nx=null;ttSpawn()}
+TT.run=true;$('ttGo').textContent='⏸ Пауза';ttSpeed();ttStat()}
+function ttSpeed(){clearInterval(TT.t);TT.t=setInterval(ttTick,Math.max(90,650-55*(TT.v-1)))}
+function ttStat(){$('ttS').textContent=TT.s;$('ttL').textContent=TT.l;$('ttV').textContent=TT.v}
+function ttTick(){if(!TT.run)return;if(ttFits(TT.p.m,TT.x,TT.y+1)){TT.y++;ttDraw()}else ttLock()}
+function ttLock(){const m=TT.p.m;for(let r=0;r<m.length;r++)for(let c=0;c<m[r].length;c++)if(m[r][c]){if(TT.y+r<0){TT.over=true}else TT.b[TT.y+r][TT.x+c]=TT.p.c}
+let n=0;for(let r=TT.H-1;r>=0;r--)if(TT.b[r].every(x=>x)){TT.b.splice(r,1);TT.b.unshift(Array(TT.W).fill(0));n++;r++}
+if(n){TT.s+=[0,100,300,500,800][n]*TT.v;TT.l+=n;const nv=1+Math.floor(TT.l/10);if(nv!==TT.v){TT.v=nv;ttSpeed()}ttStat();gflash(n>=4?['ffffff','ffd400','ffffff']:['ffffff'],140,null)}
+ttSpawn()}
+function ttMove(d){if(!TT.run)return;if(ttFits(TT.p.m,TT.x+d,TT.y)){TT.x+=d;ttDraw()}}
+function ttRot(){if(!TT.run)return;const m=TT.p.m,r=m[0].map((_,i)=>m.map(row=>row[i]).reverse());for(const k of [0,-1,1,-2,2])if(ttFits(r,TT.x+k,TT.y)){TT.p.m=r;TT.x+=k;ttDraw();return}}
+function ttDown(){if(!TT.run)return;if(ttFits(TT.p.m,TT.x,TT.y+1)){TT.y++;TT.s+=1;ttStat();ttDraw()}else ttLock()}
+function ttDrop(){if(!TT.run)return;while(ttFits(TT.p.m,TT.x,TT.y+1)){TT.y++;TT.s+=2}ttStat();ttLock()}
+function ttCell(ctx,x,y,c,s){ctx.fillStyle='#'+c;rr(ctx,x*s+1,y*s+1,s-2,s-2,5);ctx.fill();ctx.fillStyle='#ffffff33';ctx.fillRect(x*s+4,y*s+4,s-8,5)}
+function ttDraw(){const cv=$('ttc'),ctx=cv.getContext('2d'),s=30;ctx.fillStyle='#12151a';ctx.fillRect(0,0,cv.width,cv.height);
+ctx.strokeStyle='#ffffff0d';for(let x=0;x<=TT.W;x++){ctx.beginPath();ctx.moveTo(x*s,0);ctx.lineTo(x*s,600);ctx.stroke()}for(let y=0;y<=TT.H;y++){ctx.beginPath();ctx.moveTo(0,y*s);ctx.lineTo(300,y*s);ctx.stroke()}
+TT.b.forEach((row,y)=>row.forEach((c,x)=>{if(c)ttCell(ctx,x,y,c,s)}));
+if(TT.p&&!TT.over){let gy=TT.y;while(ttFits(TT.p.m,TT.x,gy+1))gy++;TT.p.m.forEach((row,r)=>row.forEach((v,c)=>{if(v&&gy+r>=0){ctx.strokeStyle='#'+TT.p.c+'88';ctx.strokeRect((TT.x+c)*s+3,(gy+r)*s+3,s-6,s-6)}}));
+TT.p.m.forEach((row,r)=>row.forEach((v,c)=>{if(v&&TT.y+r>=0)ttCell(ctx,TT.x+c,TT.y+r,TT.p.c,s)}))}
+ctx.fillStyle='#1d2129';ctx.fillRect(300,0,140,600);ctx.fillStyle='#8a93a3';ctx.font='bold 18px sans-serif';ctx.textAlign='center';ctx.fillText('Далі',370,40);
+if(TT.nx)TT.nx.m.forEach((row,r)=>row.forEach((v,c)=>{if(v){ctx.fillStyle='#'+TT.nx.c;rr(ctx,370-TT.nx.m[0].length*12+c*24,60+r*24,22,22,4);ctx.fill()}}));
+if(!TT.run)overlay(ctx,300,600,TT.over?'Кінець гри':(TT.p?'Пауза':'Тетріс'),TT.over?'Рахунок: '+TT.s:'Натисніть «Почати»')}
+HOLD_TAP['tt:l']=()=>ttMove(-1);HOLD_TAP['tt:r']=()=>ttMove(1);HOLD_TAP['tt:d']=()=>ttDown();
+XI.tetris=()=>{$('ttH').textContent=hiGet('tetris',0);clearInterval(TT.mv);TT.mv=setInterval(()=>{if(HOLD['tt:l'])ttMove(-1);if(HOLD['tt:r'])ttMove(1);if(HOLD['tt:d'])ttDown()},110);ttDraw()};
+XS.tetris=()=>{TT.run=false;clearInterval(TT.t);clearInterval(TT.mv);if(TT.p&&!TT.over)$('ttGo').textContent='▶ Далі'};
+XKEY.tetris=k=>{if(k==='ArrowLeft')ttMove(-1);else if(k==='ArrowRight')ttMove(1);else if(k==='ArrowDown')ttDown();else if(k==='ArrowUp')ttRot();else if(k===' ')ttDrop();else return false;return true};
+$('ttc').addEventListener('pointerdown',e=>{if(!TT.run){ttStart();return}const p=cvPos($('ttc'),e);if(p.x>300)return;const cx=(TT.x+TT.p.m[0].length/2)*30;if(Math.abs(p.x-cx)<35)ttRot();else ttMove(p.x<cx?-1:1)});
+
+// ================= 🏓 АРКАНОЇД =================
+const BRC=['ef4444','ff8a00','ffd400','22c55e','00b7ff','b84dff'];
+const BR={px:500,pw:170,bx:0,by:0,vx:0,vy:0,stuck:true,bricks:[],s:0,l:3,lv:1,raf:0,run:false,over:false};
+function brLevel(){BR.bricks=[];const cols=10,bw=(1000-40-9*8)/cols;for(let r=0;r<6;r++)for(let c=0;c<cols;c++)BR.bricks.push({x:20+c*(bw+8),y:60+r*30,w:bw,h:22,c:BRC[r],hp:1});BR.stuck=true}
+function brNew(){BR.s=0;BR.l=3;BR.lv=1;BR.over=false;brLevel();brStat()}
+function brStat(){$('brS').textContent=BR.s;$('brL').textContent=BR.l;$('brH').textContent=hiGet('break',0)}
+function brLaunch(){if(BR.over){brNew()}if(BR.stuck){BR.stuck=false;const sp=7+BR.lv;BR.vx=(Math.random()<.5?-1:1)*sp*0.6;BR.vy=-sp*0.8;gl('00b7ff')}}
+function brStep(){const cv=$('brc'),ctx=cv.getContext('2d'),W=1000,H=560,PY=520;
+if(HOLD['br:l'])BR.px-=16;if(HOLD['br:r'])BR.px+=16;if(KEY.ArrowLeft)BR.px-=16;if(KEY.ArrowRight)BR.px+=16;BR.px=Math.max(BR.pw/2,Math.min(W-BR.pw/2,BR.px));
+if(BR.stuck){BR.bx=BR.px;BR.by=PY-12}else if(!BR.over){const steps=3;for(let i=0;i<steps;i++){BR.bx+=BR.vx/steps;BR.by+=BR.vy/steps;
+if(BR.bx<10){BR.bx=10;BR.vx=Math.abs(BR.vx)}if(BR.bx>W-10){BR.bx=W-10;BR.vx=-Math.abs(BR.vx)}if(BR.by<10){BR.by=10;BR.vy=Math.abs(BR.vy)}
+if(BR.vy>0&&BR.by>PY-10&&BR.by<PY+12&&Math.abs(BR.bx-BR.px)<BR.pw/2+10){const k=(BR.bx-BR.px)/(BR.pw/2),sp=Math.hypot(BR.vx,BR.vy);BR.vx=sp*Math.sin(k*1.05);BR.vy=-Math.abs(sp*Math.cos(k*1.05));BR.by=PY-10}
+for(const b of BR.bricks){if(b.hp&&BR.bx>b.x-9&&BR.bx<b.x+b.w+9&&BR.by>b.y-9&&BR.by<b.y+b.h+9){b.hp=0;BR.s+=10*BR.lv;brStat();gl(b.c);
+const ox=Math.min(BR.bx-(b.x-9),b.x+b.w+9-BR.bx),oy=Math.min(BR.by-(b.y-9),b.y+b.h+9-BR.by);if(ox<oy)BR.vx=-BR.vx;else BR.vy=-BR.vy;break}}
+if(BR.by>H+20){BR.l--;brStat();if(BR.l<=0){BR.over=true;if(BR.s>hiGet('break',0))hiSet('break',BR.s);brStat();gflash(['ff0000','330000','ff0000'],250,cur.color)}else{BR.stuck=true;gflash(['ff0000'],300,null)}break}}
+if(BR.bricks.every(b=>!b.hp)){BR.lv++;brLevel();gflash(['ff0000','ffd400','22c55e','00b7ff','b84dff'],150,null)}}
+ctx.fillStyle='#12151a';ctx.fillRect(0,0,W,H);
+BR.bricks.forEach(b=>{if(b.hp){ctx.fillStyle='#'+b.c;rr(ctx,b.x,b.y,b.w,b.h,6);ctx.fill()}});
+ctx.fillStyle='#e9ecf1';rr(ctx,BR.px-BR.pw/2,PY,BR.pw,16,8);ctx.fill();
+ctx.beginPath();ctx.arc(BR.bx,BR.by,9,0,7);ctx.fillStyle='#fff';ctx.fill();
+ctx.fillStyle='#8a93a3';ctx.font='18px sans-serif';ctx.textAlign='left';ctx.fillText('Рівень '+BR.lv,16,32);
+if(BR.over)overlay(ctx,W,H,'Кінець гри','Рахунок: '+BR.s+' · «Запустити» — ще раз');else if(BR.stuck){ctx.fillStyle='#fff';ctx.textAlign='center';ctx.font='24px sans-serif';ctx.fillText('Торкніться «Запустити» або поля',W/2,H/2+60)}
+if(xgCur==='break')BR.raf=requestAnimationFrame(brStep)}
+$('brc').addEventListener('pointermove',e=>{if(e.pointerType==='mouse'&&!e.buttons)return;BR.px=cvPos($('brc'),e).x});
+$('brc').addEventListener('pointerdown',e=>{BR.px=cvPos($('brc'),e).x;if(BR.stuck||BR.over)brLaunch()});
+XI.break=()=>{if(!BR.bricks.length)brNew();brStat();cancelAnimationFrame(BR.raf);BR.raf=requestAnimationFrame(brStep)};
+XS.break=()=>{cancelAnimationFrame(BR.raf)};
+XKEY.break=k=>{if(k===' '){brLaunch();return true}return k==='ArrowLeft'||k==='ArrowRight'};
+
+// ================= 🐦 FLAPPY =================
+const FL={y:270,v:0,pipes:[],s:0,run:false,over:false,raf:0,last:0,t:0};
+const FLC=['ef4444','ff8a00','ffd400','22c55e','00e5ff','2f7bf5','b84dff','ff3fd0'];
+function flFlap(){if(FL.over){FL.over=false;FL.run=false;FL.y=270;FL.v=0;FL.pipes=[];FL.s=0;$('flS').textContent=0;return}if(!FL.run){FL.run=true;FL.t=0}FL.v=-8.6}
+function flStep(ts){const cv=$('flc'),ctx=cv.getContext('2d'),W=1000,H=540,X=240;
+if(FL.run&&!FL.over){FL.v+=0.45;FL.y+=FL.v;FL.t++;if(FL.t%95===1)FL.pipes.push({x:W+40,gy:120+Math.random()*(H-300),ok:false});
+FL.pipes.forEach(p=>{p.x-=4.2;if(!p.ok&&p.x+40<X){p.ok=true;FL.s++;$('flS').textContent=FL.s;gl(FLC[FL.s%FLC.length])}});FL.pipes=FL.pipes.filter(p=>p.x>-100);
+const hit=FL.y<0||FL.y>H-20||FL.pipes.some(p=>X+18>p.x-40&&X-18<p.x+40&&(FL.y-16<p.gy-95||FL.y+16>p.gy+95));
+if(hit){FL.over=true;if(FL.s>hiGet('flap',0))hiSet('flap',FL.s);$('flH').textContent=hiGet('flap',0);gflash(['ff0000','330000','ff0000'],220,cur.color)}}
+const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#13233b');g.addColorStop(1,'#0d1117');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+FL.pipes.forEach(p=>{ctx.fillStyle='#22c55e';rr(ctx,p.x-40,-10,80,p.gy-95+10,8);ctx.fill();rr(ctx,p.x-40,p.gy+95,80,H,8);ctx.fill();ctx.fillStyle='#16a34a';ctx.fillRect(p.x-46,p.gy-115,92,20);ctx.fillRect(p.x-46,p.gy+95,92,20)});
+ctx.save();ctx.translate(X,FL.y);ctx.rotate(Math.max(-0.5,Math.min(1,FL.v/12)));ctx.font='44px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('🐦',0,0);ctx.restore();
+ctx.fillStyle='#fff';ctx.font='bold 48px sans-serif';ctx.textAlign='center';ctx.textBaseline='alphabetic';ctx.fillText(FL.s,W/2,70);
+if(FL.over)overlay(ctx,W,H,'Бум!','Рахунок: '+FL.s+' · торкніться, щоб почати знову');else if(!FL.run){ctx.font='26px sans-serif';ctx.fillText('Торкніться, щоб злетіти',W/2,H/2+80)}
+if(xgCur==='flap')FL.raf=requestAnimationFrame(flStep)}
+$('flc').addEventListener('pointerdown',e=>{e.preventDefault();flFlap()});$('flB').addEventListener('pointerdown',e=>{e.preventDefault();flFlap()});
+XI.flap=()=>{$('flH').textContent=hiGet('flap',0);cancelAnimationFrame(FL.raf);FL.raf=requestAnimationFrame(flStep)};
+XS.flap=()=>{cancelAnimationFrame(FL.raf);if(!FL.over)FL.run=false};
+XKEY.flap=k=>{if(k===' '||k==='ArrowUp'){flFlap();return true}return false};
+
+// ================= 🚀 ЗАГАРБНИКИ =================
+const IV={x:500,al:[],dir:1,sp:1,b:[],eb:[],s:0,l:3,w:1,cd:0,over:false,raf:0,base:'1d4ed8',flash:0};
+function ivWave(){IV.al=[];for(let r=0;r<5;r++)for(let c=0;c<10;c++)IV.al.push({x:120+c*72,y:70+r*52,r:r,alive:true});IV.dir=1;IV.sp=0.8+IV.w*0.35;IV.b=[];IV.eb=[]}
+function ivNew(){IV.s=0;IV.l=3;IV.w=1;IV.over=false;ivWave();ivStat();gl(IV.base)}
+function ivStat(){$('ivS').textContent=IV.s;$('ivL').textContent=IV.l;$('ivW').textContent=IV.w;$('ivH').textContent=hiGet('inv',0)}
+const IVE=['👾','👽','👾','🛸','👾'];
+function ivStep(){const cv=$('ivc'),ctx=cv.getContext('2d'),W=1000,H=560,PY=510;
+if(!IV.over){if(HOLD['iv:l']||KEY.ArrowLeft)IV.x-=10;if(HOLD['iv:r']||KEY.ArrowRight)IV.x+=10;IV.x=Math.max(30,Math.min(W-30,IV.x));
+if(IV.cd>0)IV.cd--;if((HOLD['iv:f']||KEY[' '])&&IV.cd===0){IV.b.push({x:IV.x,y:PY-20});IV.cd=18}
+let edge=false;const live=IV.al.filter(a=>a.alive);live.forEach(a=>{a.x+=IV.dir*IV.sp*(1+(50-live.length)/35);if(a.x<30||a.x>W-30)edge=true});
+if(edge){IV.dir*=-1;IV.al.forEach(a=>{a.y+=18})}
+if(Math.random()<0.012+IV.w*0.004&&live.length){const a=live[Math.floor(Math.random()*live.length)];IV.eb.push({x:a.x,y:a.y+20})}
+IV.b.forEach(b=>b.y-=12);IV.eb.forEach(b=>b.y+=5+IV.w*0.5);
+IV.b=IV.b.filter(b=>{if(b.y<0)return false;for(const a of IV.al)if(a.alive&&Math.abs(a.x-b.x)<26&&Math.abs(a.y-b.y)<22){a.alive=false;IV.s+=(5-a.r)*10;ivStat();gl('22c55e');IV.flash=8;return false}return true});
+IV.eb=IV.eb.filter(b=>{if(b.y>H)return false;if(Math.abs(b.x-IV.x)<28&&Math.abs(b.y-PY)<20){IV.l--;ivStat();gflash(['ff0000'],300,IV.base);if(IV.l<=0)ivOver();return false}return true});
+if(live.some(a=>a.y>PY-40))ivOver();if(!IV.al.some(a=>a.alive)){IV.w++;ivWave();ivStat();gflash(['22c55e','ffffff','22c55e'],150,IV.base)}
+if(IV.flash>0){IV.flash--;if(IV.flash===0)gl(IV.base)}}
+ctx.fillStyle='#0b0d12';ctx.fillRect(0,0,W,H);ctx.fillStyle='#ffffff22';for(let i=0;i<40;i++)ctx.fillRect((i*137)%W,(i*71)%H,2,2);
+ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='38px sans-serif';IV.al.forEach(a=>{if(a.alive)ctx.fillText(IVE[a.r],a.x,a.y)});
+ctx.font='44px sans-serif';ctx.fillText('🚀',IV.x,PY);ctx.fillStyle='#ffd400';IV.b.forEach(b=>ctx.fillRect(b.x-2,b.y-10,4,16));ctx.fillStyle='#ef4444';IV.eb.forEach(b=>ctx.fillRect(b.x-3,b.y-8,6,14));
+ctx.textBaseline='alphabetic';if(IV.over)overlay(ctx,W,H,'Кінець гри','Рахунок: '+IV.s+' · «Вогонь» — ще раз');
+if(xgCur==='inv')IV.raf=requestAnimationFrame(ivStep)}
+function ivOver(){IV.over=true;if(IV.s>hiGet('inv',0))hiSet('inv',IV.s);ivStat();gflash(['ff0000','330000','ff0000'],250,cur.color)}
+HOLD_TAP['iv:f']=()=>{if(IV.over)ivNew()};
+XI.inv=()=>{if(!IV.al.length)ivNew();else gl(IV.base);ivStat();cancelAnimationFrame(IV.raf);IV.raf=requestAnimationFrame(ivStep)};
+XS.inv=()=>{cancelAnimationFrame(IV.raf)};
+XKEY.inv=k=>{if(k===' '&&IV.over){ivNew();return true}return ['ArrowLeft','ArrowRight',' '].includes(k)};
+$('ivc').addEventListener('pointerdown',e=>{if(IV.over){ivNew();return}const p=cvPos($('ivc'),e);IV.x=p.x;if(IV.cd===0){IV.b.push({x:IV.x,y:490});IV.cd=18}});
+
+// ================= 🔢 2048 =================
+const T2C={2:'eee4da',4:'ede0c8',8:'f2b179',16:'f59563',32:'f67c5f',64:'f65e3b',128:'edcf72',256:'edcc61',512:'edc850',1024:'edc53f',2048:'edc22e'};
+const T2L={2:'ffffff',4:'ffe9b0',8:'ff9a3c',16:'ff7a1a',32:'ff4d2e',64:'ff2a00',128:'ffd400',256:'c8ff00',512:'22c55e',1024:'00e5ff',2048:'b84dff'};
+let T2={g:[],s:0,max:0,over:false};
+function t2New(){T2={g:Array.from({length:4},()=>Array(4).fill(0)),s:0,max:0,over:false};t2Add();t2Add();t2Draw()}
+function t2Add(){const e=[];T2.g.forEach((r,y)=>r.forEach((v,x)=>{if(!v)e.push([y,x])}));if(!e.length)return;const [y,x]=e[Math.floor(Math.random()*e.length)];T2.g[y][x]=Math.random()<0.9?2:4}
+function t2Move(d){if(T2.over)return;let moved=false;const g=T2.g;
+const line=i=>[0,1,2,3].map(j=>d==='l'?[i,j]:d==='r'?[i,3-j]:d==='u'?[j,i]:[3-j,i]);
+for(let i=0;i<4;i++){const cs=line(i),vals=cs.map(([y,x])=>g[y][x]).filter(v=>v),out=[];
+for(let k=0;k<vals.length;k++){if(vals[k]===vals[k+1]){out.push(vals[k]*2);T2.s+=vals[k]*2;k++}else out.push(vals[k])}
+cs.forEach(([y,x],k)=>{const v=out[k]||0;if(g[y][x]!==v)moved=true;g[y][x]=v})}
+if(!moved)return;t2Add();const mx=Math.max(...g.flat());if(mx>T2.max){T2.max=mx;if(mx>=8)gl(T2L[Math.min(mx,2048)]||'b84dff');if(mx===2048)gflash(['ffd400','ffffff','ffd400','ffffff'],200,'b84dff')}
+if(T2.s>hiGet('2048',0))hiSet('2048',T2.s);
+const can=g.some((r,y)=>r.some((v,x)=>!v||(x<3&&v===r[x+1])||(y<3&&v===g[y+1][x])));if(!can){T2.over=true;gflash(['ff0000','330000','ff0000'],250,cur.color)}t2Draw()}
+function t2Draw(){$('tw2S').textContent=T2.s;$('tw2H').textContent=hiGet('2048',0);
+$('tw2').innerHTML=T2.g.flat().map(v=>'<div class="t2" style="background:'+(v?'#'+(T2C[v]||'3c3a32'):'')+';color:'+(v>4?'#fff':'#776e65')+';font-size:'+(v>=1024?26:v>=128?32:40)+'px">'+(v||'')+'</div>').join('')+(T2.over?'<div class="t2over">Ходів немає<br><small>Рахунок: '+T2.s+'</small></div>':'')}
+XI['2048']=()=>{if(!T2.g.length)t2New();else t2Draw()};XS['2048']=()=>{};
+XKEY['2048']=k=>{const m={ArrowLeft:'l',ArrowRight:'r',ArrowUp:'u',ArrowDown:'d'}[k];if(m){t2Move(m);return true}return false};
+
+// ================= 💣 САПЕР =================
+const MN={C:10,R:8,N:12,g:[],first:true,over:false,flag:false,t0:0,tm:null,open:0};
+function mnNew(){MN.g=Array.from({length:MN.R*MN.C},()=>({m:false,o:false,f:false,n:0}));MN.first=true;MN.over=false;MN.open=0;clearInterval(MN.tm);$('mnT').textContent='Відкрийте першу клітинку';$('mnM').textContent=MN.N;mnDraw()}
+function mnNb(i){const x=i%MN.C,y=Math.floor(i/MN.C),o=[];for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){if(!dx&&!dy)continue;const X=x+dx,Y=y+dy;if(X>=0&&X<MN.C&&Y>=0&&Y<MN.R)o.push(Y*MN.C+X)}return o}
+function mnPlace(safe){const ban=new Set([safe,...mnNb(safe)]);let k=0;while(k<MN.N){const i=Math.floor(Math.random()*MN.g.length);if(!MN.g[i].m&&!ban.has(i)){MN.g[i].m=true;k++}}MN.g.forEach((c,i)=>c.n=mnNb(i).filter(j=>MN.g[j].m).length)}
+function mnToggle(){MN.flag=!MN.flag;$('mnMode').textContent=MN.flag?'🚩 Прапорці':'⛏ Відкривати'}
+function mnTap(i){if(MN.over)return;const c=MN.g[i];if(MN.flag){if(!c.o){c.f=!c.f;$('mnM').textContent=MN.N-MN.g.filter(x=>x.f).length;mnDraw()}return}
+if(c.f||c.o)return;if(MN.first){MN.first=false;mnPlace(i);MN.t0=Date.now();clearInterval(MN.tm);MN.tm=setInterval(()=>{$('mnT').textContent='⏱ '+Math.floor((Date.now()-MN.t0)/1000)+' с'},500);gl('2f7bf5')}
+if(c.m){MN.over=true;clearInterval(MN.tm);c.boom=true;MN.g.forEach(x=>{if(x.m)x.o=true});$('mnT').textContent='💥 Вибух!';gflash(['ff0000','ff8a00','ff0000','330000'],200,cur.color);mnDraw();return}
+const st=[i];while(st.length){const j=st.pop(),d=MN.g[j];if(d.o||d.f)continue;d.o=true;MN.open++;if(!d.n)mnNb(j).forEach(k=>{if(!MN.g[k].o&&!MN.g[k].m)st.push(k)})}
+if(MN.open===MN.g.length-MN.N){MN.over=true;clearInterval(MN.tm);const t=Math.floor((Date.now()-MN.t0)/1000);$('mnT').textContent='🎉 Перемога за '+t+' с';const h=hiGet('mines',0);if(!h||t<h)hiSet('mines',t);
+$('mnH').textContent=hiGet('mines',0)+' с';gflash(['ef4444','ffd400','22c55e','00e5ff','2f7bf5','b84dff'],180,cur.color)}mnDraw()}
+const MNC=['','#3b82f6','#22c55e','#ef4444','#a855f7','#f59e0b','#06b6d4','#e9ecf1','#8a93a3'];
+function mnDraw(){$('mn').innerHTML=MN.g.map((c,i)=>'<button class="mc'+(c.o?' o':'')+(c.boom?' boom':'')+'" onclick="mnTap('+i+')" style="color:'+MNC[c.n]+'">'+(c.o?(c.m?'💣':(c.n||'')):(c.f?'🚩':''))+'</button>').join('')}
+XI.mines=()=>{const h=hiGet('mines',0);$('mnH').textContent=h?h+' с':'—';if(!MN.g.length)mnNew()};XS.mines=()=>{};
+
+// ================= 🃏 МЕМО =================
+const MEP=[['🍒','ef4444'],['🍊','ff8a00'],['🍋','ffd400'],['🍀','22c55e'],['💧','00b7ff'],['🔷','2f7bf5'],['🍇','b84dff'],['🌸','ff3fd0']];
+const ME={c:[],open:[],moves:0,pairs:0,lock:false};
+function meNew(){const d=[];MEP.forEach((p,i)=>{d.push({k:i,o:false,ok:false});d.push({k:i,o:false,ok:false})});for(let i=d.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[d[i],d[j]]=[d[j],d[i]]}
+ME.c=d;ME.open=[];ME.moves=0;ME.pairs=0;ME.lock=false;meDraw()}
+function meTap(i){const c=ME.c[i];if(ME.lock||c.o||c.ok)return;c.o=true;ME.open.push(i);if(ME.open.length===2){ME.moves++;const [a,b]=ME.open.map(j=>ME.c[j]);
+if(a.k===b.k){a.ok=b.ok=true;ME.pairs++;ME.open=[];gl(MEP[a.k][1]);if(ME.pairs===8){const h=hiGet('memo',0);if(!h||ME.moves<h)hiSet('memo',ME.moves);gflash(MEP.map(p=>p[1]),150,cur.color)}}
+else{ME.lock=true;setTimeout(()=>{a.o=b.o=false;ME.open=[];ME.lock=false;meDraw()},850)}}meDraw()}
+function meDraw(){$('meS').textContent=ME.moves;$('meP').textContent=ME.pairs;const h=hiGet('memo',0);$('meH').textContent=h||'—';
+$('me').innerHTML=ME.c.map((c,i)=>'<button class="mcard'+(c.o||c.ok?' up':'')+(c.ok?' ok':'')+'" onclick="meTap('+i+')" style="'+(c.o||c.ok?'background:#'+MEP[c.k][1]+'33;border-color:#'+MEP[c.k][1]:'')+'">'+(c.o||c.ok?MEP[c.k][0]:'')+'</button>').join('')+(ME.pairs===8?'<div class="t2over" style="grid-column:1/-1">🎉 Усі пари за '+ME.moves+' ходів</div>':'')}
+XI.memo=()=>{if(!ME.c.length)meNew();else meDraw()};XS.memo=()=>{};
+
+// ================= ❌⭕ ХРЕСТИКИ-НУЛИКИ =================
+const TTT={b:Array(9).fill(''),turn:'X',cpu:true,over:false,sx:0,so:0};
+const TL=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+function tttWin(b){for(const l of TL)if(b[l[0]]&&b[l[0]]===b[l[1]]&&b[l[1]]===b[l[2]])return {p:b[l[0]],l:l};return b.every(x=>x)?{p:'D'}:null}
+function tttMM(b,p){const w=tttWin(b);if(w)return w.p==='O'?10:w.p==='X'?-10:0;const sc=[];b.forEach((v,i)=>{if(!v){b[i]=p;sc.push(tttMM(b,p==='O'?'X':'O'));b[i]=''}});return p==='O'?Math.max(...sc):Math.min(...sc)}
+function tttCpu(){let best=-99,mv=-1;const opts=[];TTT.b.forEach((v,i)=>{if(!v){TTT.b[i]='O';const s=tttMM(TTT.b,'X');TTT.b[i]='';opts.push([s,i]);if(s>best)best=s}});
+const good=opts.filter(o=>o[0]===best);mv=good[Math.floor(Math.random()*good.length)][1];tttPut(mv)}
+function tttPut(i){if(TTT.over||TTT.b[i])return;TTT.b[i]=TTT.turn;const w=tttWin(TTT.b);
+if(w){TTT.over=true;TTT.wl=w.l;if(w.p==='X')TTT.sx++;else if(w.p==='O')TTT.so++;$('ttt_msg').textContent=w.p==='D'?'Нічия 🤝':(w.p==='X'?'❌':'⭕')+' перемагає! 🎉';
+const c=w.p==='X'?'2f7bf5':w.p==='O'?'ef4444':'ffffff';gflash([c,'ffffff',c,'ffffff',c],180,null)}
+else{TTT.turn=TTT.turn==='X'?'O':'X';$('ttt_msg').textContent='Хід: '+(TTT.turn==='X'?'❌':'⭕')+(TTT.cpu&&TTT.turn==='O'?' (думаю…)':'');gl(TTT.turn==='X'?'2f7bf5':'ef4444')}
+tttDraw();if(!TTT.over&&TTT.cpu&&TTT.turn==='O')setTimeout(tttCpu,450)}
+function tttTap(i){if(TTT.cpu&&TTT.turn==='O')return;tttPut(i)}
+function tttNew(){TTT.b=Array(9).fill('');TTT.turn='X';TTT.over=false;TTT.wl=null;$('ttt_msg').textContent='Хід: ❌';gl('2f7bf5');tttDraw()}
+function tttMode(){TTT.cpu=!TTT.cpu;TTT.sx=TTT.so=0;$('tttM').textContent=TTT.cpu?"🤖 Проти комп'ютера":'👥 Проти друга';tttNew()}
+function tttDraw(){$('tttX').textContent=TTT.sx;$('tttO').textContent=TTT.so;$('ttt').innerHTML=TTT.b.map((v,i)=>'<button class="tc'+(TTT.wl&&TTT.wl.includes(i)?' win':'')+'" onclick="tttTap('+i+')">'+(v==='X'?'❌':v==='O'?'⭕':'')+'</button>').join('')}
+XI.ttt=()=>{tttDraw();gl(TTT.turn==='X'?'2f7bf5':'ef4444')};XS.ttt=()=>{};
+
+// ================= 🔴🟡 4 В РЯД =================
+const C4={b:[],turn:1,cpu:true,over:false,r:0,y:0,win:null};
+function c4New(){C4.b=Array.from({length:6},()=>Array(7).fill(0));C4.turn=1;C4.over=false;C4.win=null;$('c4msg').textContent='Хід: 🔴';gl('ef4444');c4Draw()}
+function c4Row(b,c){for(let r=5;r>=0;r--)if(!b[r][c])return r;return -1}
+function c4Wins(b,p){const D=[[0,1],[1,0],[1,1],[1,-1]];for(let r=0;r<6;r++)for(let c=0;c<7;c++)for(const [dr,dc] of D){const cells=[];for(let k=0;k<4;k++){const R=r+dr*k,C=c+dc*k;if(R<0||R>5||C<0||C>6||b[R][C]!==p)break;cells.push(R*7+C)}if(cells.length===4)return cells}return null}
+function c4Drop(c){if(C4.over)return;const r=c4Row(C4.b,c);if(r<0)return;C4.b[r][c]=C4.turn;const w=c4Wins(C4.b,C4.turn);
+if(w){C4.over=true;C4.win=w;if(C4.turn===1)C4.r++;else C4.y++;$('c4msg').textContent=(C4.turn===1?'🔴':'🟡')+' перемагає! 🎉';const col=C4.turn===1?'ef4444':'ffd400';gflash([col,'ffffff',col,'ffffff',col],180,null)}
+else if(C4.b[0].every(x=>x)){C4.over=true;$('c4msg').textContent='Нічия 🤝';gflash(['ffffff'],300,null)}
+else{C4.turn=3-C4.turn;$('c4msg').textContent='Хід: '+(C4.turn===1?'🔴':'🟡')+(C4.cpu&&C4.turn===2?' (думаю…)':'');gl(C4.turn===1?'ef4444':'ffd400')}
+c4Draw();if(!C4.over&&C4.cpu&&C4.turn===2)setTimeout(c4Cpu,500)}
+function c4Cpu(){const b=C4.b,cols=[3,2,4,1,5,0,6].filter(c=>c4Row(b,c)>=0);
+for(const p of [2,1])for(const c of cols){const r=c4Row(b,c);b[r][c]=p;const w=c4Wins(b,p);b[r][c]=0;if(w)return c4Drop(c)}
+const safe=cols.filter(c=>{const r=c4Row(b,c);b[r][c]=2;let bad=false;if(r>0){b[r-1][c]=1;bad=!!c4Wins(b,1);b[r-1][c]=0}b[r][c]=0;return !bad});
+const pool=safe.length?safe:cols;c4Drop(Math.random()<0.75?pool[0]:pool[Math.floor(Math.random()*pool.length)])}
+function c4Tap(c){if(C4.cpu&&C4.turn===2)return;c4Drop(c)}
+function c4Mode(){C4.cpu=!C4.cpu;C4.r=C4.y=0;$('c4M').textContent=C4.cpu?"🤖 Проти комп'ютера":'👥 Проти друга';c4New()}
+function c4Draw(){$('c4R').textContent=C4.r;$('c4Y').textContent=C4.y;let h='';for(let r=0;r<6;r++)for(let c=0;c<7;c++){const v=C4.b[r][c];
+h+='<button class="c4c" onclick="c4Tap('+c+')"><span class="'+(v===1?'r':v===2?'y':'')+(C4.win&&C4.win.includes(r*7+c)?' win':'')+'"></span></button>'}$('c4').innerHTML=h}
+XI.c4=()=>{if(!C4.b.length)c4New();else{c4Draw();gl(C4.turn===1?'ef4444':'ffd400')}};XS.c4=()=>{};
+
+// ================= ⚡ РЕАКЦІЯ =================
+const RC={duo:false,st:'idle',t0:0,tm:null,s1:0,s2:0};
+function rcMode(){RC.duo=!RC.duo;RC.s1=RC.s2=0;$('rcS1').textContent=0;$('rcS2').textContent=0;$('rcM').textContent=RC.duo?'👤 Один гравець':'👥 Двоє гравців';$('rcInfo').textContent=RC.duo?'Двоє гравців':'Один гравець';
+$('rc1').classList.toggle('hide',RC.duo);$('rc2').classList.toggle('hide',!RC.duo);rcReset()}
+function rcPads(cls,txt){['rc1','rcA','rcB'].forEach(i=>{const e=$(i);e.classList.remove('wait','go','bad','win');if(cls)e.classList.add(cls)});if(txt!=null)$('rcT').innerHTML=txt}
+function rcReset(){clearTimeout(RC.tm);RC.st='idle';rcPads('',RC.duo?null:'Торкніться, щоб почати')}
+function rcStart(){clearTimeout(RC.tm);RC.st='wait';rcPads('wait','Чекайте зеленого…');gl('ff0000');
+RC.tm=setTimeout(()=>{RC.st='go';RC.t0=performance.now();rcPads('go','ТИСНІТЬ!');if($('glink').checked){clearTimeout(glQ);glT=Date.now();raw('color','00ff00')}},1800+Math.random()*3500)}
+function rcName(){$('rcN1').textContent='Гравець 1';$('rcN2').textContent='Гравець 2'}
+function rcScore(){$('rcS1').textContent=RC.s1;$('rcS2').textContent=RC.s2}
+function rcTap(p){if(RC.duo&&p===0)return;if(!RC.duo&&p!==0)return;
+if(RC.st==='idle'||RC.st==='done'){if(!RC.duo)rcStart();return}
+if(RC.st==='wait'){clearTimeout(RC.tm);RC.st='done';
+if(RC.duo){const w=p===1?2:1;if(w===1)RC.s1++;else RC.s2++;rcScore();rcPads('');$(p===1?'rcA':'rcB').classList.add('bad');$(w===1?'rcA':'rcB').classList.add('win');$('rcN'+p).textContent='Фальстарт! 😅';setTimeout(rcName,2500)}
+else rcPads('bad','Зарано! 😅<br><small>Торкніться, щоб спробувати ще</small>');gflash(['ff0000','330000'],200,null);return}
+if(RC.st==='go'){const ms=Math.round(performance.now()-RC.t0);RC.st='done';
+if(RC.duo){if(p===1)RC.s1++;else RC.s2++;rcScore();rcPads('');$(p===1?'rcA':'rcB').classList.add('win');$('rcN'+p).textContent='Гравець '+p+' — '+ms+' мс!';setTimeout(rcName,2500)}
+else{const h=hiGet('react',0),rec=!h||ms<h;if(rec)hiSet('react',ms);$('rcH').textContent=hiGet('react',0)+' мс';rcPads('win',ms+' мс'+(rec?' — рекорд! 🏆':'')+'<br><small>Торкніться, щоб ще раз</small>')}
+gflash(['22c55e','ffffff','22c55e'],150,null)}}
+XI.react=()=>{const h=hiGet('react',0);$('rcH').textContent=h?h+' мс':'—';rcReset()};XS.react=()=>{clearTimeout(RC.tm);RC.st='idle'};
 // ---- Карти: Waze (затори), тривоги (офіційна мапа), шахеди (monitor). Працюють і без плати, і без пароля
 const MAPS=[null,{id:'al',url:'https://map.ukrainealarm.com/',name:'Офіційна мапа тривог (застосунок «Повітряна тривога»)'},
 {id:'sh',url:'https://map.war-monitor.org/',name:'Мапа monitor: приблизний рух шахедів і ракет'}];let mTab=0;
@@ -484,7 +810,7 @@ openMap=function(){om();scrSave('map')};closeMap=function(){cm();scrSave('main')
 openGame=function(){og();scrSave('game:'+gm)};closeGame=function(){cg();if(!inMap)scrSave('main')};
 gMode=function(m){gmo(m);if(inGame)scrSave('game:'+m)}}
 {let v='';try{v=localStorage.getItem('tled_scr')||''}catch(e){}
-if(v==='map')openMap();else if(v.indexOf('game:')===0){openGame();if(v==='game:snake')gMode('snake')}}
+if(v==='map')openMap();else if(v.indexOf('game:')===0){openGame();const g=v.slice(5);if(g&&g!=='cones')gMode(g)}}
 // ================= ПАНЕЛЬ: годинник, погода, курси, таймери, розклад, калькулятор =================
 var inDash=false,dashLoginWas=false;
 const DOW=['Нд','Пн','Вт','Ср','Чт','Пт','Сб'],DOWF=['неділя','понеділок','вівторок','середа','четвер','пʼятниця','субота'];
@@ -616,47 +942,33 @@ $('dNext').innerHTML=best?'Наступне за розкладом:<br><b style
 {const r0=render;render=function(){r0();if(inDash)scRender()}}
 {const p0=poll;poll=async function(){await p0();if(inDash)scRender()}}
 
-// ---- калькулятор-блокнот (як Soulver)
-const CURW=[[/^(usd|долар\w*|\$)$/i,'USD'],[/^(eur|євро|€)$/i,'EUR'],[/^(pln|злот\w*)$/i,'PLN'],[/^(gbp|фунт\w*|£)$/i,'GBP'],[/^(uah|грн|гривн\w*|₴)$/i,'UAH']];
-const CSYM={USD:'$',EUR:'€',PLN:'zł',GBP:'£',UAH:'грн'};
-function curOf(w){for(const [re,c] of CURW)if(re.test(w))return c;return null}
-function calcTok(s){s=s.replace(/\/\/.*$/,'').replace(/(\d)[   ](?=\d{3}(\D|$))/g,'$1').replace(/(\d),(\d)/g,'$1.$2').replace(/[×·]/g,'*').replace(/÷/g,'/').replace(/−/g,'-');
-const t=[],re=/\s*(\d+(?:\.\d+)?|[a-zа-яіїєґ_ʼ'][a-zа-яіїєґ_0-9ʼ']*|[$€£₴]|[-+*/^()%=]|\S)/giy;let m;
-while((m=re.exec(s))){const v=m[1];if(/^\d/.test(v))t.push({k:'n',v:+v});else if(/^[$€£₴]$/.test(v))t.push({k:'c',v:curOf(v)});
-else if(/^[a-zа-яіїєґ_]/i.test(v)){const lw=v.toLowerCase(),c=curOf(lw);if(c)t.push({k:'c',v:c});else if(['в','у','in','to'].includes(lw))t.push({k:'to'});else if(['від','of','with'].includes(lw))t.push({k:'of'});
-else if(lw==='x'||lw==='х')t.push({k:'o',v:'*'});else t.push({k:'w',v:lw})}else t.push({k:'o',v:v})}return t}
-function calcLine(src,vars,ctx){let t=calcTok(src);if(!t.length)return null;let asg=null;
-if(t.length>2&&t[0].k==='w'&&t[1].k==='o'&&t[1].v==='='){asg=t[0].v;t=t.slice(2)}
-// слова без значення (не змінні, не ключові) прибираємо — «бензин 1250 грн» = 1250 грн
-const KEY=['разом','сума','total','sum','попереднє','prev','ans'];t=t.filter(x=>x.k!=='w'||vars[x.v]!==undefined||KEY.includes(x.v));
-let i=0;const pk=()=>t[i],nx=()=>t[i++];
-const V=(v,c,p)=>({v:v,c:c||null,p:!!p});
-function conv(a,c){if(!a.c||!c||a.c===c)return V(a.v,c||a.c);return V(fromUah(toUah(a.v,a.c),c),c)}
-function prim(){const k=pk();if(!k)throw 'end';
-if(k.k==='o'&&k.v==='('){nx();const e=expr();if(pk()&&pk().v===')')nx();return post(e)}
-if(k.k==='o'&&k.v==='-'){nx();const e=prim();return V(-e.v,e.c,e.p)}
-if(k.k==='c'&&t[i+1]&&t[i+1].k==='n'){nx();const n=nx();return post(V(n.v,k.v))}
-if(k.k==='n'){nx();return post(V(k.v))}
-if(k.k==='w'){nx();if(k.v==='разом'||k.v==='сума'||k.v==='total'||k.v==='sum')return post(ctx.sum());if(['попереднє','prev','ans'].includes(k.v)){if(!ctx.prev)throw 'prev';return post(ctx.prev)}return post(vars[k.v])}
-throw 'tok'}
-function post(a){let k=pk();if(k&&k.k==='c'&&!a.c){nx();a=V(a.v,k.v,a.p)}k=pk();if(k&&k.k==='o'&&k.v==='%'){nx();a=V(a.v,a.c,true);
-if(pk()&&pk().k==='of'){nx();const b=pow();return V(a.v/100*b.v,b.c)}}return a}
-function pow(){let a=prim();while(pk()&&pk().k==='o'&&pk().v==='^'){nx();const b=prim();a=V(Math.pow(a.v,b.v),a.c)}return a}
-function term(){let a=pow();while(pk()&&pk().k==='o'&&(pk().v==='*'||pk().v==='/')){const op=nx().v,b=pow();
-if(b.p){a=V(op==='*'?a.v*b.v/100:a.v/(b.v/100),a.c)}else if(op==='*')a=V(a.v*b.v,a.c||b.c);else a=V(a.v/b.v,(a.c&&b.c)?null:a.c)}return a}
-function expr(){let a=term();while(pk()&&pk().k==='o'&&(pk().v==='+'||pk().v==='-')){const op=nx().v;let b=term();
-if(b.p&&!a.p){a=V(a.v*(1+(op==='+'?1:-1)*b.v/100),a.c)}else{if(a.c&&b.c&&a.c!==b.c)b=conv(b,a.c);a=V(op==='+'?a.v+b.v:a.v-b.v,a.c||b.c)}}return a}
-let r=expr();if(pk()&&pk().k==='to'){nx();const c=nx();if(!c||c.k!=='c')throw 'to';r=r.c?conv(r,c.v):V(r.v,c.v)}
-if(i<t.length)throw 'rest';if(asg)vars[asg]=r;return r}
-function calcRun(){const lines=$('cIn').value.split('\n'),vars={};let prev=null,block=[];const out=[];
-lines.forEach(l=>{if(!l.trim()){block=[];out.push('');return}
-const ctx={prev:prev,sum:()=>{let c=null,s=0;block.forEach(b=>{if(c===null)c=b.c;s+=(b.c&&c&&b.c!==c)?fromUah(toUah(b.v,b.c),c):b.v});return {v:s,c:c,p:false}}};
-let r=null;try{r=calcLine(l,vars,ctx)}catch(e){r=null}
-if(r&&isFinite(r.v)){prev=r;if(!/^\s*(разом|сума|total|sum)\b/i.test(l))block.push(r);out.push((r.p?fmtN(r.v)+'%':fmtN(r.v)+(r.c?' '+CSYM[r.c]:'')))}else out.push('')});
-$('cOut').innerHTML=out.map(o=>'<div>'+(o?esc(o):'&nbsp;')+'</div>').join('');LS.set('tled_calc',$('cIn').value)}
-function calcHelp(){$('cHelp').classList.toggle('hide')}
-$('cIn').value=LS.get('tled_calc','бензин 1250 грн\nмийка 300 грн\nразом\n\n100 usd в грн\n20% від 4500\nціна = 1200\nціна - 15%');
-$('cIn').addEventListener('input',calcRun);$('cIn').addEventListener('scroll',()=>{$('cOut').scrollTop=$('cIn').scrollTop});
+// ---- класичний калькулятор
+const CA={toks:[],cur:'0',fresh:true,done:false};
+const OPS={'+':'+','-':'−','*':'×','/':'÷'};
+function cEval(t){const out=[],st=[],pr={'+':1,'-':1,'*':2,'/':2};
+t.forEach(x=>{if(typeof x==='number')out.push(x);else{while(st.length&&pr[st[st.length-1]]>=pr[x])out.push(st.pop());st.push(x)}});while(st.length)out.push(st.pop());
+const s=[];out.forEach(x=>{if(typeof x==='number')s.push(x);else{const b=s.pop(),a=s.pop();s.push(x==='+'?a+b:x==='-'?a-b:x==='*'?a*b:a/b)}});return s[0]}
+function cFmt(v){if(!isFinite(v))return 'Помилка';const r=Math.round(v*1e10)/1e10;let s=String(r);if(Math.abs(r)>=1e15||(r!==0&&Math.abs(r)<1e-9))s=r.toExponential(6);
+const p=s.split('.');p[0]=p[0].replace(/\B(?=(\d{3})+(?!\d))/g,' ');return p.join(',')}
+function cShow(){const curTxt=CA.cur.indexOf('e')>=0?CA.cur:(()=>{const p=CA.cur.split('.');p[0]=p[0].replace(/\B(?=(\d{3})+(?!\d))/g,' ');return p.join(',')})();
+$('cVal').textContent=CA.cur==='Помилка'?CA.cur:curTxt;$('cExpr').innerHTML=CA.toks.map(x=>typeof x==='number'?cFmt(x):' '+OPS[x]+' ').join('')||'&nbsp;'}
+function cKey(k){if(CA.cur==='Помилка'&&k!=='C'){CA.cur='0';CA.toks=[];CA.fresh=true}
+if(/^[0-9]$/.test(k)){if(CA.done){CA.toks=[];CA.done=false}if(CA.fresh){CA.cur=k;CA.fresh=false}else if(CA.cur.replace(/[-.]/g,'').length<15)CA.cur=CA.cur==='0'?k:CA.cur+k}
+else if(k==='.'){if(CA.done){CA.toks=[];CA.done=false}if(CA.fresh){CA.cur='0.';CA.fresh=false}else if(CA.cur.indexOf('.')<0)CA.cur+='.'}
+else if(k==='C'){CA.toks=[];CA.cur='0';CA.fresh=true;CA.done=false}
+else if(k==='back'){if(!CA.fresh&&!CA.done){CA.cur=CA.cur.length>1&&CA.cur!=='-0'?CA.cur.slice(0,-1):'0';if(CA.cur==='-')CA.cur='0'}}
+else if(k==='neg'){if(CA.cur!=='0')CA.cur=CA.cur.charAt(0)==='-'?CA.cur.slice(1):'-'+CA.cur;CA.done=false}
+else if(k==='%'){const v=parseFloat(CA.cur),n=CA.toks.length;let r=v/100;if(n>=2&&(CA.toks[n-1]==='+'||CA.toks[n-1]==='-')){const base=cEval(CA.toks.slice(0,-1));r=base*v/100}CA.cur=String(r);CA.fresh=true;CA.done=false}
+else if(OPS[k]){if(CA.done){CA.done=false}if(CA.fresh&&CA.toks.length&&typeof CA.toks[CA.toks.length-1]!=='number')CA.toks[CA.toks.length-1]=k;else{CA.toks.push(parseFloat(CA.cur),k)}
+const part=CA.toks.slice(0,-1);CA.cur=String(cEval(part));CA.fresh=true}
+else if(k==='='){if(!CA.toks.length)return;if(!CA.fresh||typeof CA.toks[CA.toks.length-1]!=='number')CA.toks.push(parseFloat(CA.cur));if(typeof CA.toks[CA.toks.length-1]!=='number')CA.toks.pop();
+const r=cEval(CA.toks);CA.toks.push('=');CA.cur=isFinite(r)?String(Math.round(r*1e10)/1e10):'Помилка';CA.fresh=true;CA.done=true;
+$('cVal').textContent=CA.cur==='Помилка'?CA.cur:cFmt(r);$('cExpr').innerHTML=CA.toks.slice(0,-1).map(x=>typeof x==='number'?cFmt(x):' '+OPS[x]+' ').join('')+' =';CA.toks=[];return}
+cShow()}
+document.querySelectorAll('.ck').forEach(b=>b.onclick=()=>cKey(b.dataset.k));
+document.addEventListener('keydown',e=>{if(!inDash||/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName))return;const m={Enter:'=',Backspace:'back',Escape:'C',',':'.'}[e.key]||e.key;
+if(/^[0-9]$/.test(m)||['.','+','-','*','/','%','=','back','C'].includes(m)){e.preventDefault();cKey(m)}});
+function calcRun(){}
 {let v='';try{v=localStorage.getItem('tled_scr')||''}catch(e){}if(v==='dash')openDash()}
 // ================= КАМЕРИ ШВИДКОСТІ та ЗАРЯДКИ (дані OpenStreetMap через Overpass) =================
 let LM=null,camLayer=null,chgLayer=null,meMk=null,camOn=LS.get('tled_cam_on',true),chgOn=LS.get('tled_chg_on',true);
