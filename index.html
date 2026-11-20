@@ -120,10 +120,14 @@ h1{font-size:28px;margin:0}
 .rpad{min-height:300px;border-radius:18px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:34px;font-weight:800;background:var(--btn);color:var(--txt);cursor:pointer;user-select:none;touch-action:manipulation}
 .rpad.wait{background:#7f1d1d;color:#fff}.rpad.go{background:#16a34a;color:#fff}.rpad.bad{background:#e5484d;color:#fff}.rpad.win{background:#2f7bf5;color:#fff}.rpad small{font-size:18px;font-weight:500}
 .rduo{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (prefers-color-scheme:dark){#lmap .leaflet-tile-pane{filter:invert(1) hue-rotate(180deg) brightness(.85) contrast(.9)}}
+#lmap{background:#dfe3e8}
+.shcard{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:30px}
+#cSc,#dNext{display:none!important}
 </style>
 <script>
 // ---- ДЕМО-режим: сайт працює без плати, усі команди обробляються тут же, у браузері
-(function(){let on=false;try{on=/[?&]demo\b/.test(location.search)||localStorage.getItem('tled_demo')==='1'}catch(e){}
+(function(){let on=false;try{on=(/[?&]demo\b/.test(location.search)||localStorage.getItem('tled_demo')==='1')&&!!localStorage.getItem('tled_pass')}catch(e){}
 if(!on)return;window.TLED_DEMO=true;try{localStorage.setItem('tled_demo','1')}catch(e){}
 const now=new Date();
 const D={online:true,inet:true,remote:true,connected:false,name:'',msg:'Демо-режим: натисніть «Шукати контролери»',saved:'',proto:1,env:0,
@@ -198,14 +202,10 @@ window.addEventListener('load',connect);
 })();
 </script>
 </head><body><div class="login" id="login"><div class="card" style="width:min(520px,92vw)">
-<h2>Підсвітка салону — вхід</h2><div class="big">Введіть пароль керування</div>
+<h2>Підсвітка салону — вхід</h2><div class="big">Введіть пароль</div>
 <input id="lp" type="password" autocomplete="current-password" placeholder="Пароль">
 <button class="btn pri" style="width:100%" id="lb">Увійти</button>
-<div class="small" id="lm" style="margin-top:12px"></div>
-<button class="btn" style="width:100%;margin-top:14px" onclick="openDash()">📊 Панель: погода, курси, таймери</button>
-<button class="btn" style="width:100%;margin-top:10px" onclick="openMap()">🗺 Карти: Waze, тривоги, шахеди, камери</button>
-<button class="btn" style="width:100%;margin-top:10px" onclick="try{localStorage.setItem('tled_demo','1')}catch(e){}location.href=location.pathname+'?demo'">🧪 Спробувати без плати (демо)</button>
-<div class="small" style="margin-top:8px">Демо показує, як працює сайт: усі кнопки клацаються, але команди нікуди не йдуть.</div></div></div>
+<div class="small" id="lm" style="margin-top:12px"></div></div></div>
 <div id="camWarn" class="camwarn hide"></div><div class="wrap">
 <header><h1>Підсвітка салону <span class="small" style="display:block;font-weight:400">через інтернет · <a href="#" onclick="TLED.logout();return false" style="color:var(--mut)">вийти</a></span></h1><div class="st"><button class="btn" id="dashBtn" onclick="openDash()" style="min-height:44px;font-size:16px;flex:0 0 auto">📊 Панель</button><button class="btn" id="mapBtn" onclick="openMap()" style="min-height:44px;font-size:16px;flex:0 0 auto">🗺 Карти</button><button class="btn" id="gameBtn" onclick="openGame()" style="min-height:44px;font-size:16px;flex:0 0 auto">🎮 Гра</button><button class="btn hide" id="back" onclick="showConn()">Пристрій</button><span id="stt">…</span><span class="dot" id="dot"></span></div></header>
 <div id="scrConn" class="card" style="max-width:760px;margin:0 auto">
@@ -223,7 +223,10 @@ window.addEventListener('load',connect);
 <div class="small" id="mMsg" style="margin:8px 4px"></div>
 <iframe id="wz" title="Waze" allow="geolocation" class="mframe"></iframe>
 <iframe id="al" title="Тривоги" class="mframe hide"></iframe>
-<iframe id="sh" title="Шахеди" class="mframe hide"></iframe>
+<div id="sh" class="mframe hide shcard"><div style="font-size:64px">🛩</div><div class="big">Мапа шахедів не дозволяє показувати себе всередині інших сайтів</div>
+<div class="small">Відкрийте її окремою вкладкою — повернутися сюди можна кнопкою «назад» або вкладками браузера.</div>
+<a class="btn pri" style="min-height:64px;font-size:20px;padding:0 30px;display:flex;align-items:center;text-decoration:none" href="https://map.war-monitor.org/" target="_blank" rel="noopener">Відкрити мапу шахедів ↗</a>
+<a class="btn" style="min-height:56px;padding:0 24px;display:flex;align-items:center;text-decoration:none" href="https://map.war-monitor.org/">Відкрити в цій вкладці</a></div>
 <div id="camBar" class="hide"><div class="mapbar"><button class="btn pri" onclick="camMe()">📍 Де я</button><button class="btn" id="camFol" onclick="camFollow()">🚗 Стежити: вимк.</button><div class="row" style="gap:10px"><button class="btn" id="tgCam" onclick="camLayerT('cam')">📷</button><button class="btn" id="tgChg" onclick="camLayerT('chg')">⚡</button></div></div>
 <div class="small" id="camInfo" style="margin:8px 4px"></div><div id="lmap" class="mframe"></div></div>
 </div>
@@ -777,7 +780,7 @@ $('wz').classList.toggle('hide',t!==0);$('al').classList.toggle('hide',t!==1);$(
 try{localStorage.setItem('tled_mtab',t)}catch(e){}
 if(t===0){$('mMsg').textContent='';if(!$('wz').src)mapLoad();mapLocate(false);return}
 if(t===3){$('tgCam').classList.toggle('pri',camOn);$('tgChg').classList.toggle('pri',chgOn);camTab();return}
-const m=MAPS[t];if(!$(m.id).src)$(m.id).src=m.url;
+const m=MAPS[t];if(m.id==='al'&&!$(m.id).src)$(m.id).src=m.url;
 $('mMsg').innerHTML=m.name+' · <a href="'+m.url+'" target="_blank" rel="noopener" style="color:var(--acc)">відкрити окремо ↗</a><br>Положення цілей приблизні й із затримкою. Дійте за офіційними сигналами тривоги.'}
 let inMap=false,mFol=false,mTimer=null,mLoginWas=false;
 const M={lat:50.4501,lon:30.5234,z:13,known:false};
@@ -797,11 +800,11 @@ function mapFollow(){mFol=!mFol;$('mFollow').textContent='🚗 Стежити: '
 clearInterval(mTimer);if(mFol){mapLocate(false);mTimer=setInterval(()=>mapLocate(false),30000)}}
 function openMap(){inMap=true;if(inGame)closeGame();['scrConn','scrCtl','scrGame'].forEach(i=>$(i).classList.add('hide'));
 $('scrMap').classList.remove('hide');$('gameBtn').classList.add('hide');$('mapBtn').classList.add('hide');$('back').classList.add('hide');
-const L=$('login');mLoginWas=L&&!L.classList.contains('hide');if(L)L.classList.add('hide');
+
 let t=0;try{t=+(localStorage.getItem('tled_mtab')||0)}catch(e){}mapTab(t)}
 function closeMap(){inMap=false;clearInterval(mTimer);mFol=false;$('mFollow').textContent='🚗 Стежити: вимк.';$('mFollow').classList.remove('pri');
 $('scrMap').classList.add('hide');$('gameBtn').classList.remove('hide');$('mapBtn').classList.remove('hide');
-if(mLoginWas&&!TLED.hasPass())$('login').classList.remove('hide');render()}
+render()}
 {const og=openGame,cg=closeGame;openGame=function(){og();$('mapBtn').classList.add('hide')};closeGame=function(){cg();if(!inMap)$('mapBtn').classList.remove('hide')}}
 // ---- запам'ятовуємо екран: Tesla закриває браузер, коли відкриваєш музику, — після повернення сторінка відкривається там само
 function scrSave(v){try{localStorage.setItem('tled_scr',v)}catch(e){}}
@@ -819,10 +822,10 @@ const two=n=>String(n).padStart(2,'0');
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 function openDash(){inDash=true;if(inGame)closeGame();if(inMap)closeMap();['scrConn','scrCtl','scrGame','scrMap'].forEach(i=>$(i).classList.add('hide'));
 $('scrDash').classList.remove('hide');['gameBtn','mapBtn','dashBtn','back'].forEach(i=>$(i).classList.add('hide'));
-const L=$('login');dashLoginWas=L&&!L.classList.contains('hide');if(L)L.classList.add('hide');
+
 wxLoad(false);rtLoad(false);scRender();calcRun();try{localStorage.setItem('tled_scr','dash')}catch(e){}}
 function closeDash(){inDash=false;$('scrDash').classList.add('hide');['gameBtn','mapBtn','dashBtn'].forEach(i=>$(i).classList.remove('hide'));
-if(dashLoginWas&&!TLED.hasPass())$('login').classList.remove('hide');try{localStorage.setItem('tled_scr','main')}catch(e){}render()}
+try{localStorage.setItem('tled_scr','main')}catch(e){}render()}
 {const om=openMap,og=openGame;openMap=function(){if(inDash){inDash=false;$('scrDash').classList.add('hide')}om();$('dashBtn').classList.add('hide')};
 const cm=closeMap,cg=closeGame;closeMap=function(){cm();$('dashBtn').classList.remove('hide')};
 openGame=function(){if(inDash){inDash=false;$('scrDash').classList.add('hide')}og();$('dashBtn').classList.add('hide')};closeGame=function(){cg();if(!inMap)$('dashBtn').classList.remove('hide')}}
@@ -974,20 +977,20 @@ function calcRun(){}
 let LM=null,camLayer=null,chgLayer=null,meMk=null,camOn=LS.get('tled_cam_on',true),chgOn=LS.get('tled_chg_on',true);
 let OSM=LS.get('tled_osm',{boxes:[],cams:{},chg:{}});   // кеш, переживає закриття браузера
 let camWatch=null,camWarned={},camFol=false;
-const OVP=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter','https://maps.mail.ru/osm/tools/overpass/api/interpreter'];
+const OVP=['https://overpass-api.de/api/interpreter','https://overpass.private.coffee/api/interpreter','https://overpass.kumi.systems/api/interpreter'];
 function osmSave(){const ck=Object.keys(OSM.cams),hk=Object.keys(OSM.chg);if(ck.length+hk.length>6000){OSM={boxes:[],cams:{},chg:{}}}LS.set('tled_osm',OSM)}
 function camInit(){if(LM||typeof L==='undefined')return;
 LM=L.map('lmap',{zoomControl:true,attributionControl:true}).setView([M.lat,M.lon],M.known?13:11);
-const dark=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches;
-L.tileLayer('https://{s}.basemaps.cartocdn.com/'+(dark?'dark_all':'rastertiles/voyager')+'/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',attribution:'© OpenStreetMap contributors © CARTO'}).addTo(LM);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap contributors'}).addTo(LM);
 camLayer=L.layerGroup();chgLayer=L.layerGroup();if(camOn)camLayer.addTo(LM);if(chgOn)chgLayer.addTo(LM);
 let tmo=null;LM.on('moveend',()=>{clearTimeout(tmo);tmo=setTimeout(osmFetchView,700)});camDraw();osmFetchView()}
 function camTab(){camInit();if(!LM){$('mMsg').textContent='Карта не завантажилась — перевірте інтернет.';return}setTimeout(()=>LM.invalidateSize(),50);
 $('mMsg').innerHTML='📷 камери швидкості й ⚡ зарядні станції з OpenStreetMap. Дані волонтерські: нових камер може не бути. Попередження працюють, коли ввімкнено «Стежити».'}
 function boxCovered(s,w,n,e){return OSM.boxes.some(b=>b[0]<=s&&b[1]<=w&&b[2]>=n&&b[3]>=e&&Date.now()-b[4]<7*864e5)}
 let osmBusy=false;
-async function osmFetchView(){if(!LM||osmBusy)return;if(LM.getZoom()<9){$('camInfo').textContent='Наблизьте карту, щоб завантажити камери й зарядки.';return}
-const b=LM.getBounds().pad(0.5),s=+b.getSouth().toFixed(2),w=+b.getWest().toFixed(2),n=+b.getNorth().toFixed(2),e=+b.getEast().toFixed(2);
+async function osmFetchView(){if(!LM||osmBusy)return;if(LM.getZoom()<8){$('camInfo').textContent='Наблизьте карту, щоб завантажити камери й зарядки.';camDraw();return}
+const b=LM.getBounds().pad(0.3),c=LM.getCenter();let s=Math.min(b.getSouth(),c.lat-0.25),n=Math.max(b.getNorth(),c.lat+0.25),w=Math.min(b.getWest(),c.lng-0.4),e=Math.max(b.getEast(),c.lng+0.4);
+s=+s.toFixed(2);n=+n.toFixed(2);w=+w.toFixed(2);e=+e.toFixed(2);
 if(boxCovered(s,w,n,e)){camDraw();return}osmBusy=true;$('camInfo').textContent='Завантажую камери й зарядки…';
 const bb='('+s+','+w+','+n+','+e+')',q='[out:json][timeout:25];(node["highway"="speed_camera"]'+bb+';node["amenity"="charging_station"]'+bb+';way["amenity"="charging_station"]'+bb+';);out center tags;';
 let ok=false;for(const u of OVP){try{const r=await fetch(u,{method:'POST',body:'data='+encodeURIComponent(q),headers:{'Content-Type':'application/x-www-form-urlencoded'}});if(!r.ok)continue;const j=await r.json();
@@ -995,7 +998,7 @@ j.elements.forEach(x=>{const la=x.lat||(x.center&&x.center.lat),lo=x.lon||(x.cen
 if(t.highway==='speed_camera')OSM.cams[x.id]=[+la.toFixed(5),+lo.toFixed(5),t.maxspeed||'',t.direction||''];
 else OSM.chg[x.id]=[+la.toFixed(5),+lo.toFixed(5),t.name||t.operator||t.brand||'',t.operator||'',chgPlugs(t),t['capacity']||'',t['fee']||'',t['opening_hours']||'']});
 OSM.boxes.push([s,w,n,e,Date.now()]);if(OSM.boxes.length>40)OSM.boxes.shift();osmSave();ok=true;break}catch(err){}}
-osmBusy=false;camDraw();if(!ok)$('camInfo').textContent='Не вдалося завантажити дані OpenStreetMap — спробуйте пізніше.'}
+osmBusy=false;camDraw();if(!ok)$('camInfo').textContent='Не вдалося завантажити дані OpenStreetMap (сервер перевантажений) — спробуйте за хвилину кнопкою «Де я» або посуньте карту.'}
 function chgPlugs(t){const P=[['socket:type2_combo','CCS2'],['socket:chademo','CHAdeMO'],['socket:type2','Type 2'],['socket:tesla_supercharger','Tesla'],['socket:gb_dc','GB/T'],['socket:type1_combo','CCS1'],['socket:schuko','Schuko']];
 const o=[];P.forEach(([k,n])=>{if(t[k]&&t[k]!=='no'){const pw=t[k+':output']||'';o.push(n+(t[k]!=='yes'&&!isNaN(+t[k])?' ×'+t[k]:'')+(pw?' '+pw:''))}});return o.join(', ')}
 function camDraw(){if(!LM)return;camLayer.clearLayers();chgLayer.clearLayers();const b=LM.getBounds().pad(0.3);let nc=0,nh=0;
@@ -1005,7 +1008,8 @@ L.marker([c[0],c[1]],{icon:c[2]?L.divIcon({className:'mk',html:'<div class="mkc"
 for(const id in OSM.chg){const c=OSM.chg[id];if(!b.contains([c[0],c[1]]))continue;nh++;
 L.marker([c[0],c[1]],{icon:chgIc}).bindPopup('<b>⚡ '+esc(c[2]||'Зарядна станція')+'</b>'+(c[3]&&c[3]!==c[2]?'<br>'+esc(c[3]):'')+(c[4]?'<br>Роз\'єми: '+esc(c[4]):'')+(c[5]?'<br>Місць: '+esc(c[5]):'')+
 (c[6]?'<br>Оплата: '+(c[6]==='no'?'безкоштовно':c[6]==='yes'?'платно':esc(c[6])):'')+(c[7]?'<br>Години: '+esc(c[7]):'')+navLinks(c[0],c[1],true)).addTo(chgLayer)}
-$('camInfo').textContent=(camOn?'📷 '+nc:'')+(camOn&&chgOn?' · ':'')+(chgOn?'⚡ '+nh:'')+' на карті'}
+let near='';if(camOn){const c=LM.getCenter();let best=1e9;for(const id in OSM.cams){const d=dist(c.lat,c.lng,OSM.cams[id][0],OSM.cams[id][1]);if(d<best)best=d}if(best<1e9&&!nc)near=' · найближча камера за '+(best/1000).toFixed(1)+' км'}
+$('camInfo').textContent=(camOn?'📷 '+nc:'')+(camOn&&chgOn?' · ':'')+(chgOn?'⚡ '+nh:'')+' на екрані'+near}
 function navLinks(la,lo,ps){return '<div class="pl"><a target="_blank" rel="noopener" href="https://waze.com/ul?ll='+la+','+lo+'&navigate=yes">Waze</a><a target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination='+la+','+lo+'">Google Maps</a>'+
 (ps?'<a target="_blank" rel="noopener" href="https://www.plugshare.com/">PlugShare</a>':'')+'</div>'}
 function camLayerT(w){if(w==='cam'){camOn=!camOn;LS.set('tled_cam_on',camOn);camOn?camLayer.addTo(LM):LM.removeLayer(camLayer)}else{chgOn=!chgOn;LS.set('tled_chg_on',chgOn);chgOn?chgLayer.addTo(LM):LM.removeLayer(chgLayer)}
@@ -1027,16 +1031,16 @@ else{W.className='camwarn hide';for(const id in camWarned){const c=OSM.cams[id];
 function camFollow(){camFol=!camFol;$('camFol').textContent='🚗 Стежити: '+(camFol?'увімк.':'вимк.');$('camFol').classList.toggle('pri',camFol);
 if(camWatch!==null){navigator.geolocation.clearWatch(camWatch);camWatch=null}$('camWarn').className='camwarn hide';
 if(camFol&&navigator.geolocation){beep(1,660);camWatch=navigator.geolocation.watchPosition(camPos,()=>{$('camInfo').textContent='Немає доступу до місцезнаходження — попередження не працюють.'},{enableHighAccuracy:true,maximumAge:2000,timeout:15000})}}
-// ---- вхід: перевіряємо пароль командою /ping — плата підтверджує її в стані (ack)
+// ---- вхід: пароль перевіряється тут же (PBKDF2), без нього сайт закритий повністю
 (function(){const L=$('login');if(TLED.hasPass()){L.classList.add('hide');return}
+const VER='5a2f31ad29701c1d967072a483f8db0374c7223fa08dba81c8549edae6161b6b';
+async function chk(p){const e=new TextEncoder(),k=await crypto.subtle.importKey('raw',e.encode(p),'PBKDF2',false,['deriveBits']);
+const b=await crypto.subtle.deriveBits({name:'PBKDF2',salt:e.encode('tesla-led-7b266m44ctfz'),iterations:150000,hash:'SHA-256'},k,256);
+return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('')===VER}
 async function go(){const p=$('lp').value.trim();if(!p){$('lm').textContent='Введіть пароль';return}
-TLED.setPass(p);$('lm').textContent='Перевіряю…';
-let n=null;for(let i=0;i<10&&!n;i++){n=await TLED.send('/ping');if(!n)await wait(800)}
-if(!n){$('lm').textContent='Немає зв\'язку із сервером. Пароль збережено — спробуйте пізніше.';setTimeout(()=>L.classList.add('hide'),2500);return}
-const t0=Date.now();while(Date.now()-t0<8000){const s=TLED.state();if(s&&s.ack===n){L.classList.add('hide');return}await wait(300)}
-const s=TLED.state();
-if(s&&s.online){TLED.clear();$('lm').textContent='Неправильний пароль'}
-else{$('lm').textContent='Плата зараз не на зв\'язку, тож пароль перевірити не можна. Його збережено.';setTimeout(()=>L.classList.add('hide'),2500)}}
-$('lb').onclick=go;$('lp').addEventListener('keydown',e=>{if(e.key==='Enter')go()})})();
+$('lm').textContent='Перевіряю…';$('lb').disabled=true;let ok=false;try{ok=await chk(p)}catch(e){}$('lb').disabled=false;
+if(!ok){$('lm').textContent='Неправильний пароль';$('lp').select();return}
+TLED.setPass(p);location.reload()}
+$('lb').onclick=go;$('lp').addEventListener('keydown',e=>{if(e.key==='Enter')go()});setTimeout(()=>$('lp').focus(),100)})();
 poll();setInterval(poll,4000);
 </script></body></html>
