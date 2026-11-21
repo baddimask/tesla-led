@@ -258,7 +258,7 @@ window.addEventListener('load',connect);
 <button class="btn ck fn" data-k="neg">±</button><button class="btn ck" data-k="0">0</button><button class="btn ck" data-k=".">,</button><button class="btn ck pri" data-k="=">=</button>
 </div></div>
 <div class="card" id="cBrd"><h2>Плата</h2><div id="brd" class="small"></div>
-<button class="btn" style="width:100%;margin-top:12px" onclick="logGet()">📋 Показати журнал плати</button>
+<div class="row" style="margin-top:12px"><button class="btn" onclick="logGet()">🔄 Показати журнал</button><button class="btn" id="logCp" onclick="logCopy()">📋 Копіювати журнал</button></div>
 <pre id="logBox" class="logbox">Натисніть кнопку, щоб отримати останні 40 подій.</pre></div>
 </div></div>
 <div id="scrGame" class="hide card" style="text-align:center">
@@ -935,6 +935,11 @@ $('brd').innerHTML='<table class="rtt"><tr><td>Зв\'язок</td><td>'+(a!=null
 setInterval(()=>{if(inDash)brdShow()},1000);
 function logGet(){$('logBox').textContent='Запитую журнал у плати…';if(!TLED.send('/log'))$('logBox').textContent='Немає зв\'язку із сервером.'}
 TLED.onLog=j=>{$('logBox').textContent=(j.lines||[]).join('\n')||'Журнал порожній';$('logBox').scrollTop=1e9};
+async function logCopy(){const b=$('logCp'),s=TLED.state()||{};
+const t='Плата: '+(s.fw||'?')+' · працює '+upTxt(s.up)+' · перезапусків '+(s.boots??'?')+' · причина: '+(s.rr||'?')+'\n\n'+$('logBox').textContent;
+let ok=false;try{await navigator.clipboard.writeText(t);ok=true}catch(e){}
+if(!ok){const ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{ok=document.execCommand('copy')}catch(e){}ta.remove()}
+b.textContent=ok?'✓ Скопійовано':'Не вдалося — виділіть текст вручну';setTimeout(()=>b.textContent='📋 Копіювати журнал',2000)}
 // ---- вхід: пароль сайту (PBKDF2 + AES-GCM) розшифровує ключ керування платою; без пароля сайт закритий
 (function(){const L=$('login');if(TLED.hasPass()){L.classList.add('hide');return}
 const IV='y3bvKfMl3WaM7XEp',CT='2xuiRgkcrgpBSXRhPitoY+G32mnwGDaj',b=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
