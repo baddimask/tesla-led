@@ -163,6 +163,7 @@ else if(p==='/night'){if('b' in a){D.nightBri=+a.b;if(D.night)D.bri=D.nightBri}i
  L.bri=D.bri;L.power=D.pw;show('нічне світло '+(D.night?'увімк. '+D.nightBri+'%':'вимк.'))}
 else if(p==='/preset'){const m={on:'pOn',ds:'pDs',ns:'pNs',dc:'pDc',db:'pDb',nc:'pNc',nb:'pNb',fade:'pFade',wel:'pWel'};let any=false;
  for(const k in m)if(k in a){any=true;D[m[k]]=['dc','nc'].includes(k)?a[k]:(['on','fade','wel'].includes(k)?a[k]==='1':+a[k])}
+ if(!['on','ds','ns','dc','nc','db','nb','apply'].some(k=>k in a)){show('налаштування збережено');return}
  const cm=D.clock;D.pCur=(D.pDs<D.pNs?(cm>=D.pDs&&cm<D.pNs):(cm>=D.pDs||cm<D.pNs))?0:1;const c=D.pCur?D.pNc:D.pDc,b=D.pCur?D.pNb:D.pDb;D.col=c;D.bri=b;D.fx=0;L.color=c;L.bri=b;L.fx=0;
  show(any?'налаштування режимів збережено':'повернення до поточного режиму')}
 else if(p==='/log'){setTimeout(()=>{if(window.TLED.onLog)TLED.onLog({lines:['12s  Підключено до контролера','13s  Привітальне світло','40s  MQTT: плата на зв\'язку із сайтом','3600s  Увімкнено нічний режим']})},600)}
@@ -355,9 +356,15 @@ window.addEventListener('load',connect);
 <div class="card" data-f="fx"><h2>Ефекти <span class="sum" id="sumFx" hidden></span></h2>
 <div class="vrow"><div class="fx" id="fx" style="flex:1"></div><div class="vcol"><div class="vs" id="spd"></div><b id="spv" style="color:var(--txt)">50%</b>Швидкість</div></div></div>
 
-<div class="card" id="preCard"><h2>Денний і нічний режим <span id="sumHue" hidden></span><span id="sumEve" hidden></span></h2>
+<div class="card" id="optCard" style="grid-column:1/-1"><h2>Додаткові налаштування</h2>
 <div class="small" id="clk">Годинник: …</div>
-<label class="chk"><input type="checkbox" id="pOn" onchange="pDirty()"> Автоматично перемикати за часом</label>
+<label class="chk"><input type="checkbox" id="pOn" onchange="pOpt()"> Автоматично перемикати денний і нічний режим за часом</label>
+<label class="chk"><input type="checkbox" id="pFade" onchange="pOpt()"> Плавний перехід між денним і нічним (2 хв)</label>
+<label class="chk"><input type="checkbox" id="pWel" onchange="pOpt()"> Привітальне світло: коли плата вмикається, підсвітка плавно розгоряється</label>
+<div class="small" id="optMsg">Ці перемикачі зберігаються одразу.</div>
+<div class="small" style="margin-top:14px"><a href="/update" id="updLink" style="color:var(--acc)">Оновлення прошивки →</a></div>
+</div>
+<div class="card" id="preCard" style="grid-column:1/-1"><h2>Денний і нічний режим <span id="sumHue" hidden></span><span id="sumEve" hidden></span></h2>
 <div class="pgrid">
 <div class="pbox" id="pb0"><div class="phead"><b>☀️ Денний</b><span class="small">з <input type="time" id="pT0" class="ptime" onchange="pDirty()"></span></div>
 <div class="pprev" id="pv0"></div><div class="psw" id="ps0"></div>
@@ -367,11 +374,8 @@ window.addEventListener('load',connect);
 <div class="lbl"><span>Яскравість</span><span class="step"><button onclick="pBri(1,-5)">−</button><b id="pbv1">25%</b><button onclick="pBri(1,5)">+</button></span></div></div>
 </div>
 <div class="small" id="pRange" style="margin-top:8px"></div>
-<label class="chk"><input type="checkbox" id="pFade" onchange="pDirty()"> Плавний перехід між денним і нічним (2 хв)</label>
-<label class="chk"><input type="checkbox" id="pWel" onchange="pDirty()"> Привітальне світло: коли плата вмикається, підсвітка плавно розгоряється</label>
 <div class="row" style="margin-top:12px"><button class="btn" onclick="pCancel()">Скасувати</button><button class="btn pri" onclick="pSave()">Зберегти</button></div>
 <div class="small" id="pMsg" style="margin-top:10px">Торкніться кольору чи яскравості — підсвітка одразу покаже, як це виглядатиме. Потім «Зберегти».</div>
-<div class="small" style="margin-top:14px"><a href="/update" id="updLink" style="color:var(--acc)">Оновлення прошивки →</a></div>
 </div>
 </div>
 <div class="cbar"><div class="sw" id="sw"></div></div>
@@ -522,16 +526,19 @@ PCOL.forEach(c=>[0,1].forEach(k=>{const b=document.createElement('button');b.sty
 function pShow(){$('pOn').checked=PF.on;$('pFade').checked=PF.fade;$('pWel').checked=PF.wel;[0,1].forEach(k=>{$('pT'+k).value=hm(PF.t[k]);$('pv'+k).style.background='#'+PF.c[k];$('pbv'+k).textContent=PF.b[k]+'%';
 document.querySelectorAll('#ps'+k+' button').forEach(b=>b.classList.toggle('sel',b.dataset.c===PF.c[k]))});
 $('pRange').textContent='Денний: '+hm(PF.t[0])+'–'+hm((PF.t[1]+1439)%1440)+' · Нічний: '+hm(PF.t[1])+'–'+hm((PF.t[0]+1439)%1440)}
-function pRead(){PF.on=$('pOn').checked;PF.fade=$('pFade').checked;PF.wel=$('pWel').checked;PF.t=[mm($('pT0').value),mm($('pT1').value)]}
+function pRead(){PF.t=[mm($('pT0').value),mm($('pT1').value)]}
+let optEdit=0;function pOpt(){PF.on=$('pOn').checked;PF.fade=$('pFade').checked;PF.wel=$('pWel').checked;optEdit=Date.now();
+const id=(window.event&&event.target&&event.target.id)||'';get('/preset?'+(id==='pFade'?'fade='+(PF.fade?1:0):id==='pWel'?'wel='+(PF.wel?1:0):'on='+(PF.on?1:0)));$('optMsg').textContent='✓ Збережено';setTimeout(()=>$('optMsg').textContent='Ці перемикачі зберігаються одразу.',2000)}
 function pDirty(){pRead();pEdit=true;pShow();$('pMsg').textContent='Є незбережені зміни — натисніть «Зберегти».'}
 function pPrev(k){cmd('power',1);cmd('color',PF.c[k]);cmd('bri',PF.b[k])}
 function pPick(k,c){pRead();PF.c[k]=c;pEdit=true;pShow();pPrev(k);$('pMsg').textContent='Так виглядатиме '+(k?'нічний':'денний')+' режим. Подобається — «Зберегти».'}
 let pbT=null;function pBri(k,d){pRead();PF.b[k]=Math.max(5,Math.min(100,PF.b[k]+d));pEdit=true;pShow();clearTimeout(pbT);pbT=setTimeout(()=>pPrev(k),300)}
-function pSave(){pRead();get('/preset?on='+(PF.on?1:0)+'&ds='+PF.t[0]+'&ns='+PF.t[1]+'&dc='+PF.c[0]+'&db='+PF.b[0]+'&nc='+PF.c[1]+'&nb='+PF.b[1]+'&fade='+(PF.fade?1:0)+'&wel='+(PF.wel?1:0));
+function pSave(){pRead();get('/preset?ds='+PF.t[0]+'&ns='+PF.t[1]+'&dc='+PF.c[0]+'&db='+PF.b[0]+'&nc='+PF.c[1]+'&nb='+PF.b[1]);
 pEdit=false;$('pMsg').textContent='Збережено в пам\'ять плати. Підсвітка повертається до поточного режиму.'}
 function pCancel(){pEdit=false;pLoaded=false;if(last)preFill(last);get('/preset?apply=1');$('pMsg').textContent='Зміни скасовано.'}
 function preFill(s){if(s.pDs===undefined){$('pMsg').textContent='Ця функція працює з прошивкою v19.';return}
-if(!pEdit){PF.on=!!s.pOn;PF.t=[s.pDs,s.pNs];PF.c=[s.pDc,s.pNc];PF.b=[s.pDb,s.pNb];PF.fade=!!s.pFade;PF.wel=!!s.pWel;pShow()}
+if(Date.now()-optEdit>5000){PF.on=!!s.pOn;PF.fade=!!s.pFade;PF.wel=!!s.pWel}
+if(!pEdit){PF.t=[s.pDs,s.pNs];PF.c=[s.pDc,s.pNc];PF.b=[s.pDb,s.pNb]}pShow();
 [0,1].forEach(k=>$('pb'+k).classList.toggle('now',s.pOn&&s.pCur===k))}
 pShow();
 // ================= НОВІ ІГРИ (тільки на сайті) =================
